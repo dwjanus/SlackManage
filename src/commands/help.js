@@ -5,7 +5,7 @@ const config = require('../config');
 
 const msgDefaults = {
   response_type: 'in_channel',
-  username: 'Samanagebot',
+  username: 'Samanage',
   icon_emoji: config('ICON_EMOJI')
 };
 
@@ -13,8 +13,8 @@ let attachments = [
   {
     title: 'Samanagebot will help you view the status of, and modify, your latest incidents',
     color: '#0067B3',
-    text: '"/samanage my incidents" returns your 5 most recently updated/modified incidents \n' +
-          '"/samanage latest incidents" returns the 5 newest incidents',
+    text: '"/samanage myincidents" returns your 5 most recently updated/modified incidents \n' +
+          '"/samanage latestincidents" returns the 5 newest incidents',
     mrkdown_in: ['text']
   },
   {

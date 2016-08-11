@@ -17,7 +17,7 @@ bot.configureIncomingWebhook({ url: config('WEBHOOK_URL') });
 
 const msgDefaults = {
   response_type: 'in_channel',
-  username: 'Samanagebot',
+  username: 'Samanage',
   icon_emoji: config('ICON_EMOJI')
 };
 
@@ -55,7 +55,7 @@ contoller.hears(['my incidents'], 'direct_message, direct_mention, mention', fun
       console.log(`problem with request: ${e.msg}`);
     });
     req.end();
-    
+
   })
 })
 

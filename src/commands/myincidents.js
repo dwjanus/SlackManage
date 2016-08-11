@@ -5,7 +5,7 @@ const config = require('../config');
 
 const msgDefaults = {
   response_type: 'in_channel',
-  username: 'Samanagebot',
+  username: 'Samanage',
   icon_emoji: config('ICON_EMOJI')
 };
 
@@ -29,4 +29,4 @@ const handler = (payload, res) => {
   return;
 };
 
-module.exports = { pattern: /my incidents/ig, handler: handler };
+module.exports = { pattern: /myincidents/ig, handler: handler };
