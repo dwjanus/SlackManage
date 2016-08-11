@@ -11,7 +11,7 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-  var attachments = {
+  let attachments = {
       title: 'Incidents',
       color: '#0067B3',
       text: 'This will contain a list with your 5 most recent incidents',
