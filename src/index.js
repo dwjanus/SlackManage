@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
-app.post('/commands/samanagebot', (req, res) => {
+app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
