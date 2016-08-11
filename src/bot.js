@@ -4,7 +4,7 @@ const slack = require('slack');
 const _ = require('lodash');
 const config = require('./config');
 
-let bet = slack.rtm.client();
+let bot = slack.rtm.client();
 
 bot.started((payload) => {
   this.self = payload.self;
