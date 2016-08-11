@@ -12,8 +12,6 @@ const config = {
   WEBHOOK_URL: process.env.WEBHOOK_URL,
   SAMANAGE_COMMAND_TOKEN: process.env.SAMANAGE_COMMAND_TOKEN,
   SLACK_TOKEN: process.env.SLACK_TOKEN,
-  CLIENT_ID: process.env.CLIENT_ID,
-  CLIENT_SECRET: process.env.CLIENT_SECRET,
   ICON_EMOJI: ':samanage:'
 };
 

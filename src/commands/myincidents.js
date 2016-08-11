@@ -14,7 +14,7 @@ const handler = (payload, res) => {
     title: 'Incidents',
     color: '#0067B3',
     text: 'This will contain a list with your 5 most recent incidents',
-    mrkdown_in: ['text']
+    mrkdown_in: ['text', 'pretext']
   };
 
   let msg = _.defaults({
@@ -27,4 +27,4 @@ const handler = (payload, res) => {
   return;
 };
 
-module.exports = { pattern: /myincidents/ig, handler: handler };
+module.exports = { pattern: /my incidents/ig, handler: handler };
