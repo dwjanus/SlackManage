@@ -11,7 +11,7 @@ var controller = Botkit.slackbot({
 
 var bot = controller.spawn().startRTM();
 
-var http = require('http');
+//var http = require('http');
 
 bot.configureIncomingWebhook({ url: config('WEBHOOK_URL') });
 
@@ -21,43 +21,43 @@ const msgDefaults = {
   icon_emoji: config('ICON_EMOJI')
 };
 
-controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
-  id = message.user;
-  var options = {user: id};
-  user = bot.api.users.info(options, function(err, res) {
-    var email = response.user.profile.email;
+// controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
+//   id = message.user;
+//   var options = {user: id};
+//   user = bot.api.users.info(options, function(err, res) {
+//     var email = response.user.profile.email;
 
-    bot.reply(message, "Searching for incidents assigned to: " + email);
+//     bot.reply(message, "Searching for incidents assigned to: " + email);
 
-    var options = {
-      host: 'localhost',
-      port: 3000,
-      path: '/incidents?q=' + email,
-      method: 'GET'
-    };
+//     var options = {
+//       host: 'localhost',
+//       port: 3000,
+//       path: '/incidents?q=' + email,
+//       method: 'GET'
+//     };
 
-    var str = '';
-    var req = http.request(options, (res) => {
-      console.log(`STATUS: ${res.statusCode}`);
-      res.setEncoding('utf8');
-      res.on('data', (chunk) => {
-        str += chunk;
-      });
+//     var str = '';
+//     var req = http.request(options, (res) => {
+//       console.log(`STATUS: ${res.statusCode}`);
+//       res.setEncoding('utf8');
+//       res.on('data', (chunk) => {
+//         str += chunk;
+//       });
 
-      res.on('end', () => {
-        console.log("\n\n\n\n...and: " + str);
-        bot.reply(message, str);
-        console.log("No more data in response.");
-      });
-    });
+//       res.on('end', () => {
+//         console.log("\n\n\n\n...and: " + str);
+//         bot.reply(message, str);
+//         console.log("No more data in response.");
+//       });
+//     });
 
-    req.on('error', (e) => {
-      console.log(`problem with request: ${e.message}`);
-    });
-    req.end();
+//     req.on('error', (e) => {
+//       console.log(`problem with request: ${e.message}`);
+//     });
+//     req.end();
 
-  });
-});
+//   });
+// });
 
 //*************************************************** 
 //    -- function to alert user if they have -- 
