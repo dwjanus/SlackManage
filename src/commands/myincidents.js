@@ -9,14 +9,15 @@ const msgDefaults = {
   icon_emoji: config('ICON_EMOJI')
 };
 
-const handler = (payload, res) => {
-  let attachments = {
+var attachments = {
     title: 'Incidents',
     color: '#0067B3',
     text: 'This will contain a list with your 5 most recent incidents',
-    mrkdown_in: ['text', 'pretext']
+    mrkdown_in: ['text']
   };
 
+const handler = (payload, res) => {
+  
   let msg = _.defaults({
     channel: payload.channel_name,
     attachments: attachments
