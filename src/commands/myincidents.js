@@ -14,7 +14,7 @@ const handler = (payload, res) => {
     title: 'Incidents',
     color: '#0067B3',
     text: 'This will contain a list with your 5 most recent incidents',
-    mrkdown_in: ['text', 'pretext']
+    mrkdown_in: ['text']
   }
 
   let msg = _.defaults({
