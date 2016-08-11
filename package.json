@@ -1,5 +1,5 @@
 {
-  "name": "samanagebot",
+  "name": "samanage",
   "description": "Samanagebot helps keep you updated on your incidents",
   "version": "1.0.0",
   "main": "src/index.js",

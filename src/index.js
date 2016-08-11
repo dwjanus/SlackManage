@@ -45,10 +45,10 @@ app.post('/commands/samanage', (req, res) => {
 app.listen(config('PORT'), (err) => {
   if (err) throw err;
 
-  console.log(`\n🚀 Slackbot LIVES on PORT ${config('PORT')} 🚀`);
+  console.log(`\n🚀 Samanagebot LIVES on PORT ${config('PORT')} 🚀`);
 
   if (config('SLACK_TOKEN')) {
-    console.log(`🤖  beep boop: @samanagebot is real-time\n`);
+    console.log(`🤖  beep boop: @samanage is real-time\n`);
     bot.listen({ token: config('SLACK_TOKEN') });
   }
 });

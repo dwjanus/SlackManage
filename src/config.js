@@ -10,7 +10,7 @@ const config = {
   PORT: process.env.PORT,
   PROXY_URI: process.env.PROXY_URI,
   WEBHOOK_URL: process.env.WEBHOOK_URL,
-  STARBOT_COMMAND_TOKEN: process.env.STARBOT_COMMAND_TOKEN,
+  SAMANAGE_COMMAND_TOKEN: process.env.SAMANAGE_COMMAND_TOKEN,
   SLACK_TOKEN: process.env.SLACK_TOKEN,
   CLIENT_ID: process.env.CLIENT_ID,
   CLIENT_SECRET: process.env.CLIENT_SECRET,

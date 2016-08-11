@@ -18,7 +18,7 @@ bot.message((msg) => {
     token: config('SLACK_TOKEN'),
     icon_emoji: config('ICON_EMOJI'),
     channel: msg.channel,
-    username: 'Samanagebot',
+    username: 'Samanage',
     text: `beep boop: What it do tho"`
   }, (err, data) => {
     if (err) throw err;
