@@ -2,13 +2,13 @@
   "name": "Samanagebot",
   "description": "Samanagebot helps keep you updated on your incidents",
   "repository": "https://github.com/dwjanus/slackmanage",
-  "logo": "https://heroku-www-files.s3.amazonaws.com/starbot/starbot-icon.png",
+  "logo": "https://s3-media2.fl.yelpcdn.com/bphoto/N4Xl3iEv5Xb0OUiqlEX9EQ/ls.jpg",
   "success_url": "/",
   "env": {
     "HEROKU_APP_NAME": {
       "required": true
     },
-    "STARBOT_COMMAND_TOKEN": {
+    "SAMANAGE_COMMAND_TOKEN": {
       "description": "Slash command token, for the Samanagebot command endpoint",
       "required": true
     },
