@@ -15,7 +15,7 @@ let attachments = [
     color: '#0067B3',
     text: '`/samanage my incidents` returns your 5 most recently updated/modified incidents \n' +
           '`/samanage latest incidents` returns the 5 newest incidents',
-    mrkdown_in ['text']
+    mrkdown_in: ['text']
   },
   {
     title: 'Configuring Samanagebot',

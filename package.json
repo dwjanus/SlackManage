@@ -2,7 +2,7 @@
   "name": "samanagebot",
   "description": "Samanagebot helps keep you updated on your incidents",
   "version": "1.0.0",
-  "main": "src/index.js", // <-- this may have to change if we need that button... maybe
+  "main": "src/index.js",
   "scripts": {
     "start": "node ./src",
     "notify": "node ./src/tasks/notify",
