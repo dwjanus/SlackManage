@@ -27,4 +27,4 @@ const handler = (payload, res) => {
   return;
 };
 
-module.exports = { pattern: /my incidents/ig, handler: handler };
+module.exports = { pattern: /myincidents/ig, handler: handler };
