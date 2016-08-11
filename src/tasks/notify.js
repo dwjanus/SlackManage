@@ -21,8 +21,8 @@ const msgDefaults = {
   icon_emoji: config('ICON_EMOJI')
 };
 
-controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, msg) {
-  id = msg.user;
+controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
+  id = message.user;
   var options = {user: id};
   user = bot.api.users.info(options, function(err, res) {
     var email = response.user.profile.email;
@@ -46,18 +46,18 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
 
       res.on('end', () => {
         console.log("\n\n\n\n...and: " + str);
-        bot.reply(msg, str);
+        bot.reply(message, str);
         console.log("No more data in response.");
       });
     });
 
     req.on('error', (e) => {
-      console.log(`problem with request: ${e.msg}`);
+      console.log(`problem with request: ${e.message}`);
     });
     req.end();
 
-  })
-})
+  });
+});
 
 //*************************************************** 
 //    -- function to alert user if they have -- 
@@ -76,9 +76,9 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
 //     };
 //   });
 
-//   let msg = _.defaults({ attachments: attachments }, msgDefaults);
+//   let message = _.defaults({ attachments: attachments }, messageDefaults);
 
-//   bot.sendWebhook(msg, (err, res) => {
+//   bot.sendWebhook(message, (err, res) => {
 //     if (err) throw err;
 
 //     console.log(`\n🚀 Latest incidents delivered! 🚀`)
