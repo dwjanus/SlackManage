@@ -21,7 +21,7 @@ const msgDefaults = {
   icon_emoji: config('ICON_EMOJI')
 };
 
-contoller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, msg) {
+controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, msg) {
   id = msg.user;
   var options = {user: id};
   user = bot.api.users.info(options, function(err, res) {
