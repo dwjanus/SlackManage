@@ -12,17 +12,17 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-  Samanage.my_incidents((err, incidents) => {
+  Samanage.new_incidents((err, incidents) => {
     if (err) throw err;
 
     var attachments = incidents.slice(0, 4).map((incident) => {
-        return {
-          title: `${incident.name}/${incident.requester}`,
-          color: '#0067B3',
-          text: `${incident.assignee}\n_${incident.description}_\n`,
-          mrkdown_in: ['text', 'pretext']
-        }
-      });    
+      return {
+        title: `${incident.name}/${incident.requester}`,
+        color: '#0067B3',
+        text: `${incident.assignee}\n_${incident.description}_\n`,
+        mrkdown_in: ['text', 'pretext']
+      }
+    });    
   });
 
   let msg = _.defaults({
@@ -35,4 +35,5 @@ const handler = (payload, res) => {
   return;
 };
 
-module.exports = { pattern: /my incidents/ig, handler: handler };
+module.exports = { pattern: /incidents/ig, handler: handler };
+
