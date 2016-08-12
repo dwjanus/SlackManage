@@ -25,7 +25,7 @@ const handler = (payload, res) => {
 
   res.set('content-type', 'application/json');
   res.status(200).json(msg);
-  res.write(JSON.stringify(msg));
+  res.write("BIT OL BUTTS");
   return;
 };
 
