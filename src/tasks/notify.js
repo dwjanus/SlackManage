@@ -64,7 +64,7 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
       mrkdown_in: ['text']
     }];
 
-    let message = _.defaults({ attachments: attachments }, messageDefaults);
+    let message = _.defaults({ attachments: attachments }, msgDefaults);
 
     bot.sendWebhook(message, (err, res) => {
       if (err) throw err;
