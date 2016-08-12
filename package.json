@@ -22,7 +22,7 @@
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
     "express-http-proxy": "^0.6.0",
-    "reqclient": "^3.9.5",
+    "reqclient": "^1.2.2",
     "lodash": "^4.6.1",
     "slack": "^6.1.0"
   },
