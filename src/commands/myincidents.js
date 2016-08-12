@@ -25,7 +25,7 @@ const handler = (payload, res) => {
 
   res.set('content-type', 'application/json');
   res.text = JSON.stringify(msg);
-  return;
+  return res;
 };
 
 module.exports = { pattern: /myincidents/ig, handler: handler };
