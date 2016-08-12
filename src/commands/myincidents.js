@@ -11,7 +11,7 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-  let attachments = {
+  var attachments = {
       title: 'Incidents',
       color: '#0067B3',
       text: 'This will contain a list with your 5 most recent incidents',
@@ -24,7 +24,7 @@ const handler = (payload, res) => {
   }, msgDefaults);
 
   res.set('content-type', 'application/json');
-  res.status(200).json(msg);
+  res.text = JSON.stringify(msg);
   return;
 };
 
