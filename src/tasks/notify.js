@@ -57,12 +57,12 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
     });
     req.end();
 
-    var attachments = {
+    var attachments = [{
       title: 'Incidents',
       color: '#0067B3',
       text: 'This will contain a list with your 5 most recent incidents',
       mrkdown_in: ['text']
-    };
+    }];
 
     let message = _.defaults({ attachments: attachments }, messageDefaults);
 
