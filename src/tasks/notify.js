@@ -28,24 +28,25 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
   id = message.user;
   var options = {user: id};
   user = bot.api.users.info(options, function(err, res) {
-  var email = response.user.profile.email;
+    var email = response.user.profile.email;
 
-  bot.reply(message, "Searching for incidents assigned to: " + email);
+    bot.reply(message, "Searching for incidents assigned to: " + email);
 
-  Samanage.my_incidents(email, (err, incidents) => {
-    if (err) throw err;
+    Samanage.my_incidents(email, (err, incidents) => {
+      if (err) throw err;
 
-    var attachments = incidents.slice(0, 4).map((incident) => {
-      return {
-        title: `${incident.name}/${incident.requester}`,
-        color: '#0067B3',
-        text: `${incident.assignee}\n_${incident.description}_\n`,
-        mrkdown_in: ['text', 'pretext']
-      }
+      var attachments = incidents.slice(0, 4).map((incident) => {
+        return {
+          title: `${incident.name}/${incident.requester}`,
+          color: '#0067B3',
+          text: `${incident.assignee}\n_${incident.description}_\n`,
+          mrkdown_in: ['text', 'pretext']
+        }
+      });
     });
   });
 
-  let message = _.defaults({ attachments: attachments }, msgDefaults);
+  message = _.defaults({ attachments: attachments }, msgDefaults);
 
   bot.sendWebhook(message, (err, res) => {
     if (err) throw err;

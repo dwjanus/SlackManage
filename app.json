@@ -16,6 +16,10 @@
       "description": "Slack bot RTM API token",
       "required": false
     },
+    "WEBHOOK_URL": {
+      "description": "Slack webhook url",
+      "required": false
+    },
     "NODE_ENV": "staging"
   },
   "image": "heroku/nodejs"
