@@ -2,13 +2,13 @@
 const _ = require('lodash');
 const config = require('./config');
 const request = require('request');
+const RequestClient = require('reqclient').RequestClient;
 const api_url = 'https://api.samanage.com/';
 
 // authorize the api user
 request.get(api_url).auth('devin.janus@samanage.com', 'BenHobgood666', false);
 
 // this will handle our api requests
-var RequestClient = require('reqclient').RequestClient;
 var client = new RequestClient(api_url);
 
 var incident_list;
