@@ -3,16 +3,19 @@ const _ = require('lodash');
 const config = require('../config');
 var https = require('https');
 
+const username = config('username');
+const password = config('password');
+
+var options = {
+  host: 'https://api.samanage.com/',
+  path: '/incidents.json',
+  method: 'GET',
+  auth: username + ':' + password
+};
+
 module.exports = {
 
-  var options = {
-    host: 'https://api.samanage.com/',
-    path: '/incidents.json',
-    method: 'GET',
-    auth: username:env.process.username + ':' + password:env.process.password
-  };
-
-  var incident_list;
+  //var incident_list;
 
   my_incidents: function (email, callback) {
     var req = https.request(options, function (res) {
