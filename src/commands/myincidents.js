@@ -3,7 +3,7 @@
 
 const _ = require('lodash');
 const config = require('../config');
-const Samanage = require('../samanage');
+const Samanage = require('../lib/samanage');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -16,13 +16,13 @@ const handler = (payload, res) => {
     if (err) throw err;
 
     var attachments = incidents.slice(0, 4).map((incident) => {
-        return {
-          title: `${incident.name}/${incident.requester}`,
-          color: '#0067B3',
-          text: `${incident.assignee}\n_${incident.description}_\n`,
-          mrkdown_in: ['text', 'pretext']
-        }
-      });    
+      return {
+        title: `${incident.name}/${incident.requester}`,
+        color: '#0067B3',
+        text: `${incident.assignee}\n_${incident.description}_\n`,
+        mrkdown_in: ['text', 'pretext']
+      }
+    });    
   });
 
   let msg = _.defaults({
