@@ -6,54 +6,118 @@ var https = require('https');
 const username = config('username');
 const password = config('password');
 
-const options = {
+
+const useroptions = {
+    host: 'https://api.samanage.com/',
+    path: '/users.json?email=' + email,
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
+    auth: username + ':' + password
+  };
+
+const newoptions = {
   host: 'https://api.samanage.com/',
   path: '/incidents.json',
   method: 'GET',
+  headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
   auth: username + ':' + password
 };
 
-module.exports = {
+var incident_list = [];
 
-  my_incidents: function (email, callback) {
-    var req = https.request(options, function (res) {
-      console.log('STATUS: ' + res.statusCode);
-      console.log('HEADERS: ' + JSON.stringify(res.headers));
-      res.setEncodeing('utf8');
+exports.my_incidents = function (email, callback) {
+  
+  var samanage_id;
 
-      res.on('data', function (chunk) {
-        console.log('BODY: ' + chunk);
+  var req = https.request(useroptions, function (res) {
+    console.log('STATUS: ' + res.statusCode);
+    console.log('HEADERS: ' + JSON.stringify(res.headers));
+    res.setEncodeing('utf8');
 
-        var samanage_id = JSON.parse(client.get({'uri': 'users.json', 'query': {'email': email}}));
-        var incident_list = JSON.parse(client.get({'uri': 'incidents.json', 'query': {'assigned_to': + samanage_id}}));
-        callback(null, incident_list);
+    res.on('data', function (chunk) {
+      console.log('BODY: ' + chunk);
+
+      samanage_id = JSON.stringify(chunk);
+
+      var options = {
+        host: 'https://api.samanage.com/',
+        path: '/incidents.json?=&assigned_to=' + samanage_id,
+        method: 'GET',
+        headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
+        auth: username + ':' + password
+      };
+
+      
+      var request = https.request(options, function (response) {
+        
+        response.on('data', function (chunk) {
+          console.log('BODY: ' + chunk);
+
+          var incident = {};
+          var incidentjson = JSON.parse(chunk);
+
+          for(incident in incidentjson) {
+            console.log("key: " + incident + ", value: " + incidentjson[incident]);
+            var current = incidentjson.pop();
+            
+            incident.title = current.name;
+            incident.requester = current.requester;
+            incident.description = current.description;
+            incident.assignee = current.assignee;
+            incident_list.push(incident);
+          };
+        });
       });
-
-      req.on('error', function(e) {
+      request.end();
+      
+      request.on('error', function (e) {
         console.log('problem with request: ' + e.message);
       });
 
-      req.end();
-    }); 
-  },
+      callback(null, incident_list);
+    });
+    req.end();
+
+    req.on('error', function (e) {
+      console.log('problem with request: ' + e.message);
+    });
+  }); 
+
+  return incident_list;
+};
     
-  new_incidents: function (callback) {
-    var req = https.request(options, function (res) {
-      console.log('STATUS: ' + res.statusCode);
-      console.log('HEADERS: ' + JSON.stringify(res.headers));
-      res.setEncodeing('utf8');
+exports.new_incidents = function (callback) {
+  var req = https.request(options, function (res) {
+    console.log('STATUS: ' + res.statusCode);
+    console.log('HEADERS: ' + JSON.stringify(res.headers));
+    res.setEncodeing('utf8');
 
-      res.on('data', function (chunk) {
-        console.log('BODY: ' + chunk);
-        var incident_list = JSON.parse(client.get({'uri': 'incidents.json'}));
-        callback(null, incident_list);
-      });
+    res.on('data', function (chunk) {
+      console.log('BODY: ' + chunk);
 
-      req.on('error', function(e) {
-        console.log('problem with request: ' + e.message);
-      });
+      var incident = {};
+      var incidentjson = JSON.parse(chunk);
 
-      req.end();
-    }); 
-  }
+      for(var incident in incidentjson) {
+        console.log("key: " + incident + ", value: " + incidentjson[incident]);
+        var current = incidentjson.pop();
+        
+        incident.title = current.name;
+        incident.requester = current.requester;
+        incident.description = current.description;
+        incident.assignee = current.assignee;
+        incident_list.push(incident);
+      };
+
+      callback(null, incident_list);
+    });
+    req.end();
+
+
+    req.on('error', function(e) {
+      console.log('problem with request: ' + e.message);
+    });
+
+    return incident_list;
+  }); 
 };
