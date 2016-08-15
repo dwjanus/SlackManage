@@ -6,7 +6,7 @@ var https = require('https');
 const username = config('username');
 const password = config('password');
 
-var options = {
+const options = {
   host: 'https://api.samanage.com/',
   path: '/incidents.json',
   method: 'GET',
