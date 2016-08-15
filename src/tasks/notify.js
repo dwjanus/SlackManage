@@ -6,8 +6,6 @@ const config = require('../config');
 const Botkit = require('botkit');
 const Samanage = require('../lib/samanage');
 const RequestClient = require('reqclient').RequestClient;
-const 
-var os = require('os'); // <-- do i need this?
 
 var controller = Botkit.slackbot({
   debug: false
