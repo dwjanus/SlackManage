@@ -32,10 +32,10 @@ controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function
     channel: message.channel,
     name: 'robot_face',
   },function(err,res) {
-    if (err) {
-      bot.botkit.log("Failed to add emoji reaction :(",err);
-    }
-  });
+      if (err) {
+        bot.botkit.log("Failed to add emoji reaction :(",err);
+      }
+    });
 
     controller.storage.users.get(message.user,function(err,user) {
     if (user && user.name) {
@@ -78,8 +78,9 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
       });
     });
   });
+});
 
-  controller.hears(['incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
+controller.hears(['incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
   id = message.user;
   var options = {user: id};
   user = bot.api.users.info(options, function(err, res) {
@@ -108,6 +109,7 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
 
     console.log(`\n🚀 Latest incidents delivered! 🚀`)
   });
-
 });
+
+
 
