@@ -53,7 +53,7 @@ function samanage() {
 
   const options = {
     host: 'api.samanage.com',
-    path: '/incidents.json?pages=1&per_page=25',
+    path: '/incidents.json?',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
     auth: username + ':' + password
@@ -66,15 +66,15 @@ function samanage() {
     console.log('HEADERS: ' + JSON.stringify(response.headers) + "\n\n");
 
     response.setEncoding('utf8');
-    var body = '';
+    var body = "";
 
-    response.on('data', function (chunk) {
+    stream.on('data', function (chunk) {
       body += chunk;
     });
 
-    response.on('end', function () {
+    stream.on('end', function () {
       var parsedResponse = JSON.parse(body);
-      console.log('BODY: ' + parsedResponse + "\n\n");
+      console.log('BODY: ' + JSON.stringify(parsedResponse) + "\n\n");
       // console.log('First Incident: \n');
       // console.log(parsedResponse.incident[0]) + '\n';
     });
