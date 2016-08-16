@@ -68,11 +68,11 @@ function samanage() {
     response.setEncoding('utf8');
     var body = "";
 
-    stream.on('data', function (chunk) {
+    response.on('data', function (chunk) {
       body += chunk;
     });
 
-    stream.on('end', function () {
+    response.on('end', function () {
       var parsedResponse = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsedResponse) + "\n\n");
       // console.log('First Incident: \n');
