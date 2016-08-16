@@ -75,9 +75,8 @@ function samanage() {
     stream.on('end', function () {
       var parsedResponse = JSON.parse(body);
       console.log('BODY: ' + parsedResponse + "\n\n");
-      console.log('First Five Incidents: \n');
-      for(var i = 0; i < 4; i++) {
-          console.log(parsedResponse.incident[i]) + '\n';
+      console.log('First Incident: \n');
+      console.log(parsedResponse.incident[0]) + '\n';
       };
     });
         // var incident = chunk.Incident[i];
