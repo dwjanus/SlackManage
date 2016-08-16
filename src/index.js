@@ -83,15 +83,12 @@ function samanage() {
         incident_list.push(current);
       };
     });
-      
-  }); 
-  request.end();
+    return incident_list;
+  });
 
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   }); 
-
-  return JSON.parse(incident_list);
 };
 
 app.get('/incidents', (req, res) => {  
