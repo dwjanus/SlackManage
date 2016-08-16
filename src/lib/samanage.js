@@ -7,7 +7,7 @@ const username = config('username');
 const password = config('password');
 
 const newoptions = {
-  host: 'https://api.samanage.com',
+  host: 'api.samanage.com',
   path: '/incidents.json',
   method: 'GET',
   headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
@@ -19,7 +19,7 @@ var incident_list = [];
 exports.my_incidents = function (email, callback) {
   
   const useroptions = {
-    host: 'https://api.samanage.com',
+    host: 'api.samanage.com',
     path: '/users.json?email=' + email,
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
@@ -39,7 +39,7 @@ exports.my_incidents = function (email, callback) {
       samanage_id = JSON.stringify(chunk);
 
       var options = {
-        host: 'https://api.samanage.com',
+        host: 'api.samanage.com',
         path: '/incidents.json?=&assigned_to=' + samanage_id,
         method: 'GET',
         headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
