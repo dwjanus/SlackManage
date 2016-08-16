@@ -95,7 +95,7 @@ function samanage() {
 
 app.get('/incidents', (req, res) => {  
 
-  res.send(JSON.stringify(samanage());
+  res.send(JSON.stringify(samanage()));
 });
 
 app.listen(config('PORT'), (err) => {
