@@ -91,7 +91,7 @@ function samanage() {
     console.log('problem with request: ' + e.message);
   }); 
 
-  return incident_list;
+  return JSON.parse(incident_list);
 };
 
 app.get('/incidents', (req, res) => {  
