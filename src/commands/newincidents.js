@@ -4,6 +4,7 @@
 const _ = require('lodash');
 const config = require('../config');
 const Samanage = require('../lib/samanage');
+const util = require('util');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -14,7 +15,8 @@ const msgDefaults = {
 const handler = (payload, res) => {
   let incidents = [];
   Samanage.new_incidents((err, incidents) => {
-    if (err) throw err;
+    //if (err) throw err;
+    if (err) console.log(util.inspect(err));
 
     var attachments = incidents.slice(0, 4).map((incident) => {
       return {
