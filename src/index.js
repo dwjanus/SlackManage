@@ -91,6 +91,7 @@ function samanage() {
     console.log('problem with request: ' + e.message);
   }); 
 
+  incident_list = JSON.parse(incident_list);
   return incident_list;
 };
 
