@@ -47,7 +47,6 @@ exports.my_incidents = function (email, callback) {
         auth: username + ':' + password
       };
 
-      
       var request = https.request(options, function (response) {
         
         response.on('data', function (chunk) {
