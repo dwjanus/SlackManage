@@ -86,7 +86,7 @@ var incident_list = [];
 //   return incident_list;
 // };
     
-exports.new_incidents = function () {
+exports.new_incidents = function (callback) {
   var request = https.request(newoptions, function (response) {
     console.log('STATUS: ' + response.statusCode);
     console.log('HEADERS: ' + JSON.stringify(response.headers) + "\n\n");
@@ -119,5 +119,5 @@ exports.new_incidents = function () {
     console.log('problem with request: ' + e.message);
   }); 
 
-  return incident_list;
+  callback(null, incident_list);
 };
