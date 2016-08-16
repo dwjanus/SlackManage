@@ -87,7 +87,7 @@ var incident_list = [];
 // };
     
 exports.new_incidents = function () {
-  var request = https.request(options, function (response) {
+  var request = https.request(newoptions, function (response) {
     console.log('STATUS: ' + response.statusCode);
     console.log('HEADERS: ' + JSON.stringify(response.headers) + "\n\n");
 
