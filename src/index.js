@@ -82,8 +82,9 @@ function samanage() {
         console.log('Current incident: ' + JSON.stringify(current.title) + '\n');
         incident_list.push(current);
       };
-    });  
-  });
+    });
+  }); 
+  request.end();
 
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
