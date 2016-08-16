@@ -63,23 +63,22 @@ function samanage() {
 
   var request = https.request(options, function (response) {
     console.log('STATUS: ' + response.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(response.headers));
+    console.log('HEADERS: ' + JSON.stringify(response.headers) + "\n\n");
 
     response.on('data', function (chunk) {
-      console.log('BODY: ' + chunk);
+      console.log('BODY: ' + chunk + "\n\n");
       var incident = {};
-      var incidentjson = JSON.parse(chunk);
+      var incidentjson = chunk;
 
       for(incident in incidentjson) {
         console.log("INCIDENT: " + incident + "\n");
-        var current = incidentjson.pop();
-        console.log("CURRENT: " + current + "\n");
-        incident.title = current.name;
+        var current = {};
+        current.title + incident.name;
         console.log("TITLE: " + incident.title + "\n");
         // incident.requester = current.requester;
         // incident.description = current.description;
         // incident.assignee = current.assignee;
-        incident_list.push(incident);
+        incident_list.push(current);
       };
     });
   }); 
@@ -89,7 +88,7 @@ function samanage() {
     console.log('problem with request: ' + e.message);
   }); 
 
-  return incident_list;
+  return JSON.parse(incident_list);
 };
 
 app.get('/incidents', (req, res) => {  
