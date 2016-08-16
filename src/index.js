@@ -81,7 +81,9 @@ function samanage() {
         var current = { "title" : parsedResponse[i].name };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current.title) + '\n');
         incident_list.push(current);
+        console.log(typeof incident_list);
       };
+      console.log(JSON.stringify(incident_list));
     });
   }); 
   request.end();
@@ -95,7 +97,7 @@ function samanage() {
 
 app.get('/incidents', (req, res) => {  
 
-  res.send(JSON.stringify(samanage()));
+  res.send(samanage());
 });
 
 app.listen(config('PORT'), (err) => {
