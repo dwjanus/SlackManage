@@ -77,7 +77,7 @@ function samanage() {
       //console.log('BODY: ' + JSON.stringify(parsedResponse) + "\n\n");
       console.log('First Incident name: ' + JSON.stringify(parsedResponse[0].name) + '\n');
 
-      for (var i = 0; i < 4; i++) {
+      for (var i = 0; i < 5; i++) {
         var current = { "title" : parsedResponse[i].name };
         console.log('Current incident: ' + JSON.stringify(current.title) + '\n');
         incident_list.push(current);
@@ -91,7 +91,7 @@ function samanage() {
     console.log('problem with request: ' + e.message);
   }); 
 
-  return incident_list;
+  return JSON.parse(incident_list);
 };
 
 app.get('/incidents', (req, res) => {  
