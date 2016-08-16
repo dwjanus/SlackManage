@@ -76,15 +76,13 @@ function samanage() {
       var parsedResponse = JSON.parse(body);
       //console.log('BODY: ' + JSON.stringify(parsedResponse) + "\n\n");
       console.log('First Incident: ' + JSON.stringify(parsedResponse[0]) + '\n');
+
+      for (var i = 0; i < 4; i++) {
+        var current = { "title" : parsedResponse[i].name };
+        console.log('Current incident: ' + JSON.stringify(current) + '\n');
+        incident_list.push(current);
+      };
     });
-        // var incident = chunk.Incident[i];
-        // console.log("INCIDENT " + i + ": " + incident + "\n");
-        // var current = { "title" : incident.name };
-        // console.log("INCIDENT " + i + ": " + current.title + "\n");
-        // incident.requester = current.requester;
-        // incident.description = current.description;
-        // incident.assignee = current.assignee;
-        // incident_list.push(current);
       
   }); 
   request.end();
