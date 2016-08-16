@@ -72,8 +72,9 @@ function samanage() {
       body += chunk;
     });
 
+    var parsedResponse = [];
     response.on('end', function () {
-      var parsedResponse = JSON.parse(body);
+      parsedResponse = JSON.parse(body);
       //console.log('BODY: ' + JSON.stringify(parsedResponse) + "\n\n");
       console.log('First Incident name: ' + JSON.stringify(parsedResponse[0].name) + '\n');  
     });
