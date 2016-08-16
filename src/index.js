@@ -61,18 +61,18 @@ function samanage() {
 
   var incident_list = [];
 
-  var request = https.request(options, function (response) {
+  var request = https.request(options, function(response) {
     console.log('STATUS: ' + response.statusCode);
     console.log('HEADERS: ' + JSON.stringify(response.headers) + "\n\n");
 
     response.setEncoding('utf8');
-    var body = "";
+    var body = '';
 
-    stream.on('data', function (chunk) {
+    response.on('data', function (chunk) {
       body += chunk;
     });
 
-    stream.on('end', function () {
+    response.on('end', function () {
       var parsedResponse = JSON.parse(body);
       console.log('BODY: ' + parsedResponse + "\n\n");
       // console.log('First Incident: \n');
