@@ -5,6 +5,7 @@ const express = require('express');
 const proxy = require('express-http-proxy');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
+const https = require('https');
 const config = require('./config');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
@@ -40,6 +41,60 @@ app.post('/commands/samanage', (req, res) => {
   }, helpCommand);
 
   cmd.handler(payload, res);
+});
+
+// -->
+// This stuff is for testing purposes...
+// -->
+function samanage() {
+
+  const username = config('username');
+  const password = config('password');
+
+  const options = {
+    host: 'api.samanage.com',
+    path: '/incidents.json',
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
+    auth: username + ':' + password
+  };  
+
+  var incident_list = [];
+
+  var request = https.request(options, function (response) {
+    console.log('STATUS: ' + response.statusCode);
+    console.log('HEADERS: ' + JSON.stringify(respoonse.headers));
+    response.setEncodeing('utf8');
+
+    response.on('data', function (chunk) {
+      console.log('BODY: ' + chunk);
+      var incident = {};
+      var incidentjson = JSON.parse(chunk);
+
+      for(var incident in incidentjson) {
+        console.log("key: " + incident + ", value: " + incidentjson[incident]);
+        var current = incidentjson.pop();
+ 
+        incident.title = current.name;
+        incident.requester = current.requester;
+        incident.description = current.description;
+        incident.assignee = current.assignee;
+        incident_list.push(incident);
+      };
+    });
+  }); 
+  request.end();
+
+  request.on('error', function (e) {
+    console.log('problem with request: ' + e.message);
+  }); 
+
+  return incident_list;
+};
+
+app.get('/incidents', (req, res) => {  
+
+  res.send(samanage());
 });
 
 app.listen(config('PORT'), (err) => {
