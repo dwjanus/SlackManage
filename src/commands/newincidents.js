@@ -15,15 +15,15 @@ const msgDefaults = {
 const handler = (payload, res) => {
   let incidents = [];
   Samanage.new_incidents((err, incidents) => {
-    //if (err) throw err;
+    // if (err) throw err;
     if (err) console.log(util.inspect(err));
 
     var attachments = incidents.slice(0, 4).map((incident) => {
       return {
         title: `${incident.title}/${incident.requester}`,
         color: '#0067B3',
-        text: `${incident.assignee}\n_${incident.description}_\n`,
-        mrkdown_in: ['text', 'pretext']
+        // text: `${incident.assignee}\n_${incident.description}_\n`,
+        mrkdown_in: ['text']
       }
     });    
 
