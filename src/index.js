@@ -69,9 +69,9 @@ function samanage() {
       console.log('BODY: ' + chunk + "\n\n");
       
       for(var i = 0, l = chunk.items.length; i < l; && i < 5; i) {
-        incident = chunk.items[i];
+        var incident = chunk.items[i];
         console.log("INCIDENT " + i + ": " + incident + "\n");
-        current = { "title" : incident.name };
+        var current = { "title" : incident.name };
         console.log("INCIDENT " + i + ": " + current.title + "\n");
         // incident.requester = current.requester;
         // incident.description = current.description;
