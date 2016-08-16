@@ -75,11 +75,11 @@ function samanage() {
     response.on('end', function () {
       var parsedResponse = JSON.parse(body);
       //console.log('BODY: ' + JSON.stringify(parsedResponse) + "\n\n");
-      console.log('First Incident: ' + JSON.stringify(parsedResponse[0]) + '\n');
+      console.log('First Incident name: ' + JSON.stringify(parsedResponse[0].name) + '\n');
 
       for (var i = 0; i < 4; i++) {
         var current = { "title" : parsedResponse[i].name };
-        console.log('Current incident: ' + JSON.stringify(current) + '\n');
+        console.log('Current incident: ' + JSON.stringify(current.title) + '\n');
         incident_list.push(current);
       };
     });
