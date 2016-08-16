@@ -48,8 +48,8 @@ app.post('/commands/samanage', (req, res) => {
 // -->
 function samanage() {
 
-  const username = config('username');
-  const password = config('password');
+  const username = 'devin.janus@samanage.com';
+  const password = 'BenHobgood666';
 
   const options = {
     host: 'api.samanage.com',
@@ -63,7 +63,7 @@ function samanage() {
 
   var request = https.request(options, function (response) {
     console.log('STATUS: ' + response.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(respoonse.headers));
+    console.log('HEADERS: ' + JSON.stringify(response.headers));
     response.setEncodeing('utf8');
 
     response.on('data', function (chunk) {
