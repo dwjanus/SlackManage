@@ -76,11 +76,10 @@ function samanage() {
       var parsedResponse = JSON.parse(body);
       console.log('BODY: ' + parsedResponse + "\n\n");
       console.log('First Five Incidents: \n');
-      for(var i = 0; i < 5; i) {
+      for(var i = 0; i &lt; 5; i++) {
           console.log(parsedResponse.incident[i]) + '\n';
       };
     });
-    
         // var incident = chunk.Incident[i];
         // console.log("INCIDENT " + i + ": " + incident + "\n");
         // var current = { "title" : incident.name };
