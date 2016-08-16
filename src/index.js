@@ -70,14 +70,15 @@ function samanage() {
       var incident = {};
       var incidentjson = JSON.parse(chunk);
 
-      for(var incident in incidentjson) {
-        //console.log("key: " + incident + ", value: " + incidentjson[incident]);
+      for(incident in incidentjson) {
+        console.log("INCIDENT: " + incident + "\n");
         var current = incidentjson.pop();
- 
+        console.log("CURRENT: " + current + "\n");
         incident.title = current.name;
-        incident.requester = current.requester;
-        incident.description = current.description;
-        incident.assignee = current.assignee;
+        console.log("TITLE: " + incident.title + "\n");
+        // incident.requester = current.requester;
+        // incident.description = current.description;
+        // incident.assignee = current.assignee;
         incident_list.push(incident);
       };
     });
