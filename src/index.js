@@ -71,7 +71,7 @@ function samanage() {
       var incidentjson = JSON.parse(chunk);
 
       for(var incident in incidentjson) {
-        console.log("key: " + incident + ", value: " + incidentjson[incident]);
+        //console.log("key: " + incident + ", value: " + incidentjson[incident]);
         var current = incidentjson.pop();
  
         incident.title = current.name;
