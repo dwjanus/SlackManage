@@ -90,12 +90,12 @@ function samanage() {
     console.log('problem with request: ' + e.message);
   }); 
 
-  return JSON.parse(incident_list);
+  return incident_list;
 };
 
 app.get('/incidents', (req, res) => {  
 
-  res.send(samanage());
+  res.send(JSON.parse(samanage());
 });
 
 app.listen(config('PORT'), (err) => {
