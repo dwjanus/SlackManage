@@ -53,7 +53,7 @@ function samanage() {
 
   const options = {
     host: 'api.samanage.com',
-    path: '/incidents.json',
+    path: '/incidents.json?page=1',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
     auth: username + ':' + password
@@ -64,7 +64,6 @@ function samanage() {
   var request = https.request(options, function (response) {
     console.log('STATUS: ' + response.statusCode);
     console.log('HEADERS: ' + JSON.stringify(response.headers));
-    response.setEncodeing('utf8');
 
     response.on('data', function (chunk) {
       console.log('BODY: ' + chunk);
