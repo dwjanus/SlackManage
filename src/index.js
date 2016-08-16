@@ -82,13 +82,14 @@ function samanage() {
         console.log('Current incident: ' + JSON.stringify(current.title) + '\n');
         incident_list.push(current);
       };
-    });
-    return incident_list;
+    });  
   });
 
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   }); 
+
+  return incident_list;
 };
 
 app.get('/incidents', (req, res) => {  
