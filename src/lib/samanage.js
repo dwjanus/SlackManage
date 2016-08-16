@@ -6,15 +6,6 @@ var https = require('https');
 const username = config('username');
 const password = config('password');
 
-
-const useroptions = {
-    host: 'https://api.samanage.com/',
-    path: '/users.json?email=' + email,
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
-    auth: username + ':' + password
-  };
-
 const newoptions = {
   host: 'https://api.samanage.com/',
   path: '/incidents.json',
@@ -27,6 +18,14 @@ var incident_list = [];
 
 exports.my_incidents = function (email, callback) {
   
+  const useroptions = {
+    host: 'https://api.samanage.com/',
+    path: '/users.json?email=' + email,
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
+    auth: username + ':' + password
+  };
+
   var samanage_id;
 
   var req = https.request(useroptions, function (res) {
@@ -86,7 +85,7 @@ exports.my_incidents = function (email, callback) {
 };
     
 exports.new_incidents = function (callback) {
-  var req = https.request(options, function (res) {
+  var req = https.request(newoptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
     console.log('HEADERS: ' + JSON.stringify(res.headers));
     res.setEncodeing('utf8');
