@@ -73,8 +73,8 @@ function samanage() {
       for(incident in incidentjson) {
         console.log("INCIDENT: " + incident + "\n");
         var current = {};
-        current.title + incident.name;
-        console.log("TITLE: " + incident.title + "\n");
+        current.title = incident.name;
+        console.log("TITLE: " + current.title + "\n");
         // incident.requester = current.requester;
         // incident.description = current.description;
         // incident.assignee = current.assignee;
