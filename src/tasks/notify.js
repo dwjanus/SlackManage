@@ -5,7 +5,6 @@ const _ = require('lodash');
 const config = require('../config');
 const Botkit = require('botkit');
 const Samanage = require('../lib/samanage');
-const RequestClient = require('reqclient').RequestClient;
 
 var controller = Botkit.slackbot({
   debug: false
