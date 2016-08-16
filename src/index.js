@@ -79,8 +79,8 @@ function samanage() {
 
       for (var i = 0; i < 5; i++) {
         var current = { "title" : parsedResponse[i].name };
-        console.log('Current incident: ' + JSON.stringify(current.title) + '\n');
-        //incident_list.push(current);
+        console.log('Current incident - ' + i + ': ' + JSON.stringify(current.title) + '\n');
+        incident_list.push(current);
       };
     });
   }); 
@@ -90,7 +90,7 @@ function samanage() {
     console.log('problem with request: ' + e.message);
   }); 
 
-  return incident_list;
+  return JSON.stringify(incident_list);
 };
 
 app.get('/incidents', (req, res) => {  
