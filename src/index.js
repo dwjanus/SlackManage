@@ -61,7 +61,7 @@ function samanage() {
 
   var incident_list = [];
 
-  var request = https.request(options, function(response) {
+  var request = https.request(options, function (response) {
     console.log('STATUS: ' + response.statusCode);
     console.log('HEADERS: ' + JSON.stringify(response.headers) + "\n\n");
 
