@@ -80,7 +80,7 @@ function samanage() {
       for (var i = 0; i < 5; i++) {
         var current = { "title" : parsedResponse[i].name };
         console.log('Current incident: ' + JSON.stringify(current.title) + '\n');
-        incident_list.push(current);
+        //incident_list.push(current);
       };
     });
   }); 
