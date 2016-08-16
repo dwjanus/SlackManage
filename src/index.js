@@ -96,6 +96,7 @@ function samanage() {
 
 app.get('/incidents', (req, res) => {  
   var output = JSON.stringify(samanage());
+  res.setHeader('content-type', 'application/json');
   res.send(output);
 });
 
