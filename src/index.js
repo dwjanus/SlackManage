@@ -76,7 +76,7 @@ function samanage() {
       var parsedResponse = JSON.parse(body);
       console.log('BODY: ' + parsedResponse + "\n\n");
       console.log('First Five Incidents: \n');
-      for(var i = 0; i &lt; 5; i++) {
+      for(var i = 0; i < 4; i++) {
           console.log(parsedResponse.incident[i]) + '\n';
       };
     });
