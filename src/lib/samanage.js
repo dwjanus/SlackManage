@@ -107,6 +107,7 @@ exports.new_incidents = function () {
           "title" : parsedResponse[i].name,
           "description" : parsedResponse[i].description_no_html,
           "requester" : parsedResponse[i].requester.name,
+          "state" : parsedResponse[i].state,
           "priority" : parsedResponse[i].priority,
           "ts" : parsedResponse[i].due_at
         };
