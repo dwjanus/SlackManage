@@ -54,7 +54,7 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
   var id = message.user;
   var options = {user: id};
   user = bot.api.users.info(options, function(err, res) {
-    var email = response.user.profile.email;
+    var email = res.user.profile.email;
 
     bot.say("Searching for incidents assigned to: " + email);
 
