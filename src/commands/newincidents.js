@@ -21,7 +21,7 @@ const handler = (payload, res) => {
     return {
       title: `${incident.title}\n`,
       title_link: `${incident.title_link}\n`,
-      author: `${incident.requester} / ${incident.requester_email}\n`,
+      author: `${incident.requester}/${incident.requester_email}\n`,
       color: '#0067B3',
       text: `${incident.description}`,
       fields: [
