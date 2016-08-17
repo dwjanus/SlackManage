@@ -106,7 +106,7 @@ exports.new_incidents = function () {
         var color = "#0067B3";
         if (JSON.stringify(parsedResponse[i].state) == "In Progress")
           color = "#FFB6D1";
-        var current = { 
+        var current = {
           "title" : parsedResponse[i].name,
           "number" : parsedResponse[i].number,
           "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
