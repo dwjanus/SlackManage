@@ -34,8 +34,8 @@ const handler = (payload, res) => {
           short: true
         }
       ]
-      foot: `${incident.requester}\n`,
-      ts: `${incident.ts}`,
+      "footer" : `${incident.requester}\n`,
+      "ts" : `${incident.ts}`,
       mrkdown_in: ['text']
     }
   });    
