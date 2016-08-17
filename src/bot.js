@@ -17,7 +17,7 @@ bot.message((msg) => {
 
   var id = msg.user;
   var options = {user: id};
-  var user = slack.users.info(options, function(err, res) {
+  var thisuser = slack.users.info(options, function(err, res) {
     var email = res.user.profile.email;
 
     slack.chat.postMessage({
@@ -34,7 +34,7 @@ bot.message((msg) => {
   //   icon_emoji: config('ICON_EMOJI'),
   //   channel: msg.channel,
   //   username: 'Samanage',
-  //   text: `beep boop: What it do tho"`
+  //   text: `beep boop: What it do tho`
   // }, (err, data) => {
   //   if (err) throw err;
 
