@@ -21,10 +21,15 @@ const handler = (payload, res) => {
     return {
       title: `${incident.title}\n`,
       title_link: `${incident.title_link}\n`,
-      author: `${incident.requester}/${incident.requester_email}\n`,
+      pretext: `"Ticket: " + ${incident.number} + " Requested by: " ${incident.requester}\n`,
       color: '#0067B3',
-      text: `${incident.description}`,
+      text: `${incident.description}\n`,
       fields: [
+        {
+          title: 'Assigned To',
+          value: `${incident.assignee}`,
+          short: true
+        },
         {
           title: 'State',
           value: `${incident.state}`,
@@ -36,9 +41,9 @@ const handler = (payload, res) => {
           short: true
         }
       ],
-      footer: `${incident.assignee}`,
-      ts: `due at: ${incident.ts}`,
-      mrkdown_in: ['text']
+      footer: 'due at: ',
+      ts: `${incident.ts}`,
+      mrkdown_in: ['text', 'pretext']
     }
   });    
 
