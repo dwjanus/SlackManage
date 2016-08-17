@@ -19,13 +19,13 @@ const handler = (payload, res) => {
 
   var attachments = incidents.slice(0, 5).map((incident) => {
     var color = '';
-    if (incident.state) == "In Progress") {
+    if (JSON.stringify(incident.state) == "In Progress") {
       color = '#FFC8D2';
-    } else if (incident.state) == "Resolved") {
+    } else if (JSON.stringify(incident.state) == "Resolved") {
       color = '#A7FFA1';
-    } else if (incident.state) == "Assigned") {
+    } else if (JSON.stringify(incident.state) == "Assigned") {
       color = '#DEF9EB';
-    } else if (incident.state) == "Closed") {
+    } else if (JSON.stringify(incident.state) == "Closed") {
       color = '#AAAAAA';
     } else {
       color = '#0067B3';
