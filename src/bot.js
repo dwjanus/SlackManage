@@ -18,7 +18,7 @@ bot.message((msg) => {
   var id = msg.user;
   var options = {user: id};
   var thisuser = slack.users.info(options, function(err, res) {
-    var email = res.user.profile.email;
+    var email = res.thisuser.profile.email;
 
     slack.chat.postMessage({
       token: config('SLACK_TOKEN'),
