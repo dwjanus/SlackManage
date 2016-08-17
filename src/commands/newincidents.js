@@ -21,7 +21,7 @@ const handler = (payload, res) => {
     return {
       title: `${incident.title}\n`,
       title_link: `${incident.title_link}\n`,
-      pretext: `"Ticket: " + ${incident.number} + " Requested by: " ${incident.requester}\n`,
+      pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
       color: '#0067B3',
       text: `${incident.description}\n`,
       fields: [
