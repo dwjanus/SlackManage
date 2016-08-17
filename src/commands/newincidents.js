@@ -15,7 +15,7 @@ const msgDefaults = {
 const handler = (payload, res) => {
   var incidents = Samanage.new_incidents();
   // if (err) throw err;
-  if (err) console.log(util.inspect(err));
+  //if (err) console.log(util.inspect(err));
 
   var attachments = incidents.slice(0, 4).map((incident) => {
     return {
