@@ -6,12 +6,8 @@ const config = require('../config');
 const Botkit = require('botkit');
 const Samanage = require('../lib/samanage');
 
-var controller = Botkit.slackbot({
-  debug: false
-});
-
-var bot = controller.spawn().startRTM();
-
+var controller = Botkit.slackbot({});
+var bot = controller.spawn();
 var http = require('http');
 
 bot.configureIncomingWebhook({ url: config('WEBHOOK_URL') });
@@ -132,11 +128,11 @@ controller.hears(['incidents'], 'direct_message, direct_mention, mention', funct
     }
   }); 
 
-  message = _.defaults({ attachments: attachments }, msgDefaults);
+  let msg = _.defaults({ attachments: attachments }, msgDefaults);
 
-  //bot.message(msg);
+  bot.reply(message, msg);
 
-  bot.sendWebhook(message, (err, res) => {
+  bot.sendWebhook(msg, (err, res) => {
     if (err) throw err;
 
     console.log(`\n🚀 Latest incidents delivered! 🚀`)
