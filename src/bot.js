@@ -13,35 +13,21 @@ bot.started((payload) => {
 
 bot.message((msg) => {
   if (!msg.user) return;
-  //if (!_.includes(msg.text.match(/<@[A-Z0-9])+>/igm), `<@${this.self.id}>`)) return;
+  if (!_.includes(msg.text.match(/<@[A-Z0-9])+>/igm), `<@${this.self.id}>`)) return;
 
-  var id = msg.user;
-  var options = {user: id};
-  var thisuser = slack.users.info(options, function(err, res) {
-    var email = res.thisuser.profile.email;
+  slack.chat.postMessage({
+    token: config('SLACK_TOKEN'),
+    icon_emoji: config('ICON_EMOJI'),
+    channel: msg.channel,
+    username: 'Samanage',
+    text: `beep boop: What it do tho`
+  }, (err, data) => {
+    if (err) throw err;
 
-    slack.chat.postMessage({
-      token: config('SLACK_TOKEN'),
-      icon_emoji: config('ICON_EMOJI'),
-      channel: msg.channel,
-      username: "Samanage",
-      text: "You are: " + email
-    });
+    let txt = _.truncate(data.message.text);
+
+    console.log(`🤖  beep boop: I responded with "${txt}"`);
   });
-
-  // slack.chat.postMessage({
-  //   token: config('SLACK_TOKEN'),
-  //   icon_emoji: config('ICON_EMOJI'),
-  //   channel: msg.channel,
-  //   username: 'Samanage',
-  //   text: `beep boop: What it do tho`
-  // }, (err, data) => {
-  //   if (err) throw err;
-
-  //   let txt = _.truncate(data.message.text);
-
-  //   console.log(`🤖  beep boop: I responded with "${txt}"`);
-  // });
 });
 
 module.exports = bot;
