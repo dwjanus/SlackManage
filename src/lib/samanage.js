@@ -104,7 +104,7 @@ exports.new_incidents = function () {
 
       for (var i = 0; i < 6; i++) {
         var color = "#0067B3";
-        if (JSON.stringify(parsedResponse[i].state) == "In Progress")
+        if (parsedResponse[i].state == "In Progress")
           color = "#FFB6D1";
         var current = {
           "title" : parsedResponse[i].name,
