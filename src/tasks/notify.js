@@ -6,8 +6,10 @@ const config = require('../config');
 const Botkit = require('botkit');
 const Samanage = require('../lib/samanage');
 
-var controller = Botkit.slackbot({});
-var bot = controller.spawn();
+var controller = Botkit.slackbot({
+  debug: false
+});
+var bot = controller.spawn().startRTM();
 var http = require('http');
 
 bot.configureIncomingWebhook({ url: config('WEBHOOK_URL') });
@@ -53,10 +55,10 @@ controller.hears(['what is my name','who am i'],'direct_message,direct_mention,m
 controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
   var id = message.user;
   var options = {user: id};
-  user = bot.api.users.info(options, function(err, res) {
+  var user = bot.api.users.info(options, function(err, res) {
     var email = res.user.profile.email;
 
-    bot.say("Searching for incidents assigned to: " + email);
+    //bot.say("Searching for incidents assigned to: " + email);
 
     var incidents = Samanage.my_incidents();
 
@@ -85,11 +87,11 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
       }
     });
 
-    let msg = _.defaults({ attachments: attachments }, msgDefaults);
+    message = _.defaults({ attachments: attachments }, msgDefaults);
 
-    bot.reply(message, msg);
+    //bot.reply(message, msg);
 
-    bot.sendWebhook(msg, (err, res) => {
+    bot.sendWebhook(message, (err, res) => {
       if (err) throw err;
       console.log(`\n🚀 Latest incidents delivered! 🚀`)
     });
@@ -98,7 +100,7 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
 
 controller.hears(['new incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
 
-  bot.say("Pulling latest incidents... ");
+  //bot.say("Pulling latest incidents... ");
 
   var incidents = Samanage.new_incidents();
 
@@ -132,10 +134,10 @@ controller.hears(['new incidents'], 'direct_message, direct_mention, mention', f
     }
   }); 
 
-  let msg = _.defaults({ attachments: attachments }, msgDefaults);
+  message = _.defaults({ attachments: attachments }, msgDefaults);
 
-  bot.sendWebhook(msg, (err, res) => {
-    //if (err) throw err;
+  bot.sendWebhook(message, (err, res) => {
+    if (err) throw err;
     console.log(`\n🚀 Latest incidents delivered! 🚀`)
   });
 });
