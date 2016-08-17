@@ -111,8 +111,8 @@ exports.new_incidents = function () {
           "requester_email" : parsedResponse[i].requester.email,
           "state" : parsedResponse[i].state,
           "priority" : parsedResponse[i].priority,
-          "assignee" : parsedResponse[i].assignee.name,
-          "ts" : "due at: " + parsedResponse[i].due_at,
+          "assignee" : parsedResponse[i].assignee.user,
+          "ts" : parsedResponse[i].due_at,
         };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         incident_list.push(current);
