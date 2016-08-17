@@ -10,9 +10,7 @@ var controller = Botkit.slackbot({
   debug: false
 });
 
-var bot = controller.spawn({
-  token:process.env.token
-}).startRTM();
+var bot = controller.spawn().startRTM();
 
 var http = require('http');
 
