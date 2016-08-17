@@ -105,6 +105,7 @@ exports.new_incidents = function () {
       for (var i = 0; i < 5; i++) {
         var current = { 
           "title" : parsedResponse[i].name,
+          "description" : parsedResponse[i].description,
           "requester" : parsedResponse[i].requester.email
         };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
