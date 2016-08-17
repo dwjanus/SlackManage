@@ -106,7 +106,7 @@ exports.new_incidents = function () {
         var current = { 
           "title" : parsedResponse[i].name,
           "number" : parsedResponse[i].number,
-          "title_link" : "http://app.samanage.com/incidents?id=" + parsedResponse[i].id,
+          "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
           "description" : parsedResponse[i].description_no_html,
           "requester" : parsedResponse[i].requester.name,
           "requester_email" : parsedResponse[i].requester.email,
