@@ -24,7 +24,7 @@ const msgDefaults = {
   icon_emoji: config('ICON_EMOJI')
 };
 
-controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function(bot,message) {
+controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function (bot,message) {
 
   bot.api.reactions.add({
     timestamp: message.ts,
@@ -45,7 +45,7 @@ controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function
   });
 });
 
-controller.hears(['what is my name','who am i'],'direct_message,direct_mention,mention',function(bot,message) {
+controller.hears(['what is my name','who am i'],'direct_message,direct_mention,mention',function (bot,message) {
 
   controller.storage.users.get(message.user,function(err,user) {
     if (user && user.name) {
@@ -56,52 +56,87 @@ controller.hears(['what is my name','who am i'],'direct_message,direct_mention,m
   })
 });
 
-controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
+controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function (bot, message) {
   id = message.user;
   var options = {user: id};
   user = bot.api.users.info(options, function(err, res) {
     var email = response.user.profile.email;
 
-    bot.reply(message, "Searching for incidents assigned to: " + email);
+    bot.say("Searching for incidents assigned to: " + email);
 
-    Samanage.my_incidents(email, (err, incidents) => {
-      if (err) throw err;
+    var incidents = Samanage.my_incidents();
 
-      var attachments = incidents.slice(0, 4).map((incident) => {
-        return {
-          title: `${incident.name}/${incident.requester}`,
-          color: '#0067B3',
-          text: `${incident.assignee}\n_${incident.description}_\n`,
-          mrkdown_in: ['text', 'pretext']
-        }
-      });
+    var attachments = incidents.slice(0, 5).map((incident) => {
+      return {
+        title: `${incident.title}\n`,
+        title_link: `${incident.title_link}`,
+        pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+        color: `${incident.color}`,
+        text: `${incident.description}\n\n`,
+        fields: [
+          {
+            title: 'State',
+            value: `${incident.state}`,
+            short: true
+          },
+          {
+            title: 'Priority',
+            value: `${incident.priority}`,
+            short: true
+          }
+        ],
+        footer: 'due on: ',
+        ts: `${incident.ts}`,
+        mrkdown_in: ['text', 'pretext']
+      }
     });
+
+    let msg = _.defaults({ attachments: attachments }, msgDefaults);
+
+    bot.reply(message, msg);
+
   });
 });
 
-controller.hears(['incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
-  id = message.user;
-  var options = {user: id};
-  user = bot.api.users.info(options, function(err, res) {
-    var email = response.user.profile.email;
+controller.hears(['incidents'], 'direct_message, direct_mention, mention', function (bot, message) {
 
-    bot.reply(message, "Pulling latest incidents... ");
+  bot.say("Pulling latest incidents... ");
 
-    Samanage.new_incidents(email, (err, incidents) => {
-      if (err) throw err;
+  var incidents = Samanage.new_incidents();
 
-      var attachments = incidents.slice(0, 4).map((incident) => {
-        return {
-          title: `${incident.name}/${incident.requester}`,
-          color: '#0067B3',
-          text: `${incident.assignee}\n_${incident.description}_\n`,
-          mrkdown_in: ['text', 'pretext']
+  var attachments = incidents.slice(0, 5).map((incident) => {
+    return {
+      title: `${incident.title}\n`,
+      title_link: `${incident.title_link}`,
+      pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+      color: `${incident.color}`,
+      text: `${incident.description}\n\n`,
+      fields: [
+        {
+          title: 'Assigned To',
+          value: `${incident.assignee}`,
+          short: true
+        },
+        {
+          title: 'State',
+          value: `${incident.state}`,
+          short: true
+        },
+        {
+          title: 'Priority',
+          value: `${incident.priority}`,
+          short: true
         }
-      });  
-    });
-  });
+      ],
+      footer: 'due on: ',
+      ts: `${incident.ts}`,
+      mrkdown_in: ['text', 'pretext']
+    }
+  }); 
 
-  message = _.defaults({ attachments: attachments }, msgDefaults);
+  let msg = _.defaults({ attachments: attachments }, msgDefaults);
+
+  bot.reply(message, msg);
 
   bot.sendWebhook(message, (err, res) => {
     if (err) throw err;
