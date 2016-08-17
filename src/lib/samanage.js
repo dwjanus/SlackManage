@@ -86,7 +86,7 @@ var incident_list = [];
 //   return incident_list;
 // };
     
-exports.new_incidents = function (callback) {
+exports.new_incidents = function () {
   var request = https.request(newoptions, function (response) {
     console.log('STATUS: ' + response.statusCode);
     console.log('HEADERS: ' + JSON.stringify(response.headers) + "\n\n");
@@ -105,7 +105,7 @@ exports.new_incidents = function (callback) {
       for (var i = 0; i < 5; i++) {
         var current = { 
           "title" : parsedResponse[i].name,
-          "requester" : parsedResponse[i].requester 
+          "requester" : parsedResponse[i].requester.email
         };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         incident_list.push(current);
@@ -119,5 +119,5 @@ exports.new_incidents = function (callback) {
     console.log('problem with request: ' + e.message);
   }); 
 
-  callback(null, incident_list);
+  return incident_list;
 };
