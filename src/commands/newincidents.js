@@ -19,7 +19,7 @@ const handler = (payload, res) => {
 
   var attachments = incidents.slice(0, 4).map((incident) => {
     return {
-      title: `${incident.title}`/${incident.requester}\n,
+      title: `${incident.title}/${incident.requester}\n`,
       color: '#0067B3',
       text: `${incident.description}`,
       mrkdown_in: ['text']
