@@ -7,7 +7,7 @@ const Botkit = require('botkit');
 const Samanage = require('../lib/samanage');
 
 var controller = Botkit.slackbot({});
-var bot = controller.spawn().startRTM();
+var bot = controller.spawn();
 var http = require('http');
 
 bot.configureIncomingWebhook({ url: config('WEBHOOK_URL') });
@@ -47,7 +47,7 @@ controller.hears(['what is my name','who am i'],'direct_message,direct_mention,m
     } else {
       bot.reply(message,"I don't know yet!");
     }
-  })
+  });
 });
 
 controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
@@ -89,6 +89,10 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
 
     bot.reply(message, msg);
 
+    bot.sendWebhook(msg, (err, res) => {
+      if (err) throw err;
+      console.log(`\n🚀 Latest incidents delivered! 🚀`)
+    });
   });
 });
 
@@ -134,7 +138,6 @@ controller.hears(['incidents'], 'direct_message, direct_mention, mention', funct
 
   bot.sendWebhook(msg, (err, res) => {
     if (err) throw err;
-
     console.log(`\n🚀 Latest incidents delivered! 🚀`)
   });
 });
