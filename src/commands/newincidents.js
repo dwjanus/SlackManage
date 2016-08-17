@@ -17,12 +17,26 @@ const handler = (payload, res) => {
   // if (err) throw err;
   //if (err) console.log(util.inspect(err));
 
-  var attachments = incidents.slice(0, 4).map((incident) => {
+  var attachments = incidents.slice(0, 5).map((incident) => {
     return {
-      title: `${incident.title}/${incident.requester}\n`,
+      title: `${incident.title}\n`,
       color: '#0067B3',
       text: `${incident.description}`,
-      mrkdown_in: ['text']
+      fields: [
+        {
+          title: 'State',
+          value: `${incident.state}`,
+          short: true
+        },
+        {
+          title: 'Priority',
+          value: `${incident.priority}`,
+          short: true
+        }
+      ]
+      footer: `${incident.requester}\n`,
+      ts: `${incident.ts}`,
+      mrkdown_in: ['text', 'pretext']
     }
   });    
 

@@ -102,11 +102,13 @@ exports.new_incidents = function () {
       var parsedResponse = JSON.parse(body);
       console.log('First Incident name: ' + JSON.stringify(parsedResponse[0].name) + '\n');
 
-      for (var i = 0; i < 5; i++) {
+      for (var i = 0; i < 6; i++) {
         var current = { 
           "title" : parsedResponse[i].name,
           "description" : parsedResponse[i].description_no_html,
-          "requester" : parsedResponse[i].requester.email
+          "requester" : parsedResponse[i].requester.name,
+          "priority" : parsedResponse[i].priority,
+          "ts" : parsedResponse[i].due_at
         };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         incident_list.push(current);
