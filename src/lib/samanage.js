@@ -103,19 +103,6 @@ exports.new_incidents = function () {
       console.log('First Incident name: ' + JSON.stringify(parsedResponse[0].name) + '\n');
 
       for (var i = 0; i < 6; i++) {
-        var color = '';
-        if (JSON.stringify(parsedResponse[i].state) == "In Progress") {
-          color = '#FFC8D2';
-        } else if (JSON.stringify(parsedResponse[i].state) == "Resolved") {
-          color = '#A7FFA1';
-        } else if (JSON.stringify(parsedResponse[i].state) == "Assigned") {
-          color = '#DEF9EB';
-        } else if (JSON.stringify(parsedResponse[i].state) == "Closed") {
-          color = '#AAAAAA';
-        } else {
-          color = '#0067B3';
-        };
-
         var current = { 
           "title" : parsedResponse[i].name,
           "title_link" : "http://app.samanage.com/incidents?id=" + parsedResponse[i].id,
@@ -126,7 +113,6 @@ exports.new_incidents = function () {
           "priority" : parsedResponse[i].priority,
           "assignee" : parsedResponse[i].assignee.name,
           "ts" : "due at: " + parsedResponse[i].due_at,
-          "color" : color
         };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         incident_list.push(current);

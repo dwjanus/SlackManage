@@ -18,11 +18,23 @@ const handler = (payload, res) => {
   //if (err) console.log(util.inspect(err));
 
   var attachments = incidents.slice(0, 5).map((incident) => {
+    var color = '';
+    if (incident.state) == "In Progress") {
+      color = '#FFC8D2';
+    } else if (incident.state) == "Resolved") {
+      color = '#A7FFA1';
+    } else if (incident.state) == "Assigned") {
+      color = '#DEF9EB';
+    } else if (incident.state) == "Closed") {
+      color = '#AAAAAA';
+    } else {
+      color = '#0067B3';
+    };
     return {
       title: `${incident.title}\n`,
       title_link: `${incident.title_link}\n`,
       author: `${incident.requester} / ${incident.requester_email}\n`,
-      color: `${incident.color}`,
+      color: `${color}`,
       text: `${incident.description}`,
       fields: [
         {
@@ -36,7 +48,7 @@ const handler = (payload, res) => {
           short: true
         }
       ],
-      footer: `${incidents.assignee}`,
+      footer: `${incident.assignee}`,
       ts: `${incident.ts}`,
       mrkdown_in: ['text']
     }
