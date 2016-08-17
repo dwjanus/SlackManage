@@ -105,7 +105,7 @@ exports.new_incidents = function () {
       for (var i = 0; i < 6; i++) {
         var color = "#0067B3";
         if (parsedResponse[i].state == "In Progress")
-          color = "#FF91C1";
+          color = "#FF6692";
         if (parsedResponse[i].state == "Resolved")
           color = "#AEFF99";
         if (parsedResponse[i].state == "Closed")
