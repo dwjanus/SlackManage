@@ -7,7 +7,7 @@ const Botkit = require('botkit');
 const Samanage = require('../lib/samanage');
 
 var controller = Botkit.slackbot({});
-var bot = controller.spawn();
+var bot = controller.spawn().startRTM();
 var http = require('http');
 
 bot.configureIncomingWebhook({ url: config('WEBHOOK_URL') });
@@ -18,7 +18,7 @@ const msgDefaults = {
   icon_emoji: config('ICON_EMOJI')
 };
 
-controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function (bot,message) {
+controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function(bot,message) {
 
   bot.api.reactions.add({
     timestamp: message.ts,
@@ -39,7 +39,7 @@ controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function
   });
 });
 
-controller.hears(['what is my name','who am i'],'direct_message,direct_mention,mention',function (bot,message) {
+controller.hears(['what is my name','who am i'],'direct_message,direct_mention,mention',function(bot,message) {
 
   controller.storage.users.get(message.user,function(err,user) {
     if (user && user.name) {
@@ -50,7 +50,7 @@ controller.hears(['what is my name','who am i'],'direct_message,direct_mention,m
   })
 });
 
-controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function (bot, message) {
+controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
   id = message.user;
   var options = {user: id};
   user = bot.api.users.info(options, function(err, res) {
@@ -92,7 +92,7 @@ controller.hears(['my incidents'], 'direct_message, direct_mention, mention', fu
   });
 });
 
-controller.hears(['incidents'], 'direct_message, direct_mention, mention', function (bot, message) {
+controller.hears(['incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
 
   bot.say("Pulling latest incidents... ");
 
