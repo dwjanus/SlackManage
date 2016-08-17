@@ -20,9 +20,9 @@ const handler = (payload, res) => {
   var attachments = incidents.slice(0, 5).map((incident) => {
     return {
       title: `${incident.title}\n`,
-      title_link: `${incident.title_link}\n`,
+      title_link: `${incident.title_link}`,
       pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-      color: '#0067B3',
+      color: `JSON.stringify(${incident.color})`,
       text: `${incident.description}\n`,
       fields: [
         {

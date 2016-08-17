@@ -103,6 +103,9 @@ exports.new_incidents = function () {
       console.log('First Incident name: ' + JSON.stringify(parsedResponse[0].name) + '\n');
 
       for (var i = 0; i < 6; i++) {
+        var color = "#0067B3";
+        if (JSON.stringify(parsedResponse[i].state) == "In Progress")
+          color = "#FFB6D1";
         var current = { 
           "title" : parsedResponse[i].name,
           "number" : parsedResponse[i].number,
@@ -114,6 +117,7 @@ exports.new_incidents = function () {
           "priority" : parsedResponse[i].priority,
           "assignee" : parsedResponse[i].assignee.name,
           "ts" : parsedResponse[i].due_at,
+          "color" : color
         };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         incident_list.push(current);
