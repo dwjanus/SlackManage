@@ -51,7 +51,7 @@ controller.hears(['what is my name','who am i'],'direct_message,direct_mention,m
 });
 
 controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
-  id = message.user;
+  var id = message.user;
   var options = {user: id};
   user = bot.api.users.info(options, function(err, res) {
     var email = response.user.profile.email;

@@ -15,7 +15,7 @@ bot.message((msg) => {
   if (!msg.user) return;
   //if (!_.includes(msg.text.match(/<@[A-Z0-9])+>/igm), `<@${this.self.id}>`)) return;
 
-  id = msg.user;
+  var id = msg.user;
   var options = {user: id};
   user = bot.api.users.info(options, function(err, res) {
     var email = response.user.profile.email;
