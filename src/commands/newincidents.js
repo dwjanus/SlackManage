@@ -41,7 +41,7 @@ const handler = (payload, res) => {
           short: true
         }
       ],
-      footer: 'due at: ',
+      footer: 'due on: ',
       ts: `${incident.ts}`,
       mrkdown_in: ['text', 'pretext']
     }
