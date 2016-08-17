@@ -134,8 +134,6 @@ controller.hears(['incidents'], 'direct_message, direct_mention, mention', funct
 
   let msg = _.defaults({ attachments: attachments }, msgDefaults);
 
-  bot.reply(message, msg);
-
   bot.sendWebhook(msg, (err, res) => {
     if (err) throw err;
     console.log(`\n🚀 Latest incidents delivered! 🚀`)
