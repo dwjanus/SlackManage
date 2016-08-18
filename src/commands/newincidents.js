@@ -8,7 +8,7 @@ const util = require('util');
 
 const msgDefaults = {
   response_type: 'in_channel',
-  username: 'Samanage',
+  username: 'Samanage.new_incidents',
   icon_emoji: config('ICON_EMOJI')
 };
 

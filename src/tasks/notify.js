@@ -20,127 +20,128 @@ const msgDefaults = {
   icon_emoji: config('ICON_EMOJI')
 };
 
-controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function(bot,message) {
 
-  bot.api.reactions.add({
-    timestamp: message.ts,
-    channel: message.channel,
-    name: 'robot_face',
-  },function(err,res) {
-      if (err) {
-        bot.botkit.log("Failed to add emoji reaction :(",err);
-      }
-    });
+// controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function(bot,message) {
 
-    controller.storage.users.get(message.user,function(err,user) {
-    if (user && user.name) {
-      bot.reply(message,"Hello " + user.name+"!!");
-    } else {
-      bot.reply(message,"Hello.");
-    }
-  });
-});
+//   bot.api.reactions.add({
+//     timestamp: message.ts,
+//     channel: message.channel,
+//     name: 'robot_face',
+//   },function(err,res) {
+//       if (err) {
+//         bot.botkit.log("Failed to add emoji reaction :(",err);
+//       }
+//     });
 
-controller.hears(['what is my name','who am i'],'direct_message,direct_mention,mention',function(bot,message) {
+//     controller.storage.users.get(message.user,function(err,user) {
+//     if (user && user.name) {
+//       bot.reply(message,"Hello " + user.name+"!!");
+//     } else {
+//       bot.reply(message,"Hello.");
+//     }
+//   });
+// });
 
-  controller.storage.users.get(message.user,function(err,user) {
-    if (user && user.name) {
-      bot.reply(message,"Your name is " + user.name);
-    } else {
-      bot.reply(message,"I don't know yet!");
-    }
-  });
-});
+// controller.hears(['what is my name','who am i'],'direct_message,direct_mention,mention',function(bot,message) {
 
-controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
-  var id = message.user;
-  var options = {user: id};
-  var user = bot.api.users.info(options, function(err, res) {
-    var email = res.user.profile.email;
+//   controller.storage.users.get(message.user,function(err,user) {
+//     if (user && user.name) {
+//       bot.reply(message,"Your name is " + user.name);
+//     } else {
+//       bot.reply(message,"I don't know yet!");
+//     }
+//   });
+// });
 
-    //bot.say("Searching for incidents assigned to: " + email);
+// controller.hears(['my incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
+//   var id = message.user;
+//   var options = {user: id};
+//   var user = bot.api.users.info(options, function(err, res) {
+//     var email = res.user.profile.email;
 
-    var incidents = Samanage.my_incidents();
+//     //bot.say("Searching for incidents assigned to: " + email);
 
-    var attachments = incidents.slice(0, 5).map((incident) => {
-      return {
-        title: `${incident.title}\n`,
-        title_link: `${incident.title_link}`,
-        pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-        color: `${incident.color}`,
-        text: `${incident.description}\n\n`,
-        fields: [
-          {
-            title: 'State',
-            value: `${incident.state}`,
-            short: true
-          },
-          {
-            title: 'Priority',
-            value: `${incident.priority}`,
-            short: true
-          }
-        ],
-        footer: 'due on: ',
-        ts: `${incident.ts}`,
-        mrkdown_in: ['text', 'pretext']
-      }
-    });
+//     var incidents = Samanage.my_incidents();
 
-    message = _.defaults({ attachments: attachments }, msgDefaults);
+//     var attachments = incidents.slice(0, 5).map((incident) => {
+//       return {
+//         title: `${incident.title}\n`,
+//         title_link: `${incident.title_link}`,
+//         pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+//         color: `${incident.color}`,
+//         text: `${incident.description}\n\n`,
+//         fields: [
+//           {
+//             title: 'State',
+//             value: `${incident.state}`,
+//             short: true
+//           },
+//           {
+//             title: 'Priority',
+//             value: `${incident.priority}`,
+//             short: true
+//           }
+//         ],
+//         footer: 'due on: ',
+//         ts: `${incident.ts}`,
+//         mrkdown_in: ['text', 'pretext']
+//       }
+//     });
 
-    //bot.reply(message, msg);
+//     message = _.defaults({ attachments: attachments }, msgDefaults);
 
-    bot.sendWebhook(message, (err, res) => {
-      if (err) throw err;
-      console.log(`\n🚀 Latest incidents delivered! 🚀`)
-    });
-  });
-});
+//     //bot.reply(message, msg);
 
-controller.hears(['new incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
+//     bot.sendWebhook(message, (err, res) => {
+//       if (err) throw err;
+//       console.log(`\n🚀 Latest incidents delivered! 🚀`)
+//     });
+//   });
+// });
 
-  //bot.say("Pulling latest incidents... ");
+// controller.hears(['new incidents'], 'direct_message, direct_mention, mention', function(bot, message) {
 
-  var incidents = Samanage.new_incidents();
+//   //bot.say("Pulling latest incidents... ");
 
-  var attachments = incidents.slice(0, 5).map((incident) => {
-    return {
-      title: `${incident.title}\n`,
-      title_link: `${incident.title_link}`,
-      pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-      color: `${incident.color}`,
-      text: `${incident.description}\n\n`,
-      fields: [
-        {
-          title: 'Assigned To',
-          value: `${incident.assignee}`,
-          short: true
-        },
-        {
-          title: 'State',
-          value: `${incident.state}`,
-          short: true
-        },
-        {
-          title: 'Priority',
-          value: `${incident.priority}`,
-          short: true
-        }
-      ],
-      footer: 'due on: ',
-      ts: `${incident.ts}`,
-      mrkdown_in: ['text', 'pretext']
-    }
-  }); 
+//   var incidents = Samanage.new_incidents();
 
-  message = _.defaults({ attachments: attachments }, msgDefaults);
+//   var attachments = incidents.slice(0, 5).map((incident) => {
+//     return {
+//       title: `${incident.title}\n`,
+//       title_link: `${incident.title_link}`,
+//       pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+//       color: `${incident.color}`,
+//       text: `${incident.description}\n\n`,
+//       fields: [
+//         {
+//           title: 'Assigned To',
+//           value: `${incident.assignee}`,
+//           short: true
+//         },
+//         {
+//           title: 'State',
+//           value: `${incident.state}`,
+//           short: true
+//         },
+//         {
+//           title: 'Priority',
+//           value: `${incident.priority}`,
+//           short: true
+//         }
+//       ],
+//       footer: 'due on: ',
+//       ts: `${incident.ts}`,
+//       mrkdown_in: ['text', 'pretext']
+//     }
+//   }); 
 
-  bot.sendWebhook(message, (err, res) => {
-    if (err) throw err;
-    console.log(`\n🚀 Latest incidents delivered! 🚀`)
-  });
-});
+//   message = _.defaults({ attachments: attachments }, msgDefaults);
+
+//   bot.sendWebhook(message, (err, res) => {
+//     if (err) throw err;
+//     console.log(`\n🚀 Latest incidents delivered! 🚀`)
+//   });
+// });
 
 
 

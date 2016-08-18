@@ -7,7 +7,7 @@ const Samanage = require('../lib/samanage');
 
 const msgDefaults = {
   response_type: 'in_channel',
-  username: 'Samanage',
+  username: 'Samanage.my_incidents',
   icon_emoji: config('ICON_EMOJI')
 };
 
