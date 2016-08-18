@@ -10,7 +10,7 @@ const password = 'BenHobgood666';
 
 var incident_list = [];
 
-exports.my_incidents = function (email) {
+exports.my_incidents = function(email) {
   console.log('EMAIL: ' + email + '\n');
 
   var useroptions = {
