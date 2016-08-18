@@ -3,12 +3,10 @@
 
 const _ = require('lodash');
 const config = require('../config');
-const slack = require('slack');
 const Samanage = require('../lib/samanage');
 const util = require('util');
-var https = require('https');
 
-let api = slack.api.client();
+let bot = require('../bot');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -18,13 +16,14 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
+  console.log('\nPAYLOAD: ' + JSON.stringify(payload) + '\n');
   // pull userid from payload
   var userid = payload.user_id;
-  console.log('\n' + JSON.stringify(userid) + '\n');
+  console.log('\nUSERID: ' + JSON.stringify(userid) + '\n');
   
   // get the user profile here:
-  var user = api.users.info(userid, function (err, res) {
-    
+  var user = bot.users.info(userid, function(err, res) {
+    if (err) console.log(err);
     // get the user's email here:
     var email = res.user.profile.email;
     console.log('\n' + JSON.stringify(email) + '\n');
@@ -65,7 +64,7 @@ const handler = (payload, res) => {
 
   // res.set('content-type', 'application/json');
   // res.status(200).json(msg);
-  return;
+  // return;
 };
 
 module.exports = { pattern: /mine/ig, handler: handler };
