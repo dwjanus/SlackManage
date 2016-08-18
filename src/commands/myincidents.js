@@ -23,7 +23,7 @@ const msgDefaults = {
 const handler = (payload, res) => {
 
   var userid = JSON.stringify(payload.user_id);
-  console.log('\nUSERID: ' + userid + '\n');
+  //console.log('\nUSERID: ' + userid + '\n');
   
   var options = {user: userid};
 
@@ -73,7 +73,7 @@ const handler = (payload, res) => {
 
   // res.set('content-type', 'application/json');
   // res.status(200).json(msg);
-  // return;
+  return;
 };
 
 module.exports = { pattern: /mine/ig, handler: handler };
