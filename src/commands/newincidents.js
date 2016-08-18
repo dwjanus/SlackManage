@@ -13,7 +13,7 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-  var parsed - JSON.parse(payload);
+  var parsed = JSON.parse(payload);
   console.log('\n' + JSON.stringify(parsed) + '\n');
 
   // get the email here
