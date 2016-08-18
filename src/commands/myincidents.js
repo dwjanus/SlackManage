@@ -5,17 +5,10 @@ const _ = require('lodash');
 const config = require('../config');
 const Samanage = require('../lib/samanage');
 const util = require('util');
+const slack = require('slack');
 
-var Botkit = require('botkit');
-var controller = Botkit.slackbot({
-  debug: false
-})
+let api = slack.api.client(config('SLACK_TOKEN'));
 
-var bot = controller.spawn({
-  token: process.env.SLACK_TOKEN
-}).startRTM();
-
-var https = require('https');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -31,7 +24,7 @@ const handler = (payload, res) => {
   var options = {user: userid};
 
   // get the user profile here:
-  user = bot.api.users.info(options, function (err, res) {
+  user = api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
     var email = res.user.profile.email;
