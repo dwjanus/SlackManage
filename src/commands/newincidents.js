@@ -13,11 +13,11 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-  console.log('\n' + typeof payload + '\n');
+  console.log('\n' + JSON.stringify(payload) + '\n');
 
   // get the email here
   // email = payload.message.user.email (or something like that)
-  
+
   var incidents = Samanage.new_incidents();
 
   var attachments = incidents.slice(0, 5).map((incident) => {
