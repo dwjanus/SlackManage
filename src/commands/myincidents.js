@@ -37,9 +37,6 @@ const handler = (payload, res) => {
     // });
     
   });
-
-  var email = user.profile.email;
-  console.log('\n' + JSON.stringify(email) + '\n');
   
   // var incidents = Samanage.my_incidents();
 
