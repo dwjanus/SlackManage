@@ -9,7 +9,7 @@ const Samanage = require('../lib/samanage');
 var controller = Botkit.slackbot({
   debug: false
 });
-var bot = controller.spawn().startRTM();
+var bot = controller.spawn();
 var http = require('http');
 
 bot.configureIncomingWebhook({ url: config('WEBHOOK_URL') });
