@@ -20,12 +20,12 @@ exports.my_incidents = function (email) {
     auth: username + ':' + password
   };
 
-  var samanage_id;
+  var samanage_id = '';
 
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
     console.log('HEADERS: ' + JSON.stringify(res.headers));
-    res.setEncodeing('utf8');
+    res.setEncoding('utf8');
 
     res.on('data', function (chunk) {
       console.log('BODY: ' + chunk);
