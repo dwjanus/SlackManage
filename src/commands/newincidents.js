@@ -13,7 +13,8 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-  console.log('\n' + JSON.stringify(payload) + '\n');
+  var parsed - JSON.parse(payload);
+  console.log('\n' + JSON.stringify(parsed) + '\n');
 
   // get the email here
   // email = payload.message.user.email (or something like that)
