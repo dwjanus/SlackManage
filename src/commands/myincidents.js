@@ -27,7 +27,7 @@ const handler = (payload, res) => {
   var user = api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
-    var email = user.profile.email;
+    var email = res.user.profile.email;
     console.log('\n' + JSON.stringify(email) + '\n');
 
     // get the user's email here:
