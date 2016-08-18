@@ -8,7 +8,7 @@ const Samanage = require('../lib/samanage');
 
 const msgDefaults = {
   response_type: 'in_channel',
-  username: 'Samanage.my_incidents',
+  username: 'mine',
   icon_emoji: config('ICON_EMOJI')
 };
 
@@ -60,4 +60,4 @@ const handler = (payload, res) => {
   return;
 };
 
-module.exports = { pattern: /my incidents/ig, handler: handler };
+module.exports = { pattern: /mine/ig, handler: handler };

@@ -9,7 +9,7 @@ var https = require('https');
 
 const msgDefaults = {
   response_type: 'in_channel',
-  username: 'Samanage.new_incidents',
+  username: 'new',
   icon_emoji: config('ICON_EMOJI')
 };
 
@@ -57,5 +57,5 @@ const handler = (payload, res) => {
   return;
 };
 
-module.exports = { pattern: /new incidents/ig, handler: handler };
+module.exports = { pattern: /new/ig, handler: handler };
 
