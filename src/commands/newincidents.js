@@ -57,5 +57,5 @@ const handler = (payload, res) => {
   return;
 };
 
-module.exports = { pattern: /incidents/ig, handler: handler };
+module.exports = { pattern: /new incidents/ig, handler: handler };
 
