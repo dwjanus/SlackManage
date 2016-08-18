@@ -28,7 +28,7 @@ const handler = (payload, res) => {
     var email = res.user.profile.email;
     console.log('\n' + JSON.stringify(email) + '\n');
     
-    var incidents = Samanage.my_incidents(JSON.stringify(email));
+    var incidents = Samanage.my_incidents(email);
 
     attachments = incidents.slice(0, 4).map((incident) => {
       return {
