@@ -6,7 +6,13 @@ const config = require('../config');
 const Samanage = require('../lib/samanage');
 const util = require('util');
 
-let bot = require('../bot');
+var Botkit = require('botkit');
+var controller = Botkit.slackbot({
+  debug: false
+})
+
+var bot = controller.spawn().startRTM();
+var http = require('http');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -16,13 +22,15 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
-  console.log('\nPAYLOAD: ' + JSON.stringify(payload) + '\n');
+  console.log('\nPAYLOAD: ' + payload + '\n');
   // pull userid from payload
   var userid = payload.user_id;
-  console.log('\nUSERID: ' + JSON.stringify(userid) + '\n');
+  console.log('\nUSERID: ' + userid + '\n');
+  
+  var options = {user: id};
   
   // get the user profile here:
-  var user = bot.api.users.info(JSON.stringify(userid), function(err, res) {
+  var user = bot.api.users.info(options, function(err, res) {
     if (err) console.log(err);
 
     // get the user's email here:
