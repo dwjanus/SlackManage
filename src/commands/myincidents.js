@@ -12,9 +12,10 @@ var controller = Botkit.slackbot({
 })
 
 var bot = controller.spawn({
-  token = config('SLACK_TOKEN');
+  token: process.env.SLACK_TOKEN
 }).startRTM();
-var http = require('http');
+
+var https = require('https');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -30,7 +31,7 @@ const handler = (payload, res) => {
   var options = {user: userid};
 
   // get the user profile here:
-  var user = bot.api.users.info(options, function(err, res) {
+  var user = bot.api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
     // get the user's email here:
