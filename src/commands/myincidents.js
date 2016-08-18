@@ -6,6 +6,8 @@ const config = require('../config');
 const slack = require('slack');
 const Samanage = require('../lib/samanage');
 
+let api = slack.api.client();
+
 const msgDefaults = {
   response_type: 'in_channel',
   username: 'mine',
@@ -18,7 +20,7 @@ const handler = (payload, res) => {
   var userid = payload.user_id;
   console.log('\n' + JSON.stringify(userid) + '\n');
   // get the user profile here:
-  var user = slack.api.users.info(userid);
+  var user = api.users.info(userid);
   console.log('\n' + JSON.stringify(user) + '\n');
   // get the user's email here:
   var email = user.profile.email;
