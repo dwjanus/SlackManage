@@ -12,7 +12,7 @@ var controller = Botkit.slackbot({
 })
 
 var bot = controller.spawn({
-  token: config('SLACK_TOKEN');
+  token = config('SLACK_TOKEN');
 }).startRTM();
 var http = require('http');
 
