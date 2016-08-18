@@ -9,7 +9,6 @@ const slack = require('slack');
 
 let api = slack.api.client(config('SLACK_TOKEN'));
 
-
 const msgDefaults = {
   response_type: 'in_channel',
   username: 'mine',
@@ -17,61 +16,55 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-
-  var userid = payload.user_id;
-  //console.log('\nUSERID: ' + userid + '\n');
   
+  // get user slack id, then use that to retrieve email info
+  var userid = payload.user_id;
   var options = {user: userid};
+  var email = {};
 
-  // get the user profile here:
   var user = api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
-    var email = res.user.profile.email;
+    email = res.user.profile.email;
     console.log('\n' + JSON.stringify(email) + '\n');
-
-    // get the user's email here:
-    // res.on('data', function (chunk) => {
-    //   var email = res.user.profile.email;
-    //   console.log('\n' + JSON.stringify(email) + '\n');
-    // });
     
   });
-  
-  // var incidents = Samanage.my_incidents();
+  email_string = JSON.stringify(email);
 
-  // var attachments = incidents.slice(0, 5).map((incident) => {
-  //   return {
-  //     title: `${incident.title}\n`,
-  //     title_link: `${incident.title_link}`,
-  //     pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-  //     color: `${incident.color}`,
-  //     text: `${incident.description}\n\n`,
-  //     fields: [
-  //       {
-  //         title: 'State',
-  //         value: `${incident.state}`,
-  //         short: true
-  //       },
-  //       {
-  //         title: 'Priority',
-  //         value: `${incident.priority}`,
-  //         short: true
-  //       }
-  //     ],
-  //     footer: 'due on: ',
-  //     ts: `${incident.ts}`,
-  //     mrkdown_in: ['text', 'pretext']
-  //   }
-  // });
+  var incidents = Samanage.my_incidents(email_string);
+
+  var attachments = incidents.slice(0, 4).map((incident) => {
+    return {
+      title: `${incident.title}\n`,
+      title_link: `${incident.title_link}`,
+      pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+      color: `${incident.color}`,
+      text: `${incident.description}\n\n`,
+      fields: [
+        {
+          title: 'State',
+          value: `${incident.state}`,
+          short: true
+        },
+        {
+          title: 'Priority',
+          value: `${incident.priority}`,
+          short: true
+        }
+      ],
+      footer: 'due on: ',
+      ts: `${incident.ts}`,
+      mrkdown_in: ['text', 'pretext']
+    }
+  });
     
-  // let msg = _.defaults({
-  //   channel: payload.channel_name,
-  //   attachments: attachments
-  // }, msgDefaults);
+  let msg = _.defaults({
+    channel: payload.channel_name,
+    attachments: attachments
+  }, msgDefaults);
 
-  // res.set('content-type', 'application/json');
-  // res.status(200).json(msg);
+  res.set('content-type', 'application/json');
+  res.status(200).json(msg);
   return;
 };
 
