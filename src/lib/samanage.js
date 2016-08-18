@@ -27,12 +27,8 @@ exports.my_incidents = function (email) {
     console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
     res.setEncoding('utf8');
 
-    res.on('data', function (chunk) {
-      console.log('BODY: ' + chunk + '\n');
-      var parsed = JSON.parse(chunk);
-      samanage_id = parsed.id;
-      console.log('Samanage ID: ' + samanage_id + '\n');
-    });
+    samanage_id = res.id;
+    console.log('Samanage ID: ' + samanage_id + '\n');
   });
   req.end();
 
