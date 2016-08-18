@@ -14,10 +14,6 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-  console.log('\n' + JSON.stringify(payload) + '\n');
-
-  // get the email here
-  // email = payload.message.user.email (or something like that)
 
   var incidents = Samanage.new_incidents();
 
