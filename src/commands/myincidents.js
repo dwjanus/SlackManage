@@ -31,7 +31,7 @@ const handler = (payload, res) => {
   var options = {user: userid};
 
   // get the user profile here:
-  var user = bot.api.users.info(options, function (err, res) {
+  user = bot.api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
     var email = res.user.profile.email;
