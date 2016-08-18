@@ -53,13 +53,13 @@ const handler = (payload, res) => {
         mrkdown_in: ['text', 'pretext']
       }
     });
-
+    
+    let msg = _.defaults({
+      channel: payload.channel_name,
+      attachments: attachments
+    }, msgDefaults);
   });
     
-  let msg = _.defaults({
-    channel: payload.channel_name,
-    attachments: attachments
-  }, msgDefaults);
 
   res.set('content-type', 'application/json');
   res.status(200).json(msg);
