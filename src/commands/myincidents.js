@@ -24,12 +24,12 @@ const handler = (payload, res) => {
   var options = {user: userid};
 
   // get the user profile here:
-  user = api.users.info(options, function (err, res) {
+  var user = api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
-    var email = res.user.profile.email;
+    var email = user.profile.email;
     console.log('\n' + JSON.stringify(email) + '\n');
-    
+
     // get the user's email here:
     // res.on('data', function (chunk) => {
     //   var email = res.user.profile.email;
@@ -37,6 +37,9 @@ const handler = (payload, res) => {
     // });
     
   });
+
+  var email = user.profile.email;
+  console.log('\n' + JSON.stringify(email) + '\n');
   
   // var incidents = Samanage.my_incidents();
 
