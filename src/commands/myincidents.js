@@ -58,12 +58,11 @@ const handler = (payload, res) => {
       channel: payload.channel_name,
       attachments: attachments
     }, msgDefaults);
-  });
     
-
-  res.set('content-type', 'application/json');
-  res.status(200).json(msg);
-  return;
+    res.set('content-type', 'application/json');
+    res.status(200).json(msg);
+    return;
+  });
 };
 
 module.exports = { pattern: /mine/ig, handler: handler };
