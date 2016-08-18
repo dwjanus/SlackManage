@@ -18,7 +18,7 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
-  var userid = JSON.stringify(payload.user_id);
+  var userid = payload.user_id;
   //console.log('\nUSERID: ' + userid + '\n');
   
   var options = {user: userid};
