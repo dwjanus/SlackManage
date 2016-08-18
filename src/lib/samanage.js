@@ -47,10 +47,8 @@ exports.my_incidents = function (email) {
   };
 
   var request = https.request(options, function (response) {
-    console.log('STATUS: ' + response.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(response.headers) + "\n\n");
-
     response.setEncoding('utf8');
+    
     var body = "";
 
     response.on('data', function (chunk) {
@@ -110,9 +108,6 @@ exports.new_incidents = function () {
   };
 
   var request = https.request(newoptions, function (response) {
-    console.log('STATUS: ' + response.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(response.headers) + "\n\n");
-
     response.setEncoding('utf8');
     var body = "";
 
@@ -122,7 +117,6 @@ exports.new_incidents = function () {
 
     response.on('end', function () {
       var parsedResponse = JSON.parse(body);
-      console.log('First Incident name: ' + JSON.stringify(parsedResponse[0].name) + '\n');
 
       for (var i = 0; i < 6; i++) {
         var color = "#0067B3";
@@ -146,10 +140,8 @@ exports.new_incidents = function () {
           "ts" : parsedResponse[i].due_at,
           "color" : color
         };
-        console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         incident_list.push(current);
       };
-      console.log(JSON.stringify(incident_list));
     });
   }); 
   request.end();

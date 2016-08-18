@@ -21,7 +21,7 @@ const handler = (payload, res) => {
 
   var incidents = Samanage.new_incidents();
 
-  var attachments = incidents.slice(0, 5).map((incident) => {
+  var attachments = incidents.slice(0, 4).map((incident) => {
     return {
       title: `${incident.title}\n`,
       title_link: `${incident.title_link}`,
