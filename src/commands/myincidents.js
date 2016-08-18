@@ -11,7 +11,9 @@ var controller = Botkit.slackbot({
   debug: false
 })
 
-var bot = controller.spawn().startRTM();
+var bot = controller.spawn({
+  token: config('SLACK_TOKEN');
+}).startRTM();
 var http = require('http');
 
 const msgDefaults = {
