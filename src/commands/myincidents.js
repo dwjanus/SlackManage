@@ -17,6 +17,7 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
   
+  var attachments = [];
   // get user slack id, then use that to retrieve email info
   var userid = payload.user_id;
   var options = {user: userid};
@@ -29,7 +30,7 @@ const handler = (payload, res) => {
     
     var incidents = Samanage.my_incidents(JSON.stringify(email));
 
-    var attachments = incidents.slice(0, 4).map((incident) => {
+    attachments = incidents.slice(0, 4).map((incident) => {
       return {
         title: `${incident.title}\n`,
         title_link: `${incident.title_link}`,
@@ -52,17 +53,17 @@ const handler = (payload, res) => {
         ts: `${incident.ts}`,
         mrkdown_in: ['text', 'pretext']
       }
-    });
-    
-    let msg = _.defaults({
-      channel: payload.channel_name,
-      attachments: attachments
-    }, msgDefaults);
-    
-    res.set('content-type', 'application/json');
-    res.status(200).json(msg);
-    return;
+    });  
   });
+
+  let msg = _.defaults({
+    channel: payload.channel_name,
+    attachments: attachments
+  }, msgDefaults);
+  
+  res.set('content-type', 'application/json');
+  res.status(200).json(msg);
+  return;
 };
 
 module.exports = { pattern: /mine/ig, handler: handler };
