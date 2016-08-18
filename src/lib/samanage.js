@@ -24,12 +24,14 @@ exports.my_incidents = function (email) {
 
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
+    console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
     res.setEncoding('utf8');
 
     res.on('data', function (chunk) {
-      console.log('BODY: ' + chunk);
-      samanage_id = JSON.stringify(chunk);
+      console.log('BODY: ' + chunk + '\n');
+      var parsed = JSON.parse(chunk);
+      samanage_id = parsed.id;
+      console.log('Samanage ID: ' + samanage_id + '\n');
     });
   });
   req.end();
