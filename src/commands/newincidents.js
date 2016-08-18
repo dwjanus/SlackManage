@@ -5,6 +5,7 @@ const _ = require('lodash');
 const config = require('../config');
 const Samanage = require('../lib/samanage');
 const util = require('util');
+var https = require('https');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -13,8 +14,7 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-  var parsed = JSON.parse(payload);
-  console.log('\n' + JSON.stringify(parsed) + '\n');
+  console.log('\n' + JSON.stringify(payload) + '\n');
 
   // get the email here
   // email = payload.message.user.email (or something like that)
