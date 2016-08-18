@@ -20,42 +20,40 @@ const handler = (payload, res) => {
   // get user slack id, then use that to retrieve email info
   var userid = payload.user_id;
   var options = {user: userid};
-  var email = {};
 
   var user = api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
-    email = res.user.profile.email;
+    var email = res.user.profile.email;
     console.log('\n' + JSON.stringify(email) + '\n');
     
-  });
-  var email_string = JSON.stringify(email);
+    var incidents = Samanage.my_incidents(JSON.stringify(email));
 
-  var incidents = Samanage.my_incidents(email_string);
+    var attachments = incidents.slice(0, 4).map((incident) => {
+      return {
+        title: `${incident.title}\n`,
+        title_link: `${incident.title_link}`,
+        pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+        color: `${incident.color}`,
+        text: `${incident.description}\n\n`,
+        fields: [
+          {
+            title: 'State',
+            value: `${incident.state}`,
+            short: true
+          },
+          {
+            title: 'Priority',
+            value: `${incident.priority}`,
+            short: true
+          }
+        ],
+        footer: 'due on: ',
+        ts: `${incident.ts}`,
+        mrkdown_in: ['text', 'pretext']
+      }
+    });
 
-  var attachments = incidents.slice(0, 4).map((incident) => {
-    return {
-      title: `${incident.title}\n`,
-      title_link: `${incident.title_link}`,
-      pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-      color: `${incident.color}`,
-      text: `${incident.description}\n\n`,
-      fields: [
-        {
-          title: 'State',
-          value: `${incident.state}`,
-          short: true
-        },
-        {
-          title: 'Priority',
-          value: `${incident.priority}`,
-          short: true
-        }
-      ],
-      footer: 'due on: ',
-      ts: `${incident.ts}`,
-      mrkdown_in: ['text', 'pretext']
-    }
   });
     
   let msg = _.defaults({
