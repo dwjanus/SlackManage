@@ -34,11 +34,14 @@ const handler = (payload, res) => {
   var user = bot.api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
+    var email = res.user.profile.email;
+    console.log('\n' + JSON.stringify(email) + '\n');
+    
     // get the user's email here:
-    res.on('data', () => {
-      var email = res.user.profile.email;
-      console.log('\n' + JSON.stringify(email) + '\n');
-    });
+    // res.on('data', function (chunk) => {
+    //   var email = res.user.profile.email;
+    //   console.log('\n' + JSON.stringify(email) + '\n');
+    // });
     
   });
   
