@@ -22,7 +22,7 @@ const handler = (payload, res) => {
   console.log('\nUSERID: ' + JSON.stringify(userid) + '\n');
   
   // get the user profile here:
-  var user = bot.users.info(userid, function(err, res) {
+  var user = bot.users.info(JSON.stringify(userid), function(err, res) {
     if (err) console.log(err);
     // get the user's email here:
     var email = res.user.profile.email;
