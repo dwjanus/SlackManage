@@ -22,11 +22,10 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
-  var parsed = JSON.parse(payload);
-  var userid = payload.user_id;
+  var userid = JSON.stringify(payload.user_id);
   console.log('\nUSERID: ' + userid + '\n');
   
-  var options = {user: id};
+  var options = {user: userid};
 
   // get the user profile here:
   var user = bot.api.users.info(options, function(err, res) {
