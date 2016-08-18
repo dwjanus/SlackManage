@@ -29,7 +29,7 @@ const handler = (payload, res) => {
     console.log('\n' + JSON.stringify(email) + '\n');
     
   });
-  email_string = JSON.stringify(email);
+  var email_string = JSON.stringify(email);
 
   var incidents = Samanage.my_incidents(email_string);
 
