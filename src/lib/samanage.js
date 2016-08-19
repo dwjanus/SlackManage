@@ -45,29 +45,33 @@ exports.my_incidents = function(email) {
       size = ids.length;
       console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
-      while(count < size || found == false) {
-        console.log('CURRENT ID: ' + ids[count] + '\n');
+      if (size == 1) {
+        group_id = ids[0];
+      } else {
+        while((count < size) || (found === false)) {
+          console.log('CURRENT ID: ' + ids[count] + '\n');
 
-        var group_request = https.get(group_path + ids[count] + '.json', function (group_response) {
+          var group_request = https.get(group_path + ids[count] + '.json', function (group_response) {
+            var group_body = "";
+            group_response.on('data', function (chunk) {
+              group_body += chunk;
+            });
 
-          var group_body = "";
-          group_response.on('data', function (chunk) {
-            group_body += chunk;
+            group_response.on('end', function () {
+              var parsed = JSON.parse(group_body);
+              console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+              if (parsed.is_user === true) {
+                group_id = ids[count];
+                found = true;
+                console.log('GROUP_ID FOUND: ' + group_id + '\n');
+              } else {
+                count++;
+              }
+            });
           });
-
-          group_response.on('end', function () {
-            var parsed = JSON.parse(group_body);
-            console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-            if (parsed[0].is_user == true) {
-              group_id = ids[count];
-              found = true;
-              console.log('GROUP_ID FOUND: ' + group_id + '\n');
-            };
-          });
-        });
-        group_request.end();
+          group_request.end();
+        };
       };
-
     });
   });
   req.end();
