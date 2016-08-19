@@ -20,8 +20,9 @@ exports.my_incidents = function(email) {
     auth: username + ':' + password
   };
   
-  var group_id = '1858000'; // this will be blank soon
+  var group_id; //= '1858000'; // this will be blank soon
   var ids = [];
+  var size;
 
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
@@ -41,28 +42,31 @@ exports.my_incidents = function(email) {
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
       var count = 0;
-      var size = ids.length;
+      size = ids.length;
       console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
-      // while(count < group_ids.size || found == false) {
-      //   var group_request = https.get(group_path + group_ids[count] + '.json', function (group_response) {
-          
-      //     var group_body = "";
-      //     group_response.on('data', function (chunk) {
-      //       group_body += chunk;
-      //     });
+      while(count < size || found == false) {
+        console.log('CURRENT ID: ' + ids[count] + '\n');
 
-      //     group_response.on('end', function () {
-      //       var parsed = JSON.parse(group_body);
-      //       console.log(JSON.stringify(parsed) + '\n');
-      //       if (parsed.is_user == true) {
-      //         group_id = group_ids[count];
-      //         found = true;
-      //       };
-      //     });
-      //   });
-      //   group_request.end();
-      // };
+        var group_request = https.get(group_path + ids[count] + '.json', function (group_response) {
+
+          var group_body = "";
+          group_response.on('data', function (chunk) {
+            group_body += chunk;
+          });
+
+          group_response.on('end', function () {
+            var parsed = JSON.parse(group_body);
+            console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+            if (parsed[0].is_user == true) {
+              group_id = ids[count];
+              found = true;
+              console.log('GROUP_ID FOUND: ' + group_id + '\n');
+            };
+          });
+        });
+        group_request.end();
+      };
 
     });
   });
@@ -91,7 +95,7 @@ exports.my_incidents = function(email) {
     response.on('end', function () {
       var parsedResponse = JSON.parse(output_body);
 
-      for (var i = 0; i < 1; i++) {
+      for (var i = 0; i < size; i++) {
         var color = "#0067B3";
         if (parsedResponse[i].state == "In Progress")
           color = "#FF6692";

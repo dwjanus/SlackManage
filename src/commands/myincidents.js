@@ -28,7 +28,7 @@ const handler = (payload, res) => {
     var email = res.user.profile.email; 
     var incidents = Samanage.my_incidents(email);
 
-    attachments = incidents.slice(0, 2).map((incident) => {
+    attachments = incidents.slice(0, 1).map((incident) => {
       return {
         title: `${incident.title}\n`,
         title_link: `${incident.title_link}`,
