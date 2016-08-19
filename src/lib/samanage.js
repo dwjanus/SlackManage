@@ -37,32 +37,6 @@ exports.my_incidents = function(email) {
       console.log('BODY: ' + JSON.stringify(parsedResponse) + '\n');
       var group_ids = parsedResponse.group_ids;
       console.log('GROUP_IDS: ' + JSON.stringify(group_ids) + '\n');
-
-      var group_path = 'https://api.samanage.com/groups/';
-      var found = false;
-      var count = 0;
-      console.log('SIZE OF GROUP ARRAY: ' + group_ids.size + '\n');
-
-      while(count < group_ids.size || found == false) {
-        var group_request = https.get(group_path + group_ids[count] + '.json', function (group_response) {
-          
-          var group_body = "";
-          group_response.on('data', function (chunk) {
-            group_body += chunk;
-          });
-
-          group_response.on('end', function () {
-            var parsed = JSON.parse(group_body);
-            console.log(JSON.stringify(parsed) + '\n');
-            if (parsed.is_user == true) {
-              group_id = group_ids[count];
-              found = true;
-            };
-          });
-        });
-        group_request.end();
-      };
-
     });
   });
   req.end();
@@ -70,6 +44,31 @@ exports.my_incidents = function(email) {
   req.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   });
+
+  var group_path = 'https://api.samanage.com/groups/';
+  var found = false;
+  var count = 0;
+  console.log('SIZE OF GROUP ARRAY: ' + group_ids.length + '\n');
+
+  while(count < group_ids.size || found == false) {
+    var group_request = https.get(group_path + group_ids[count] + '.json', function (group_response) {
+      
+      var group_body = "";
+      group_response.on('data', function (chunk) {
+        group_body += chunk;
+      });
+
+      group_response.on('end', function () {
+        var parsed = JSON.parse(group_body);
+        console.log(JSON.stringify(parsed) + '\n');
+        if (parsed.is_user == true) {
+          group_id = group_ids[count];
+          found = true;
+        };
+      });
+    });
+    group_request.end();
+  };
 
   var options = {
     host: 'api.samanage.com',
