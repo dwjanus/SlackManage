@@ -9,76 +9,7 @@ const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
 var incident_list = [];
 
-exports.my_incidents = function(email) {
-  console.log('EMAIL: ' + email + '\n');
-
-  var useroptions = {
-    host: 'api.samanage.com',
-    path: '/users.json?email=' + email,
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-    auth: username + ':' + password
-  };
-  
-  var group_id; //= '1858000'; // this will be blank soon
-  var ids = [];
-  var size;
-
-  var req = https.request(useroptions, function (res) {
-    console.log('STATUS: ' + res.statusCode);
-    res.setEncoding('utf8');
-
-    var body = "";
-    res.on('data', function (chunk) {
-      body += chunk;
-    });
-
-    res.on('end', function () {
-      var parsed = JSON.parse(body);
-      console.log('BODY: ' + JSON.stringify(parsed) + '\n');
-      var ids = parsed[0].group_ids;
-      console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
-
-      var group_path = 'https://api.samanage.com/groups/';
-      var found = false;
-      var count = 0;
-      size = ids.length;
-      console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
-
-      if (size == 1) {
-        group_id = ids[0];
-      } else {
-        while((count < size) || (found === false)) {
-          console.log('CURRENT ID: ' + ids[count] + '\n');
-
-          var group_request = https.get(group_path + ids[count] + '.json', function (group_response) {
-            var group_body = "";
-            group_response.on('data', function (chunk) {
-              group_body += chunk;
-            });
-
-            group_response.on('end', function () {
-              var parsed = JSON.parse(group_body);
-              console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-              if (parsed.is_user === true) {
-                group_id = ids[count];
-                found = true;
-                console.log('GROUP_ID FOUND: ' + group_id + '\n');
-              } else {
-                count++;
-              }
-            });
-          });
-          group_request.end();
-        };
-      };
-    });
-  });
-  req.end();
-
-  req.on('error', function (e) {
-    console.log('problem with request: ' + e.message);
-  });
+exports.my_incidents = function(group_id, size) {
 
   var options = {
     host: 'api.samanage.com',
