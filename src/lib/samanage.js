@@ -35,13 +35,14 @@ exports.my_incidents = function(email) {
     res.on('end', function () {
       var parsed = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsed) + '\n');
-      var group_ids = JSON.stringify(parsed.group_ids);
-      console.log('GROUP_IDS: ' + group_ids + '\n');
+      var group_ids = parsed.group_ids;
+      console.log('GROUP_IDS: ' + JSON.stringify(group_ids) + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
       var count = 0;
-      //console.log('SIZE OF GROUP ARRAY: ' +  + '\n');
+      var size = Object.keys(group_ids).length;
+      console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
       // while(count < group_ids.size || found == false) {
       //   var group_request = https.get(group_path + group_ids[count] + '.json', function (group_response) {
@@ -90,7 +91,7 @@ exports.my_incidents = function(email) {
     response.on('end', function () {
       var parsedResponse = JSON.parse(output_body);
 
-      for (var i = 0; i <= 2; i++) {
+      for (var i = 0; i < 1; i++) {
         var color = "#0067B3";
         if (parsedResponse[i].state == "In Progress")
           color = "#FF6692";
