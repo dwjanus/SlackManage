@@ -7,7 +7,6 @@ var https = require('https');
 
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
-
 var incident_list = [];
 
 exports.my_incidents = function(email) {
@@ -21,12 +20,13 @@ exports.my_incidents = function(email) {
     auth: username + ':' + password
   };
 
+  console.log('URL: ' + useroptions.host + useroptions.path + '\n');
   var samanage_id = "";
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
     res.setEncoding('utf8');
-    console.log(JSON.stringify(res.data));
-    
+    console.log(JSON.stringify(res.body));
+
     // res.on('data', function (chunk) {
     //   console.log('BODY: ' + chunk + '\n');
     //   var body = JSON.parse(chunk);
@@ -40,7 +40,7 @@ exports.my_incidents = function(email) {
     });
 
     res.on('end', function () {
-      console.log('BODY: ' + JSON.stringify(body) + '\n');
+      console.log('BODY: ' + body + '\n');
     });
   });
   req.end();
@@ -61,7 +61,6 @@ exports.my_incidents = function(email) {
     response.setEncoding('utf8');
     
     var body = "";
-
     response.on('data', function (chunk) {
       body += chunk;
     });
@@ -127,8 +126,8 @@ exports.new_incidents = function () {
     response.on('end', function () {
       var parsedResponse = JSON.parse(body);
 
-      for (var i = 0; i < 6; i++) {
-        console.log('BODY: ' + parsedResponse[i] + '\n');
+      for (var i = 0; i <= 4; i++) {
+        console.log('BODY: ' + parsedResponse[i] + '\n'); // this is here so we can figure out the assignee issue
 
         var color = "#0067B3";
         if (parsedResponse[i].state == "In Progress")
