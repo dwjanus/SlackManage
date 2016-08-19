@@ -70,8 +70,8 @@ const handler = (payload, res) => {
         } else {
           while((count < size) || (found === false)) {
             console.log('CURRENT ID: ' + ids[count] + '\n');
-
-            var group_request = https.get(group_path + ids[count] + '.json', function (group_response) {
+            group_path += (ids[count] + '.json');
+            var group_request = https.get(group_path, function (group_response) {
               var group_body = "";
               group_response.on('data', function (chunk) {
                 group_body += chunk;
@@ -99,7 +99,7 @@ const handler = (payload, res) => {
       console.log('problem with request: ' + e.message);
     });
 
-    var incidents = Samanage.my_incidents(group_id, size);
+    var incidents = Samanage.my_incidents(JSON.stringify(group_id), size);
 
     attachments = incidents.slice(0, size).map((incident) => {
       return {
