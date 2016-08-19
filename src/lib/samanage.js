@@ -19,9 +19,9 @@ exports.my_incidents = function(email) {
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
   };
-
-  console.log('URL: ' + useroptions.host + useroptions.path + '\n');
+  
   var group_id;
+  var group_ids = [];
 
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
@@ -35,7 +35,7 @@ exports.my_incidents = function(email) {
     res.on('end', function () {
       var parsedResponse = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsedResponse) + '\n');
-      var group_ids = parsedResponse.group_ids;
+      group_ids = parsedResponse.group_ids;
       console.log('GROUP_IDS: ' + JSON.stringify(group_ids) + '\n');
     });
   });
