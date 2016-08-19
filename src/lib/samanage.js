@@ -25,7 +25,6 @@ exports.my_incidents = function(email) {
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
     res.setEncoding('utf8');
-    console.log(JSON.stringify(res.body));
 
     // res.on('data', function (chunk) {
     //   console.log('BODY: ' + chunk + '\n');
@@ -41,6 +40,7 @@ exports.my_incidents = function(email) {
 
     res.on('end', function () {
       console.log('BODY: ' + body + '\n');
+      samanage_id = body.id;
     });
   });
   req.end();
@@ -83,7 +83,6 @@ exports.my_incidents = function(email) {
           "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
           "description" : parsedResponse[i].description_no_html,
           "requester" : parsedResponse[i].requester.name,
-          "requester_email" : parsedResponse[i].requester.email,
           "state" : parsedResponse[i].state,
           "priority" : parsedResponse[i].priority,
           "ts" : parsedResponse[i].due_at,
