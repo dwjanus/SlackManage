@@ -35,7 +35,7 @@ exports.my_incidents = function(email) {
     res.on('end', function () {
       var parsed = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsed) + '\n');
-      var group_ids = parsed.group_ids;
+      var group_ids = JSON.stringify(parsed.group_ids);
       console.log('GROUP_IDS: ' + group_ids + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
