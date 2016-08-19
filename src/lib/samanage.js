@@ -42,8 +42,7 @@ exports.my_incidents = function(email) {
     });
 
     res.on('end', function () {
-      var parsedResponse = JSON.parse(body);
-      console.log('BODY: ' + JSON.stringify(parsedResponse) + '\n');
+      console.log('BODY: ' + JSON.stringify(body) + '\n');
     });
   });
 
