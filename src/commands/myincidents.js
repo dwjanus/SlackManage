@@ -56,7 +56,7 @@ const handler = (payload, res) => {
       res.on('end', function () {
         var parsed = JSON.parse(body);
         console.log('BODY: ' + JSON.stringify(parsed) + '\n');
-        var ids = JSON.stringify(parsed[0].group_ids);
+        var ids = parsed[0].group_ids;
         console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
 
         var group_path = 'https://api.samanage.com/groups/';
@@ -66,7 +66,7 @@ const handler = (payload, res) => {
         console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
         if (size == 1) {
-          group_id = ids[0];
+          group_id = ids[0].toString();
         } else {
           while((count < size) || (found === false)) {
             console.log('CURRENT ID: ' + ids[count] + '\n');
@@ -81,7 +81,7 @@ const handler = (payload, res) => {
                 var parsed = JSON.parse(group_body);
                 console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
                 if (parsed.is_user === true) {
-                  group_id = ids[count];
+                  group_id = ids[count].toString();
                   found = true;
                   console.log('GROUP_ID FOUND: ' + group_id + '\n');
                 }
