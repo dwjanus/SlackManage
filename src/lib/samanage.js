@@ -21,7 +21,7 @@ exports.my_incidents = function(email) {
   };
   
   var group_id = '1858000'; // this will be blank soon
-  //var group_ids = [];
+  //var ids = [];
 
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
@@ -35,8 +35,8 @@ exports.my_incidents = function(email) {
     res.on('end', function () {
       var parsed = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsed) + '\n');
-      var group_ids = parsed.group_ids;
-      console.log('GROUP_IDS: ' + JSON.stringify(group_ids) + '\n');
+      var ids = JSON.stringify(parsed.group_ids);
+      console.log('GROUP_IDS: ' + ids + ' ' typeof ids + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
