@@ -41,7 +41,7 @@ exports.my_incidents = function(email) {
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
       var count = 0;
-      var size = ids.length;
+      var size = ids.size;
       console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
       // while(count < group_ids.size || found == false) {
