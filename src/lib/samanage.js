@@ -35,13 +35,13 @@ exports.my_incidents = function(email) {
     res.on('end', function () {
       var parsed = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsed) + '\n');
-      var ids = JSON.stringify(parsed[0].group_ids);
+      var ids = parsed[0].group_ids;
       console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
       var count = 0;
-      var size = ids.size;
+      var size = ids.length;
       console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
       // while(count < group_ids.size || found == false) {
