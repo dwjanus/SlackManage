@@ -22,12 +22,10 @@ exports.my_incidents = function(email) {
   };
 
   var samanage_id = "";
-
   var req = https.request(useroptions, function (res) {
-    
     console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
     res.setEncoding('utf8');
+    console.log(JSON.stringify(res.data));
     
     // res.on('data', function (chunk) {
     //   console.log('BODY: ' + chunk + '\n');
@@ -45,12 +43,11 @@ exports.my_incidents = function(email) {
       console.log('BODY: ' + JSON.stringify(body) + '\n');
     });
   });
+  req.end();
 
   req.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   });
-  req.end();
-
 
   var options = {
     host: 'api.samanage.com',
@@ -93,17 +90,16 @@ exports.my_incidents = function(email) {
           "ts" : parsedResponse[i].due_at,
           "color" : color
         };
-        console.log('Current incident - ' + i + ': ' + current + '\n');
+        console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         incident_list.push(current);
       };
-      console.log(JSON.stringify(incident_list));
     });
   });
+  request.end();
   
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   });
-  request.end();
       
   return incident_list;
 };
