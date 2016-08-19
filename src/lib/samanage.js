@@ -41,8 +41,8 @@ exports.my_incidents = function(email) {
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
       var count = 0;
-      var size = Object.keys(group_ids).length;
-      console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
+      //var size = Object.keys(group_ids).length;
+      //console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
       // while(count < group_ids.size || found == false) {
       //   var group_request = https.get(group_path + group_ids[count] + '.json', function (group_response) {
