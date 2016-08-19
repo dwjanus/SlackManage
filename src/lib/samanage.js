@@ -21,7 +21,7 @@ exports.my_incidents = function(email) {
   };
   
   var group_id = '1858000'; // this will be blank soon
-  //var ids = [];
+  var ids = [];
 
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
@@ -35,14 +35,14 @@ exports.my_incidents = function(email) {
     res.on('end', function () {
       var parsed = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsed) + '\n');
-      var ids = parsed[0].group_ids;
+      var ids = JSON.stringify(parsed[0].group_ids);
       console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
       var count = 0;
-      //var size = Object.keys(group_ids).length;
-      //console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
+      var size = ids.length;
+      console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
       // while(count < group_ids.size || found == false) {
       //   var group_request = https.get(group_path + group_ids[count] + '.json', function (group_response) {
