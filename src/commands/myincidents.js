@@ -26,7 +26,7 @@ const handler = (payload, res) => {
     if (err) console.log(err);
 
     var email = res.user.profile.email;
-    console.log('\n' + JSON.stringify(email) + '\n');
+    //console.log('\n' + JSON.stringify(email) + '\n');
     
     var incidents = Samanage.my_incidents(email);
 

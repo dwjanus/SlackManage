@@ -17,17 +17,18 @@ exports.my_incidents = function(email) {
     host: 'api.samanage.com',
     path: '/users.json?email=' + email,
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
   };
 
-  var samanage_id = '';
+  var samanage_id = "";
 
   var req = https.request(useroptions, function (res) {
+    
     console.log('STATUS: ' + res.statusCode);
     console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
     res.setEncoding('utf8');
-
+    
     // res.on('data', function (chunk) {
     //   console.log('BODY: ' + chunk + '\n');
     //   var body = JSON.parse(chunk);
@@ -35,19 +36,28 @@ exports.my_incidents = function(email) {
     //   console.log('Samanage ID: ' + samanage_id + '\n');
     // });
 
-    console.log('BODY: ' + JSON.stringify(res.body) + '\n');
+    var body = "";
+    res.on('data', function (chunk) {
+      body += chunk;
+    });
+
+    res.on('end', function () {
+      var parsedResponse = JSON.parse(body);
+      console.log('BODY: ' + JSON.stringify(parsedResponse) + '\n');
+    });
+  });
+
+  req.on('error', function (e) {
+    console.log('problem with request: ' + e.message);
   });
   req.end();
 
-  req.on('error', function (e) {
-      console.log('problem with request: ' + e.message);
-  });
 
   var options = {
     host: 'api.samanage.com',
     path: '/incidents.json?=&assigned_to=' + samanage_id,
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
   };
 
@@ -62,7 +72,6 @@ exports.my_incidents = function(email) {
 
     response.on('end', function () {
       var parsedResponse = JSON.parse(body);
-      console.log('First Incident name: ' + JSON.stringify(parsedResponse[0].name) + '\n');
 
       for (var i = 0; i < 6; i++) {
         var color = "#0067B3";
@@ -91,12 +100,13 @@ exports.my_incidents = function(email) {
       console.log(JSON.stringify(incident_list));
     });
   });
-  request.end();
-      
+  
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   });
 
+  request.end();
+      
   return incident_list;
 };
     
