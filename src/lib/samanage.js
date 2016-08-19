@@ -11,7 +11,7 @@ const password = 'BenHobgood666';
 var incident_list = [];
 
 exports.my_incidents = function(email) {
-  console.log('EMAIL: ' + email + '\n');
+  console.log('EMAIL: ' + email + '  ' + typeof email + '\n');
 
   var useroptions = {
     host: 'api.samanage.com',
@@ -72,7 +72,7 @@ exports.my_incidents = function(email) {
     response.on('end', function () {
       var parsedResponse = JSON.parse(body);
 
-      for (var i = 0; i < 6; i++) {
+      for (var i = 0; i <= 2; i++) {
         var color = "#0067B3";
         if (parsedResponse[i].state == "In Progress")
           color = "#FF6692";
@@ -93,7 +93,7 @@ exports.my_incidents = function(email) {
           "ts" : parsedResponse[i].due_at,
           "color" : color
         };
-        console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
+        console.log('Current incident - ' + i + ': ' + current + '\n');
         incident_list.push(current);
       };
       console.log(JSON.stringify(incident_list));
@@ -103,7 +103,6 @@ exports.my_incidents = function(email) {
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   });
-
   request.end();
       
   return incident_list;
@@ -133,6 +132,8 @@ exports.new_incidents = function () {
       var parsedResponse = JSON.parse(body);
 
       for (var i = 0; i < 6; i++) {
+        console.log('BODY: ' + parsedResponse[i] + '\n');
+
         var color = "#0067B3";
         if (parsedResponse[i].state == "In Progress")
           color = "#FF6692";

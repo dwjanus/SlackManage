@@ -25,12 +25,10 @@ const handler = (payload, res) => {
   var user = api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
-    var email = res.user.profile.email;
-    //console.log('\n' + JSON.stringify(email) + '\n');
-    
+    var email = res.user.profile.email;    
     var incidents = Samanage.my_incidents(email);
 
-    attachments = incidents.slice(0, 4).map((incident) => {
+    attachments = incidents.slice(0, 2).map((incident) => {
       return {
         title: `${incident.title}\n`,
         title_link: `${incident.title_link}`,
