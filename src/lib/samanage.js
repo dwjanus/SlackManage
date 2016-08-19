@@ -36,7 +36,7 @@ exports.my_incidents = function(email) {
       var parsedResponse = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsedResponse) + '\n');
       group_ids = parsedResponse.group_ids;
-      console.log('GROUP_IDS: ' + JSON.stringify(group_ids) + '\n');
+      console.log('GROUP_IDS: ' + group_ids + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
@@ -62,7 +62,7 @@ exports.my_incidents = function(email) {
       //   });
       //   group_request.end();
       // };
-      
+
     });
   });
   req.end();
