@@ -30,6 +30,8 @@ const handler = (payload, res) => {
     console.log('EMAIL: ' + email + '\n');
 
     // get the correct group_id from samanage
+    const username = 'devin.janus@samanage.com';
+    const password = 'BenHobgood666';
     var useroptions = {
       host: 'api.samanage.com',
       path: '/users.json?email=' + email,
