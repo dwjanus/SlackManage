@@ -28,12 +28,14 @@ exports.my_incidents = function(email) {
     console.log('HEADERS: ' + JSON.stringify(res.headers) + '\n');
     res.setEncoding('utf8');
 
-    res.on('data', function (chunk) {
-      console.log('BODY: ' + chunk + '\n');
-      var body = JSON.parse(chunk);
-      samanage_id = body.id;
-      console.log('Samanage ID: ' + samanage_id + '\n');
-    });
+    // res.on('data', function (chunk) {
+    //   console.log('BODY: ' + chunk + '\n');
+    //   var body = JSON.parse(chunk);
+    //   samanage_id = body.id;
+    //   console.log('Samanage ID: ' + samanage_id + '\n');
+    // });
+
+    console.log('BODY: ' + JSON.stringify(res.body) + '\n');
   });
   req.end();
 
