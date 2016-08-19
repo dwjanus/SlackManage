@@ -56,7 +56,7 @@ const handler = (payload, res) => {
       res.on('end', function () {
         var parsed = JSON.parse(body);
         console.log('BODY: ' + JSON.stringify(parsed) + '\n');
-        var ids = parsed[0].group_ids;
+        var ids = JSON.stringify(parsed[0].group_ids);
         console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
 
         var group_path = 'https://api.samanage.com/groups/';
@@ -99,7 +99,7 @@ const handler = (payload, res) => {
       console.log('problem with request: ' + e.message);
     });
 
-    var incidents = Samanage.my_incidents(JSON.stringify(group_id), size);
+    var incidents = Samanage.my_incidents(group_id, size);
 
     attachments = incidents.slice(0, size).map((incident) => {
       return {
