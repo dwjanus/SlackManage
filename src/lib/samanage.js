@@ -10,7 +10,7 @@ const password = 'BenHobgood666';
 var incident_list = [];
 
 exports.my_incidents = function(email) {
-  console.log('EMAIL: ' + email + '  ' + typeof email + '\n');
+  console.log('EMAIL: ' + email + '\n');
 
   var useroptions = {
     host: 'api.samanage.com',
@@ -21,17 +21,11 @@ exports.my_incidents = function(email) {
   };
 
   console.log('URL: ' + useroptions.host + useroptions.path + '\n');
-  var samanage_id = "";
+  var group_id;
+  
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
     res.setEncoding('utf8');
-
-    // res.on('data', function (chunk) {
-    //   console.log('BODY: ' + chunk + '\n');
-    //   var body = JSON.parse(chunk);
-    //   samanage_id = body.id;
-    //   console.log('Samanage ID: ' + samanage_id + '\n');
-    // });
 
     var body = "";
     res.on('data', function (chunk) {
@@ -39,8 +33,36 @@ exports.my_incidents = function(email) {
     });
 
     res.on('end', function () {
-      console.log('BODY: ' + body + '\n');
-      samanage_id = body.id;
+      var parsedResponse = JSON.parse(body);
+      console.log('BODY: ' + JSON.stringify(parsedResponse) + '\n');
+      var group_ids = parsedResponse.group_ids;
+      console.log('GROUP_IDS: ' )
+
+      var group_path = 'https://api.samanage.com/groups/';
+      var found = false;
+      var count = 0;
+      console.log('SIZE OF GROUP ARRAY: ' + group_ids.size + '\n');
+
+      while(count < group_ids.size || found == false) {
+        var group_request = https.get(group_path + group_ids[count] + '.json', function (group_response) {
+          
+          var group_body = "";
+          group_response.on('data', function (chunk) {
+            group_body += chunk;
+          });
+
+          group_response.on('end', function () {
+            var parsed = JSON.parse(group_body);
+            console.log(JSON.stringify(parsed) + '\n');
+            if (parsed.is_user == true) {
+              group_id = group_ids[count];
+              found = true;
+            };
+          });
+        });
+        group_request.end();
+      };
+
     });
   });
   req.end();
@@ -51,7 +73,7 @@ exports.my_incidents = function(email) {
 
   var options = {
     host: 'api.samanage.com',
-    path: '/incidents.json?=&assigned_to=' + samanage_id,
+    path: '/incidents.json?=&assigned_to=' + group_id,
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
@@ -108,7 +130,7 @@ exports.my_incidents = function(email) {
 exports.new_incidents = function () {
   var newoptions = {
     host: 'api.samanage.com',
-    path: '/incidents.json',
+    path: '/incidents.json?per_page=5&sort_by=updated_at&sort_order=DESC',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
     auth: username + ':' + password
