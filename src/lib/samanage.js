@@ -21,7 +21,7 @@ exports.my_incidents = function(email) {
   };
   
   var group_id;
-  var group_ids = [];
+  //var group_ids = [];
 
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
@@ -35,13 +35,13 @@ exports.my_incidents = function(email) {
     res.on('end', function () {
       var parsedResponse = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsedResponse) + '\n');
-      group_ids = parsedResponse.group_ids;
+      var group_ids = parsedResponse.group_ids;
       console.log('GROUP_IDS: ' + group_ids + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
       var count = 0;
-      console.log('SIZE OF GROUP ARRAY: ' + group_ids.size + '\n');
+      //console.log('SIZE OF GROUP ARRAY: ' +  + '\n');
 
       // while(count < group_ids.size || found == false) {
       //   var group_request = https.get(group_path + group_ids[count] + '.json', function (group_response) {
