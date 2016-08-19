@@ -20,7 +20,7 @@ exports.my_incidents = function(email) {
     auth: username + ':' + password
   };
   
-  var group_id;
+  var group_id = '1858000'; // this will be blank soon
   //var group_ids = [];
 
   var req = https.request(useroptions, function (res) {
@@ -33,9 +33,9 @@ exports.my_incidents = function(email) {
     });
 
     res.on('end', function () {
-      var parsedResponse = JSON.parse(body);
-      console.log('BODY: ' + JSON.stringify(parsedResponse) + '\n');
-      var group_ids = parsedResponse.group_ids;
+      var parsed = JSON.parse(body);
+      console.log('BODY: ' + JSON.stringify(parsed) + '\n');
+      var group_ids = parsed.group_ids;
       console.log('GROUP_IDS: ' + group_ids + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
@@ -82,13 +82,13 @@ exports.my_incidents = function(email) {
   var request = https.request(options, function (response) {
     response.setEncoding('utf8');
     
-    var body = "";
+    var output_body = "";
     response.on('data', function (chunk) {
-      body += chunk;
+      output_body += chunk;
     });
 
     response.on('end', function () {
-      var parsedResponse = JSON.parse(body);
+      var parsedResponse = JSON.parse(output_body);
 
       for (var i = 0; i <= 2; i++) {
         var color = "#0067B3";
