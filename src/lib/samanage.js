@@ -22,7 +22,7 @@ exports.my_incidents = function(email) {
 
   console.log('URL: ' + useroptions.host + useroptions.path + '\n');
   var group_id;
-  
+
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
     res.setEncoding('utf8');
@@ -36,7 +36,7 @@ exports.my_incidents = function(email) {
       var parsedResponse = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsedResponse) + '\n');
       var group_ids = parsedResponse.group_ids;
-      console.log('GROUP_IDS: ' )
+      console.log('GROUP_IDS: ' + JSON.stringify(group_ids) + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
