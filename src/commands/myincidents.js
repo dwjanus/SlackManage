@@ -3,7 +3,7 @@
 
 const _ = require('lodash');
 const config = require('../config');
-const Samanage = require('../lib/samanage');
+const Samanage = require('../lib/samanage').my_incidents;
 const util = require('util');
 const slack = require('slack');
 const https = require('https');
