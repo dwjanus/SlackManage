@@ -34,8 +34,6 @@ const handler = (payload, res) => {
     console.log('EMAIL: ' + email + '\n');
   });
 
-  console.log('EMAIL: ' + email + ' ' + typeof email + '\n');
-
   // get the correct group_id from samanage
   var useroptions = {
     host: 'api.samanage.com',
@@ -61,8 +59,12 @@ const handler = (payload, res) => {
     res.on('end', function () {
       var parsed = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsed) + '\n');
+      
       var ids = parsed[0].group_ids;
       console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
+
+      var first_group = parsed[0].group_ids[0];
+      console.log('FIRST GROUP_ID: ' + first_group + ' ' + typeof first_group + '\n');
 
       var group_path = 'https://api.samanage.com/groups/';
       var found = false;
@@ -70,32 +72,56 @@ const handler = (payload, res) => {
       size = ids.length;
       console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
-      if (size == 1) {
-        group_id = ids[0].toString();
-      } else {
-        while((count < size) || (found === false)) {
-          console.log('CURRENT ID: ' + ids[count] + '\n');
-          group_path += (ids[count] + '.json');
-          var group_request = https.get(group_path, function (group_response) {
-            var group_body = "";
-            group_response.on('data', function (chunk) {
-              group_body += chunk;
-            });
+      console.log('CURRENT ID: ' + ids[count] + '\n');
+      group_path += (ids[count] + '.json');
+      console.log('GROUP_PATH: ' + group_path + '\n');
 
-            group_response.on('end', function () {
-              var parsed = JSON.parse(group_body);
-              console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-              if (parsed.is_user === true) {
-                group_id = ids[count].toString();
-                found = true;
-                console.log('GROUP_ID FOUND: ' + group_id + '\n');
-              }
-            });
-          });
-          group_request.end();
-          count++;
-        }
-      }
+      var group_request = https.get(group_path, function (group_response) {
+        var group_body = "";
+        group_response.on('data', function (chunk) {
+          group_body += chunk;
+        });
+
+        group_response.on('end', function () {
+          var parsed = JSON.parse(group_body);
+          console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+          if (parsed.is_user === true) {
+            group_id = ids[count].toString();
+            found = true;
+            console.log('GROUP_ID FOUND: ' + group_id + '\n');
+          }
+        });
+      });
+      group_request.end();
+
+      // if (size == 1) {
+        // group_id = ids[0].toString();
+      // } else {
+        // while((count < size) || (found === false)) {
+        //   console.log('CURRENT ID: ' + ids[count] + '\n');
+        //   group_path += (ids[count] + '.json');
+        //   console.log('GROUP_PATH: ' + group_path + '\n');
+
+        //   var group_request = https.get(group_path, function (group_response) {
+        //     var group_body = "";
+        //     group_response.on('data', function (chunk) {
+        //       group_body += chunk;
+        //     });
+
+        //     group_response.on('end', function () {
+        //       var parsed = JSON.parse(group_body);
+        //       console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+        //       if (parsed.is_user === true) {
+        //         group_id = ids[count].toString();
+        //         found = true;
+        //         console.log('GROUP_ID FOUND: ' + group_id + '\n');
+        //       }
+        //     });
+        //   });
+        //   group_request.end();
+        //   count++;
+        // }
+      // }
     });
   });
   req.end();
