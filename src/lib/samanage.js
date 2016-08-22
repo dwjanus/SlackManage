@@ -71,7 +71,7 @@ exports.my_incidents = function(group_id, size) {
 // ---------------------------------------------------------------
 exports.new_incidents = function () {
   var incident_list = [];
-  
+
   var newoptions = {
     host: 'api.samanage.com',
     path: '/incidents.json?per_page=5&sort_by=updated_at&sort_order=DESC',
@@ -118,12 +118,12 @@ exports.new_incidents = function () {
         incident_list.push(current);
       };
     });
-  }); 
+  });
   request.end();
 
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
-  }); 
+  });
 
   return incident_list;
 };

@@ -11,13 +11,13 @@ const https = require('https');
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
 
-let api = slack.api.client(config('SLACK_TOKEN'));
-
 const msgDefaults = {
   response_type: 'in_channel',
   username: 'mine',
   icon_emoji: config('ICON_EMOJI')
 };
+
+let api = slack.api.client(config('SLACK_TOKEN'));
 
 const handler = (payload, res) => {
   
@@ -73,6 +73,8 @@ const handler = (payload, res) => {
         };
 
         var group_request = https.request(group_options, function (group_response) {
+          group_response.setEncoding('utf8');
+
           var group_body = "";
           group_response.on('data', function (chunk) {
             group_body += chunk;
@@ -86,7 +88,7 @@ const handler = (payload, res) => {
             group_id = ids[0].toString();
             console.log('GROUP ID (before pass off to my_incidents): ' + group_id + '\n');
             
-            var incidents = Samanage.my_incidents(group_id, size);
+            let incidents = Samanage.my_incidents(group_id, size);
 
             attachments = incidents.slice(0, size).map((incident) => {
               return {
