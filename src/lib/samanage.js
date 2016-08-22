@@ -7,10 +7,11 @@ var https = require('https');
 
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
-var incident_list = [];
 
 exports.my_incidents = function(group_id, size) {
   console.log('Now in my_incidents function!\n' + 'GROUP_ID: ' + group_id + '\nSize: ' + size + '\n');
+
+  var my_incidents = [];
 
   var options = {
     host: 'api.samanage.com',
@@ -52,7 +53,7 @@ exports.my_incidents = function(group_id, size) {
           "color" : color
         };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
-        incident_list.push(current);
+        my_incidents.push(current);
       };
     });
   });
@@ -62,13 +63,15 @@ exports.my_incidents = function(group_id, size) {
     console.log('problem with request: ' + e.message);
   });
       
-  return incident_list;
+  return my_incidents;
 };
     
 // ---------------------------------------------------------------
 // This fella is gonna handle the request for the latest incidents
 // ---------------------------------------------------------------
 exports.new_incidents = function () {
+  var incident_list = [];
+  
   var newoptions = {
     host: 'api.samanage.com',
     path: '/incidents.json?per_page=5&sort_by=updated_at&sort_order=DESC',
