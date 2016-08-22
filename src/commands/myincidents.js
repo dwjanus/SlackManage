@@ -85,39 +85,38 @@ const handler = (payload, res) => {
             var parsed_group = JSON.parse(group_body);
             console.log('PARSED: ' + JSON.stringify(parsed_group) + '\n');
             console.log('IS USER: ' + parsed_group.is_user + ' ' + typeof parsed_group.is_user  + '\n');
-            if (parsed_group.is_user) {
-              group_id = ids[0];
-              console.log('GROUP_ID FOUND: ' + group_id + '\n');  
-            }
+            
+            group_id = ids[0].toString();
+            console.log('GROUP ID (before pass off to my_incidents): ' + group_id + '\n');
+            
+            var incidents = Samanage.my_incidents(group_id, size);
+
+            attachments = incidents.slice(0, size).map((incident) => {
+              return {
+                title: `${incident.title}\n`,
+                title_link: `${incident.title_link}`,
+                pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+                color: `${incident.color}`,
+                text: `${incident.description}\n\n`,
+                fields: [
+                  {
+                    title: 'State',
+                    value: `${incident.state}`,
+                    short: true
+                  },
+                  {
+                    title: 'Priority',
+                    value: `${incident.priority}`,
+                    short: true
+                  }
+                ],
+                footer: 'due on: ',
+                ts: `${incident.ts}`,
+                mrkdown_in: ['text', 'pretext']
+              }
+            });  
+            
           });
-
-          var incidents = Samanage.my_incidents(group_id, size);
-
-          attachments = incidents.slice(0, size).map((incident) => {
-            return {
-              title: `${incident.title}\n`,
-              title_link: `${incident.title_link}`,
-              pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-              color: `${incident.color}`,
-              text: `${incident.description}\n\n`,
-              fields: [
-                {
-                  title: 'State',
-                  value: `${incident.state}`,
-                  short: true
-                },
-                {
-                  title: 'Priority',
-                  value: `${incident.priority}`,
-                  short: true
-                }
-              ],
-              footer: 'due on: ',
-              ts: `${incident.ts}`,
-              mrkdown_in: ['text', 'pretext']
-            }
-          });
-
         });
         group_request.end();
 
@@ -166,7 +165,7 @@ module.exports = { pattern: /mine/ig, handler: handler };
       //     group_response.on('end', function () {
       //       var parsed = JSON.parse(group_body);
       //       console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-      //       if (parsed.is_user === true) {
+      //       if (parsed.is_user) {
       //         group_id = ids[count].toString();
       //         found = true;
       //         console.log('GROUP_ID FOUND: ' + group_id + '\n');
