@@ -57,9 +57,6 @@ const handler = (payload, res) => {
       response.on('end', function () {
         var parsed = JSON.parse(body);
         
-        var first_group = parsed[0].group_ids[0];
-        console.log('FIRST GROUP_ID: ' + first_group + ' ' + typeof first_group + '\n');
-        
         ids = parsed[0].group_ids;
         console.log('GROUP_IDS: ' + ids + '\n');
 
@@ -131,16 +128,16 @@ const handler = (payload, res) => {
     request.on('error', function (e) {
       console.log('problem with request: ' + e.message);
     });
-
-    let msg = _.defaults({
-      channel: payload.channel_name,
-      attachments: attachments
-    }, msgDefaults);
-                
-    res.set('content-type', 'application/json');
-    res.status(200).json(msg);
-    return;
   });
+
+  let msg = _.defaults({
+    channel: payload.channel_name,
+    attachments: attachments
+  }, msgDefaults);
+              
+  res.set('content-type', 'application/json');
+  res.status(200).json(msg);
+  return;
 };
 
 module.exports = { pattern: /mine/ig, handler: handler };
