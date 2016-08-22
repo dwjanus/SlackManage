@@ -8,7 +8,7 @@ var https = require('https');
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
 
-exports.my_incidents = function(group_id, size) {
+module.exports.my_incidents = function(group_id, size) {
   console.log('Now in my_incidents function!\n' + 'GROUP_ID: ' + group_id + '\nSize: ' + size + '\n');
 
   var my_incidents = [];
@@ -69,7 +69,7 @@ exports.my_incidents = function(group_id, size) {
 // ---------------------------------------------------------------
 // This fella is gonna handle the request for the latest incidents
 // ---------------------------------------------------------------
-exports.new_incidents = function () {
+module.exports.new_incidents = function () {
   var incident_list = [];
 
   var newoptions = {
