@@ -9,7 +9,7 @@ const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
 
 
-var my_incidents = function(group_id, size) {
+module.exports.my_incidents = function (group_id, size) {
   console.log('Now in my_incidents function!\n' + 'GROUP_ID: ' + group_id + '\nSize: ' + size + '\n');
 
   var my_incidents = [];
@@ -55,7 +55,7 @@ var my_incidents = function(group_id, size) {
         };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         my_incidents.push(current);
-      };
+      }
     });
   });
   request.end();
@@ -63,14 +63,18 @@ var my_incidents = function(group_id, size) {
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   });
-      
+    
+  console.log('MY INCIDENT LIST: ' + my_incidents + ' ' + typeof my_incidents + '\n');
+
   return my_incidents;
 };
-    
+
+
 // ---------------------------------------------------------------
 // This fella is gonna handle the request for the latest incidents
 // ---------------------------------------------------------------
-var new_incidents = function () {
+module.exports.new_incidents = function () {
+  
   var incident_list = [];
 
   var newoptions = {
@@ -126,8 +130,10 @@ var new_incidents = function () {
     console.log('problem with request: ' + e.message);
   });
 
+  console.log('INCIDENT LIST: ' +  incident_list + ' ' + typeof incident_list + '\n');
+
   return incident_list;
 };
 
-module.exports.my_incidents = my_incidents;
-module.exports.new_incidents = new_incidents;
+// module.exports.my_incidents = my_incidents;
+// module.exports.new_incidents = new_incidents;

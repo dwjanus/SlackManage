@@ -3,8 +3,7 @@
 
 const _ = require('lodash');
 const config = require('../config');
-
-var Samanage = require('../lib/samanage');
+const Samanage = require('../lib/samanage');
 
 const msgDefaults = {
   response_type: 'in_channel',

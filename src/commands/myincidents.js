@@ -3,7 +3,7 @@
 
 const _ = require('lodash');
 const config = require('../config');
-var Samanage = require('../lib/samanage');
+const Samanage = require('../lib/samanage');
 const util = require('util');
 const slack = require('slack');
 const https = require('https');
@@ -17,7 +17,7 @@ const msgDefaults = {
   icon_emoji: config('ICON_EMOJI')
 };
 
-let api = slack.api.client(config('SLACK_TOKEN'));
+var api = slack.api.client(config('SLACK_TOKEN'));
 
 const handler = (payload, res) => {
   
@@ -88,9 +88,9 @@ const handler = (payload, res) => {
             group_id = ids[0].toString();
             console.log('GROUP ID (before pass off to my_incidents): ' + group_id + '\n');
             
-            let incidents = Samanage.my_incidents(group_id, size);
+            var my_incidents = Samanage.my_incidents(group_id, size);
 
-            attachments = incidents.slice(0, size).map((incident) => {
+            attachments = my_incidents.slice(0, size).map((incident) => {
               return {
                 title: `${incident.title}\n`,
                 title_link: `${incident.title_link}`,
