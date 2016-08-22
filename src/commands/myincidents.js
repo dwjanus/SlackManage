@@ -26,13 +26,15 @@ const handler = (payload, res) => {
   var userid = payload.user_id;
   var options = {user: userid};
 
-  var email;
+  var email = "";
   var user = api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
-    email = res.user.profile.email; 
+    email = res.user.profile.email;
     console.log('EMAIL: ' + email + '\n');
   });
+
+  console.log('EMAIL: ' + email + ' ' + typeof email + '\n');
 
   // get the correct group_id from samanage
   var useroptions = {
