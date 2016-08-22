@@ -84,7 +84,7 @@ const handler = (payload, res) => {
     auth: username + ':' + password
   };
 
-  var group_request = https.request.(group_options, function (group_response) {
+  var group_request = https.request(group_options, function (group_response) {
     var group_body = "";
     group_response.on('data', function (chunk) {
       group_body += chunk;
