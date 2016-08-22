@@ -22,11 +22,14 @@ const msgDefaults = {
 const handler = (payload, res) => {
   
   var attachments = [];
-  // get user slack id, then use that to retrieve email info
   var userid = payload.user_id;
   var options = {user: userid};
-
   var email = "";
+  var group_id; //= '1858000'; // this will be blank soon
+  var ids = [];
+  var size;
+
+  // get user slack id, then use that to retrieve email info
   var user = api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
@@ -34,7 +37,7 @@ const handler = (payload, res) => {
     console.log('EMAIL: ' + email + '\n');
   });
 
-  // get the correct group_id from samanage
+  // get the correct user from Samanage via their email
   var useroptions = {
     host: 'api.samanage.com',
     path: '/users.json?email=' + email,
@@ -43,10 +46,6 @@ const handler = (payload, res) => {
     auth: username + ':' + password
   };
   
-  var group_id; //= '1858000'; // this will be blank soon
-  var ids = [];
-  var size;
-
   var req = https.request(useroptions, function (res) {
     console.log('STATUS: ' + res.statusCode);
     res.setEncoding('utf8');
@@ -60,68 +59,11 @@ const handler = (payload, res) => {
       var parsed = JSON.parse(body);
       console.log('BODY: ' + JSON.stringify(parsed) + '\n');
       
-      var ids = parsed[0].group_ids;
-      console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
-
       var first_group = parsed[0].group_ids[0];
       console.log('FIRST GROUP_ID: ' + first_group + ' ' + typeof first_group + '\n');
-
-      var group_path = 'https://api.samanage.com/groups/';
-      var found = false;
-      var count = 0;
-      size = ids.length;
-      console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
-
-      console.log('CURRENT ID: ' + ids[count] + '\n');
-      group_path += (ids[count] + '.json');
-      console.log('GROUP_PATH: ' + group_path + '\n');
-
-      var group_request = https.get(group_path, function (group_response) {
-        var group_body = "";
-        group_response.on('data', function (chunk) {
-          group_body += chunk;
-        });
-
-        group_response.on('end', function () {
-          var parsed = JSON.parse(group_body);
-          console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-          if (parsed.is_user === true) {
-            group_id = ids[count].toString();
-            found = true;
-            console.log('GROUP_ID FOUND: ' + group_id + '\n');
-          }
-        });
-      });
-      group_request.end();
-
-      // if (size == 1) {
-        // group_id = ids[0].toString();
-      // } else {
-        // while((count < size) || (found === false)) {
-        //   console.log('CURRENT ID: ' + ids[count] + '\n');
-        //   group_path += (ids[count] + '.json');
-        //   console.log('GROUP_PATH: ' + group_path + '\n');
-
-        //   var group_request = https.get(group_path, function (group_response) {
-        //     var group_body = "";
-        //     group_response.on('data', function (chunk) {
-        //       group_body += chunk;
-        //     });
-
-        //     group_response.on('end', function () {
-        //       var parsed = JSON.parse(group_body);
-        //       console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-        //       if (parsed.is_user === true) {
-        //         group_id = ids[count].toString();
-        //         found = true;
-        //         console.log('GROUP_ID FOUND: ' + group_id + '\n');
-        //       }
-        //     });
-        //   });
-        //   group_request.end();
-        //   count++;
-        // }
-      // }
+      
+      ids = parsed[0].group_ids;
+      console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
     });
   });
   req.end();
@@ -130,6 +72,61 @@ const handler = (payload, res) => {
     console.log('problem with request: ' + e.message);
   });
 
+  // get the correct group_id from the Samanage user
+  size = ids.length;
+  console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
+
+  var group_path = 'https://api.samanage.com/groups/' + ids[0] + '.json';
+  console.log('GROUP_PATH: ' + group_path + '\n');
+
+  var group_request = https.get(group_path, function (group_response) {
+    var group_body = "";
+    group_response.on('data', function (chunk) {
+      group_body += chunk;
+    });
+
+    group_response.on('end', function () {
+      var parsed = JSON.parse(group_body);
+      console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+      if (parsed.is_user === true) {
+        group_id = ids[0].toString();
+        console.log('GROUP_ID FOUND: ' + group_id + '\n');
+      }
+    });
+  });
+  group_request.end();
+
+  // if (size == 1) {
+    // group_id = ids[0].toString();
+  // } else {
+    // var found = false;
+    // var count = 0;
+    // while((count < size) || (found === false)) {
+    //   console.log('CURRENT ID: ' + ids[count] + '\n');
+    //   group_path += (ids[count] + '.json');
+    //   console.log('GROUP_PATH: ' + group_path + '\n');
+
+    //   var group_request = https.get(group_path, function (group_response) {
+    //     var group_body = "";
+    //     group_response.on('data', function (chunk) {
+    //       group_body += chunk;
+    //     });
+
+    //     group_response.on('end', function () {
+    //       var parsed = JSON.parse(group_body);
+    //       console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+    //       if (parsed.is_user === true) {
+    //         group_id = ids[count].toString();
+    //         found = true;
+    //         console.log('GROUP_ID FOUND: ' + group_id + '\n');
+    //       }
+    //     });
+    //   });
+    //   group_request.end();
+    //   count++;
+    // }
+  // }
+   
   var incidents = Samanage.my_incidents(group_id, size);
 
   attachments = incidents.slice(0, size).map((incident) => {
