@@ -56,7 +56,6 @@ const handler = (payload, res) => {
 
       res.on('end', function () {
         var parsed = JSON.parse(body);
-        console.log('BODY: ' + JSON.stringify(parsed) + '\n');
         
         var first_group = parsed[0].group_ids[0];
         console.log('FIRST GROUP_ID: ' + first_group + ' ' + typeof first_group + '\n');
