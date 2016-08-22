@@ -76,6 +76,14 @@ const handler = (payload, res) => {
   size = ids.length;
   console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
+  // var groupoptions = {
+  //   host: 'api.samanage.com',
+  //   path: '/groups/' + ids[0] + '.json',
+  //   method: 'GET',
+  //   headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+  //   auth: username + ':' + password
+  // };
+
   var group_path = 'https://api.samanage.com/groups/' + ids[0] + '.json';
   console.log('GROUP_PATH: ' + group_path + '\n');
 
@@ -86,15 +94,19 @@ const handler = (payload, res) => {
     });
 
     group_response.on('end', function () {
-      var parsed = JSON.parse(group_body);
-      console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-      if (parsed.is_user === true) {
+      var parsed_group = JSON.parse(group_body);
+      console.log('PARSED: ' + JSON.stringify(parsed_group) + '\n');
+      if (parsed_group.is_user) {
         group_id = ids[0].toString();
         console.log('GROUP_ID FOUND: ' + group_id + '\n');
       }
     });
   });
   group_request.end();
+
+  group_request.on('error', function (e) {
+    console.log('problem with request: ' + e.message);
+  });
 
   // if (size == 1) {
     // group_id = ids[0].toString();
