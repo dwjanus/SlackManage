@@ -104,43 +104,43 @@ const handler = (payload, res) => {
     request.on('error', function (e) {
       console.log('problem with request: ' + e.message);
     });
+
+    var incidents = Samanage.my_incidents(group_id, size);
+
+    attachments = incidents.slice(0, size).map((incident) => {
+      return {
+        title: `${incident.title}\n`,
+        title_link: `${incident.title_link}`,
+        pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+        color: `${incident.color}`,
+        text: `${incident.description}\n\n`,
+        fields: [
+          {
+            title: 'State',
+            value: `${incident.state}`,
+            short: true
+          },
+          {
+            title: 'Priority',
+            value: `${incident.priority}`,
+            short: true
+          }
+        ],
+        footer: 'due on: ',
+        ts: `${incident.ts}`,
+        mrkdown_in: ['text', 'pretext']
+      }
+    });
+
+    let msg = _.defaults({
+      channel: payload.channel_name,
+      attachments: attachments
+    }, msgDefaults);
+                
+    res.set('content-type', 'application/json');
+    res.status(200).json(msg);
+    return;
   });
-
-  var incidents = Samanage.my_incidents(group_id, size);
-
-  attachments = incidents.slice(0, size).map((incident) => {
-    return {
-      title: `${incident.title}\n`,
-      title_link: `${incident.title_link}`,
-      pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-      color: `${incident.color}`,
-      text: `${incident.description}\n\n`,
-      fields: [
-        {
-          title: 'State',
-          value: `${incident.state}`,
-          short: true
-        },
-        {
-          title: 'Priority',
-          value: `${incident.priority}`,
-          short: true
-        }
-      ],
-      footer: 'due on: ',
-      ts: `${incident.ts}`,
-      mrkdown_in: ['text', 'pretext']
-    }
-  });
-
-  let msg = _.defaults({
-    channel: payload.channel_name,
-    attachments: attachments
-  }, msgDefaults);
-              
-  res.set('content-type', 'application/json');
-  res.status(200).json(msg);
-  return;
 };
 
 module.exports = { pattern: /mine/ig, handler: handler };
