@@ -30,10 +30,10 @@ const handler = (payload, res) => {
   var group_id; //= '1858000'; // this will be blank soon
 
   // get user slack id, then use that to retrieve email info
-  var user = api.users.info(options, function (err, res) {
+  var user = api.users.info(options, function (err, respo) {
     if (err) console.log(err);
 
-    email = res.user.profile.email;
+    email = respo.user.profile.email;
     console.log('EMAIL: ' + email + '\n');
 
     // get the correct user from Samanage via their email
@@ -45,16 +45,16 @@ const handler = (payload, res) => {
       auth: username + ':' + password
     };
     
-    var req = https.request(useroptions, function (res) {
-      console.log('STATUS: ' + res.statusCode);
-      res.setEncoding('utf8');
+    var request = https.request(useroptions, function (response) {
+      console.log('STATUS: ' + response.statusCode);
+      response.setEncoding('utf8');
 
       var body = "";
-      res.on('data', function (chunk) {
+      response.on('data', function (chunk) {
         body += chunk;
       });
 
-      res.on('end', function () {
+      response.on('end', function () {
         var parsed = JSON.parse(body);
         
         var first_group = parsed[0].group_ids[0];
@@ -99,9 +99,9 @@ const handler = (payload, res) => {
 
       });
     });
-    req.end();
+    request.end();
 
-    req.on('error', function (e) {
+    request.on('error', function (e) {
       console.log('problem with request: ' + e.message);
     });
 
