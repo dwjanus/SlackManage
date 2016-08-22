@@ -26,10 +26,11 @@ const handler = (payload, res) => {
   var userid = payload.user_id;
   var options = {user: userid};
 
+  var email;
   var user = api.users.info(options, function (err, res) {
     if (err) console.log(err);
 
-    var email = res.user.profile.email; 
+    email = res.user.profile.email; 
     console.log('EMAIL: ' + email + '\n');
   });
 
