@@ -63,44 +63,45 @@ const handler = (payload, res) => {
         
         ids = parsed[0].group_ids;
         console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
+
+        // get the correct group_id from the Samanage user
+        size = ids.length;
+        console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
+
+        var group_options = {
+          host: 'api.samanage.com',
+          path: '/groups/' + ids[0] + '.json',
+          method: 'GET',
+          headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+          auth: username + ':' + password
+        };
+
+        var group_request = https.request(group_options, function (group_response) {
+          var group_body = "";
+          group_response.on('data', function (chunk) {
+            group_body += chunk;
+          });
+
+          group_response.on('end', function () {
+            var parsed_group = JSON.parse(group_body);
+            console.log('PARSED: ' + JSON.stringify(parsed_group) + '\n');
+            if (parsed_group.is_user) {
+              group_id = ids[0].toString();
+              console.log('GROUP_ID FOUND: ' + group_id + '\n');
+            }
+          });
+        });
+        group_request.end();
+
+        group_request.on('error', function (e) {
+          console.log('problem with request: ' + e.message);
+        });
+
       });
     });
     req.end();
 
     req.on('error', function (e) {
-      console.log('problem with request: ' + e.message);
-    });
-
-    // get the correct group_id from the Samanage user
-    size = ids.length;
-    console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
-
-    var group_options = {
-      host: 'api.samanage.com',
-      path: '/groups/' + ids[0] + '.json',
-      method: 'GET',
-      headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-      auth: username + ':' + password
-    };
-
-    var group_request = https.request(group_options, function (group_response) {
-      var group_body = "";
-      group_response.on('data', function (chunk) {
-        group_body += chunk;
-      });
-
-      group_response.on('end', function () {
-        var parsed_group = JSON.parse(group_body);
-        console.log('PARSED: ' + JSON.stringify(parsed_group) + '\n');
-        if (parsed_group.is_user) {
-          group_id = ids[0].toString();
-          console.log('GROUP_ID FOUND: ' + group_id + '\n');
-        }
-      });
-    });
-    group_request.end();
-
-    group_request.on('error', function (e) {
       console.log('problem with request: ' + e.message);
     });
 
