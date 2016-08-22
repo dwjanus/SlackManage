@@ -10,6 +10,7 @@ const password = 'BenHobgood666';
 var incident_list = [];
 
 exports.my_incidents = function(group_id, size) {
+  console.log('Now in my_incidents function!\n' + 'GROUP_ID: ' + group_id + '\nSize: ' + size + '\n');
 
   var options = {
     host: 'api.samanage.com',
