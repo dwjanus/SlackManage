@@ -85,7 +85,8 @@ const handler = (payload, res) => {
           group_response.on('end', function () {
             var parsed_group = JSON.parse(group_body);
             console.log('PARSED: ' + JSON.stringify(parsed_group) + '\n');
-            if (parsed_group.is_user) {
+            console.log('IS USER? ' + parsed_group.is_user + ' ' + typeof parsed_group.is_user  + '\n');
+            if (parsed_group.is_user === true) {
               group_id = ids[0].toString();
               console.log('GROUP_ID FOUND: ' + group_id + '\n');
             }
