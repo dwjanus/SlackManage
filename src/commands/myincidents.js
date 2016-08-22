@@ -21,13 +21,13 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
   
-  var attachments = [];
   var userid = payload.user_id;
   var options = {user: userid};
+  var attachments = [];
   var email = "";
-  var group_id; //= '1858000'; // this will be blank soon
   var ids = [];
   var size;
+  var group_id; //= '1858000'; // this will be blank soon
 
   // get user slack id, then use that to retrieve email info
   var user = api.users.info(options, function (err, res) {
@@ -76,18 +76,15 @@ const handler = (payload, res) => {
   size = ids.length;
   console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
-  // var groupoptions = {
-  //   host: 'api.samanage.com',
-  //   path: '/groups/' + ids[0] + '.json',
-  //   method: 'GET',
-  //   headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-  //   auth: username + ':' + password
-  // };
+  var group_options = {
+    host: 'api.samanage.com',
+    path: '/groups/' + ids[0] + '.json',
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+    auth: username + ':' + password
+  };
 
-  var group_path = 'https://api.samanage.com/groups/' + ids[0] + '.json';
-  console.log('GROUP_PATH: ' + group_path + '\n');
-
-  var group_request = https.get(group_path, function (group_response) {
+  var group_request = https.request.(group_options, function (group_response) {
     var group_body = "";
     group_response.on('data', function (chunk) {
       group_body += chunk;
