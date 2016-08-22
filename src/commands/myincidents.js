@@ -61,7 +61,7 @@ const handler = (payload, res) => {
         console.log('FIRST GROUP_ID: ' + first_group + ' ' + typeof first_group + '\n');
         
         ids = parsed[0].group_ids;
-        console.log('GROUP_IDS: ' + ids + ' ' + typeof ids + '\n');
+        console.log('GROUP_IDS: ' + ids + '\n');
 
         // get the correct group_id from the Samanage user
         size = ids.length;
@@ -86,10 +86,38 @@ const handler = (payload, res) => {
             console.log('PARSED: ' + JSON.stringify(parsed_group) + '\n');
             console.log('IS USER: ' + parsed_group.is_user + ' ' + typeof parsed_group.is_user  + '\n');
             if (parsed_group.is_user) {
-              group_id = ids[0].toString();
+              group_id = ids[0];
               console.log('GROUP_ID FOUND: ' + group_id + '\n');  
             }
           });
+
+          var incidents = Samanage.my_incidents(group_id, size);
+
+          attachments = incidents.slice(0, size).map((incident) => {
+            return {
+              title: `${incident.title}\n`,
+              title_link: `${incident.title_link}`,
+              pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+              color: `${incident.color}`,
+              text: `${incident.description}\n\n`,
+              fields: [
+                {
+                  title: 'State',
+                  value: `${incident.state}`,
+                  short: true
+                },
+                {
+                  title: 'Priority',
+                  value: `${incident.priority}`,
+                  short: true
+                }
+              ],
+              footer: 'due on: ',
+              ts: `${incident.ts}`,
+              mrkdown_in: ['text', 'pretext']
+            }
+          });
+
         });
         group_request.end();
 
@@ -103,33 +131,6 @@ const handler = (payload, res) => {
 
     request.on('error', function (e) {
       console.log('problem with request: ' + e.message);
-    });
-
-    var incidents = Samanage.my_incidents(group_id, size);
-
-    attachments = incidents.slice(0, size).map((incident) => {
-      return {
-        title: `${incident.title}\n`,
-        title_link: `${incident.title_link}`,
-        pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-        color: `${incident.color}`,
-        text: `${incident.description}\n\n`,
-        fields: [
-          {
-            title: 'State',
-            value: `${incident.state}`,
-            short: true
-          },
-          {
-            title: 'Priority',
-            value: `${incident.priority}`,
-            short: true
-          }
-        ],
-        footer: 'due on: ',
-        ts: `${incident.ts}`,
-        mrkdown_in: ['text', 'pretext']
-      }
     });
 
     let msg = _.defaults({
