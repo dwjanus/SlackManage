@@ -13,46 +13,48 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
-  var incidents = Samanage.new_incidents();
+  Samanage.new_incidents((err, incidents) => {
+    if (err) console.log(err);
+    
+    var attachments = incidents.slice(0, 4).map((incident) => {
+      return {
+        title: `${incident.title}\n`,
+        title_link: `${incident.title_link}`,
+        pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+        color: `${incident.color}`,
+        text: `${incident.description}\n\n`,
+        fields: [
+          // {
+          //   title: 'Assigned To',
+          //   value: `${incident.assignee}`,
+          //   short: true
+          // },
+          {
+            title: 'State',
+            value: `${incident.state}`,
+            short: true
+          },
+          {
+            title: 'Priority',
+            value: `${incident.priority}`,
+            short: true
+          }
+        ],
+        footer: 'due on: ',
+        ts: `${incident.ts}`,
+        mrkdown_in: ['text', 'pretext']
+      }
+    });    
 
-  var attachments = incidents.slice(0, 4).map((incident) => {
-    return {
-      title: `${incident.title}\n`,
-      title_link: `${incident.title_link}`,
-      pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-      color: `${incident.color}`,
-      text: `${incident.description}\n\n`,
-      fields: [
-        // {
-        //   title: 'Assigned To',
-        //   value: `${incident.assignee}`,
-        //   short: true
-        // },
-        {
-          title: 'State',
-          value: `${incident.state}`,
-          short: true
-        },
-        {
-          title: 'Priority',
-          value: `${incident.priority}`,
-          short: true
-        }
-      ],
-      footer: 'due on: ',
-      ts: `${incident.ts}`,
-      mrkdown_in: ['text', 'pretext']
-    }
-  });    
+    let msg = _.defaults({
+      channel: payload.channel_name,
+      attachments: attachments
+    }, msgDefaults);
 
-  let msg = _.defaults({
-    channel: payload.channel_name,
-    attachments: attachments
-  }, msgDefaults);
-
-  res.set('content-type', 'application/json');
-  res.status(200).json(msg);
-  return;
+    res.set('content-type', 'application/json');
+    res.status(200).json(msg);
+    return;
+  });
 };
 
 module.exports = { pattern: /new/ig, handler: handler };
