@@ -84,7 +84,7 @@ const handler = (payload, res) => {
             var parsed_group = JSON.parse(group_body);
             group_id = ids[0].toString();
             
-            if (size > 1) {
+            if (size > 0) {
               var found = false;
               var count = 0;
               while((count < size) || (found === false)) {
