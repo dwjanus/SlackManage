@@ -24,7 +24,6 @@ const handler = (payload, res) => {
   var userid = payload.user_id;
   var options = {user: userid};
   var attachments = [];
-  var msg;
   var email = "";
   var ids = [];
   var size;
@@ -116,11 +115,6 @@ const handler = (payload, res) => {
                 mrkdown_in: ['text', 'pretext']
               }                
             });  
-              
-            msg = _.defaults({
-              channel: payload.channel_name,
-              attachments: attachments
-            }, msgDefaults);
             
           });
         });
@@ -138,6 +132,11 @@ const handler = (payload, res) => {
       console.log('problem with request: ' + e.message);
     });
   });
+
+  let msg = _.defaults({
+    channel: payload.channel_name,
+    attachments: attachments
+  }, msgDefaults);
 
   res.set('content-type', 'application/json');
   res.status(200).json(msg);

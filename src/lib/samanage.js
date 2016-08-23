@@ -12,7 +12,7 @@ const password = 'BenHobgood666';
 module.exports.my_incidents = function (group_id, size) {
   console.log('Now in my_incidents function!\n' + 'GROUP_ID: ' + group_id + '\nSize: ' + size + '\n');
 
-  var my_incidents = [];
+  var my_incidents_list = [];
 
   var options = {
     host: 'api.samanage.com',
@@ -54,9 +54,9 @@ module.exports.my_incidents = function (group_id, size) {
           "color" : color
         };
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
-        my_incidents.push(current);
+        my_incidents_list.push(current);
       }
-      console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents) + ' ' + typeof my_incidents + '\n');
+      console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents_list) + ' ' + typeof my_incidents + '\n');
     });
   });
   request.end();
@@ -65,7 +65,7 @@ module.exports.my_incidents = function (group_id, size) {
     console.log('problem with request: ' + e.message);
   });
 
-  return my_incidents;
+  return my_incidents_list;
 };
 
 
