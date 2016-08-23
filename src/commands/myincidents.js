@@ -24,6 +24,7 @@ const handler = (payload, res) => {
   var userid = payload.user_id;
   var options = {user: userid};
   var attachments = [];
+  var msg;
   var email = "";
   var ids = [];
   var size;
@@ -112,16 +113,13 @@ const handler = (payload, res) => {
                 footer: 'due on: ',
                 ts: `${incident.ts}`,
                 mrkdown_in: ['text', 'pretext']
-              }
-
-              let msg = _.defaults({
-                channel: payload.channel_name,
-                attachments: attachments
-              }, msgDefaults);
-                          
-              res.set('content-type', 'application/json');
-              res.status(200).json(msg);
+              }                
             });  
+              
+            msg = _.defaults({
+              channel: payload.channel_name,
+              attachments: attachments
+            }, msgDefaults);
             
           });
         });
@@ -140,7 +138,8 @@ const handler = (payload, res) => {
     });
   });
 
-  
+  res.set('content-type', 'application/json');
+  res.status(200).json(msg);
   return;
 };
 
