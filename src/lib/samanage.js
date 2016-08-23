@@ -64,7 +64,7 @@ module.exports.my_incidents = function (group_id, size) {
     console.log('problem with request: ' + e.message);
   });
     
-  console.log('MY INCIDENT LIST: ' + my_incidents + ' ' + typeof my_incidents + '\n');
+  console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents) + ' ' + typeof my_incidents + '\n');
 
   return my_incidents;
 };
