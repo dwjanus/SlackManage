@@ -66,7 +66,7 @@ function my_incidents (group_id, callback) {
           my_incidents_list.push(current);
         }
       } else {
-        let current = {
+        var none = {
             "title" : "No Incidents",
             "number" : "000000",
             "title_link" : "http://app.samanage.com/incidents/",
@@ -77,7 +77,7 @@ function my_incidents (group_id, callback) {
             "ts" : "000000000",
             "color" : "#E3E4E6"
           };
-        my_incidents_list.push(current);
+        my_incidents_list.push(none);
       }
       console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents_list) + ' ' + typeof my_incidents_list + '\n');
       callback(null, my_incidents_list, size);

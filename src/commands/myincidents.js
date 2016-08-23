@@ -84,38 +84,39 @@ const handler = (payload, res) => {
             var parsed_group = JSON.parse(group_body);
             group_id = ids[0].toString();
             
-            var found = false;
-            var count = 0;
-            while((count < size) || (found === false)) {
-              group_id = ids[count].toString();
+            if (size > 1) {
+              var found = false;
+              var count = 0;
+              while((count < size) || (found === false)) {
+                group_id = ids[count].toString();
 
-              var group_id_options = {
-                host: 'api.samanage.com',
-                path: '/groups/' + group_id + '.json',
-                method: 'GET',
-                headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-                auth: username + ':' + password
-              };
+                var group_id_options = {
+                  host: 'api.samanage.com',
+                  path: '/groups/' + group_id + '.json',
+                  method: 'GET',
+                  headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+                  auth: username + ':' + password
+                };
 
-              var group_id_request = https.get(group_id_options, function (group_id_response) {
-                var group_id_body = "";
-                group_id_response.on('data', function (chunk) {
-                  group_id_body += chunk;
+                var group_id_request = https.get(group_id_options, function (group_id_response) {
+                  var group_id_body = "";
+                  group_id_response.on('data', function (chunk) {
+                    group_id_body += chunk;
+                  });
+
+                  group_id_response.on('end', function () {
+                    var parsed = JSON.parse(group_body);
+                    console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+                    if (parsed.is_user) {
+                      found = true;
+                      console.log('GROUP_ID FOUND: ' + group_id + '\n');
+                    }
+                  });
                 });
-
-                group_id_response.on('end', function () {
-                  var parsed = JSON.parse(group_body);
-                  console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-                  if (parsed.is_user) {
-                    found = true;
-                    console.log('GROUP_ID FOUND: ' + group_id + '\n');
-                  }
-                });
-              });
-              group_id_request.end();
-              count++;
+                group_id_request.end();
+                count++;
+              }
             }
-            
 
             Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
               if (err) console.log(err);
