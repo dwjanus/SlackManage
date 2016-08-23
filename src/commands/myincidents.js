@@ -91,6 +91,7 @@ const handler = (payload, res) => {
             
             var my_incidents = Samanage.my_incidents(group_id, size);
 
+            console.log('\nMY_INCIDENTS: ' + JSON.stringify(my_incidents) + '\n');
             attachments = my_incidents.slice(0, size).map((incident) => {
               return {
                 title: `${incident.title}\n`,
