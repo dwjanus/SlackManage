@@ -8,8 +8,11 @@ var https = require('https');
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
 
+function my_incidents (group_id, size, callback) {
+  if (size == 0) {
+    return callback(new Error("No incidents in your queue"));
+  }
 
-module.exports.my_incidents = function (group_id, size) {
   console.log('Now in my_incidents function!\n' + 'GROUP_ID: ' + group_id + '\nSize: ' + size + '\n');
 
   var my_incidents_list = [];
@@ -57,6 +60,7 @@ module.exports.my_incidents = function (group_id, size) {
         my_incidents_list.push(current);
       }
       console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents_list) + ' ' + typeof my_incidents_list + '\n');
+      callback(null, my_incidents_list);
     });
   });
   request.end();
@@ -65,15 +69,15 @@ module.exports.my_incidents = function (group_id, size) {
     console.log('problem with request: ' + e.message);
   });
 
-  console.log('MY INCIDENT LIST before return: ' + JSON.stringify(my_incidents_list) + '\n');
-  return my_incidents_list;
-};
+  // console.log('MY INCIDENT LIST before return: ' + JSON.stringify(my_incidents_list) + '\n');
+  // return my_incidents_list;
+}
 
 
 // ---------------------------------------------------------------
 // This fella is gonna handle the request for the latest incidents
 // ---------------------------------------------------------------
-module.exports.new_incidents = function () {
+function new_incidents (callback) {
   
   var incident_list = [];
 
@@ -120,6 +124,7 @@ module.exports.new_incidents = function () {
         };
         incident_list.push(current);
       }
+      callback(null, incident_list);
     });
   });
   request.end();
@@ -128,10 +133,9 @@ module.exports.new_incidents = function () {
     console.log('problem with request: ' + e.message);
   });
 
-  console.log('INCIDENT LIST: ' +  incident_list + ' ' + typeof incident_list + '\n');
+  // console.log('INCIDENT LIST: ' +  incident_list + ' ' + typeof incident_list + '\n');
+  // return incident_list;
+}
 
-  return incident_list;
-};
-
-// module.exports.my_incidents = my_incidents;
-// module.exports.new_incidents = new_incidents;
+module.exports.my_incidents = my_incidents;
+module.exports.new_incidents = new_incidents;
