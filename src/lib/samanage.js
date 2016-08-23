@@ -57,6 +57,7 @@ module.exports.my_incidents = function (group_id, size) {
         my_incidents.push(current);
       }
       console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents) + ' ' + typeof my_incidents + '\n');
+      return my_incidents;
     });
   });
   request.end();
