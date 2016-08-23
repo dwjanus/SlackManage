@@ -8,14 +8,15 @@ var https = require('https');
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
 
-function my_incidents (group_id, size, callback) {
-  if (size == 0) {
-    return callback(new Error("No incidents in your queue"));
+function my_incidents (group_id, callback) {
+  if (group_id == 0) {
+    return callback(new Error("Incorrect group_id"));
   }
 
   console.log('Now in my_incidents function!\n' + 'GROUP_ID: ' + group_id + '\nSize: ' + size + '\n');
 
   var my_incidents_list = [];
+  var size = 0;
 
   var options = {
     host: 'api.samanage.com',
@@ -35,6 +36,10 @@ function my_incidents (group_id, size, callback) {
 
     response.on('end', function () {
       var parsedResponse = JSON.parse(output_body);
+      
+      for(var id in parsedResponse) {
+        size++;
+      }
 
       for (var i = 0; i < size; i++) {
         var color = "#0067B3";
@@ -60,7 +65,7 @@ function my_incidents (group_id, size, callback) {
         my_incidents_list.push(current);
       }
       console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents_list) + ' ' + typeof my_incidents_list + '\n');
-      callback(null, my_incidents_list);
+      callback(null, my_incidents_list, size);
     });
   });
   request.end();

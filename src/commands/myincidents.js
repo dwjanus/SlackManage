@@ -118,11 +118,11 @@ const handler = (payload, res) => {
               }
             }
 
-            Samanage.my_incidents(group_id, size, (err, my_incidents_list) => {
+            Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
               if (err) console.log(err);
 
               console.log('\nMY_INCIDENTS: ' + JSON.stringify(my_incidents_list) + '\n');
-              attachments = my_incidents_list.slice(0, size).map((incident) => {
+              attachments = my_incidents_list.slice(0, list_size).map((incident) => {
                 return {
                   title: `${incident.title}\n`,
                   title_link: `${incident.title_link}`,
