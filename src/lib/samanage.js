@@ -56,7 +56,7 @@ module.exports.my_incidents = function (group_id, size) {
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         my_incidents_list.push(current);
       }
-      console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents_list) + ' ' + typeof my_incidents + '\n');
+      console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents_list) + ' ' + typeof my_incidents_list + '\n');
     });
   });
   request.end();
@@ -65,6 +65,7 @@ module.exports.my_incidents = function (group_id, size) {
     console.log('problem with request: ' + e.message);
   });
 
+  console.log('MY INCIDENT LIST before return: ' + JSON.stringify(my_incidents_list) + '\n');
   return my_incidents_list;
 };
 
@@ -115,7 +116,7 @@ module.exports.new_incidents = function () {
           "requester_email" : parsedResponse[i].requester.email,
           "state" : parsedResponse[i].state,
           "priority" : parsedResponse[i].priority,
-          "assignee" : parsedResponse[i].assignee.name,
+          // "assignee" : parsedResponse[i].assignee.name,
           "ts" : parsedResponse[i].due_at,
           "color" : color
         };

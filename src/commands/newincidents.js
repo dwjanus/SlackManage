@@ -23,11 +23,11 @@ const handler = (payload, res) => {
       color: `${incident.color}`,
       text: `${incident.description}\n\n`,
       fields: [
-        {
-          title: 'Assigned To',
-          value: `${incident.assignee}`,
-          short: true
-        },
+        // {
+        //   title: 'Assigned To',
+        //   value: `${incident.assignee}`,
+        //   short: true
+        // },
         {
           title: 'State',
           value: `${incident.state}`,
