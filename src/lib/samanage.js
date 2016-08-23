@@ -68,9 +68,6 @@ function my_incidents (group_id, size, callback) {
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   });
-
-  // console.log('MY INCIDENT LIST before return: ' + JSON.stringify(my_incidents_list) + '\n');
-  // return my_incidents_list;
 }
 
 

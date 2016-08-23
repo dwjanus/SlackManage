@@ -82,12 +82,44 @@ const handler = (payload, res) => {
 
           group_response.on('end', function () {
             var parsed_group = JSON.parse(group_body);
-            console.log('PARSED: ' + JSON.stringify(parsed_group) + '\n');
-            console.log('IS USER: ' + parsed_group.is_user + ' ' + typeof parsed_group.is_user  + '\n');
-            
             group_id = ids[0].toString();
-            console.log('GROUP ID (before pass off to my_incidents): ' + group_id + '\n');
             
+            if (size == 1) {
+              group_id = ids[0].toString();
+            } else {
+              var found = false;
+              var count = 0;
+              while((count < size) || (found === false)) {
+                group_id = ids[count].toString();
+
+                var group_id_options = {
+                  host: 'api.samanage.com',
+                  path: '/groups/' + group_id + '.json',
+                  method: 'GET',
+                  headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+                  auth: username + ':' + password
+                };
+
+                var group_id_request = https.get(group_id_options, function (group_id_response) {
+                  var group_id_body = "";
+                  group_id_response.on('data', function (chunk) {
+                    group_id_body += chunk;
+                  });
+
+                  group_id_response.on('end', function () {
+                    var parsed = JSON.parse(group_body);
+                    console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+                    if (parsed.is_user) {
+                      found = true;
+                      console.log('GROUP_ID FOUND: ' + group_id + '\n');
+                    }
+                  });
+                });
+                group_id_request.end();
+                count++;
+              }
+            }
+
             Samanage.my_incidents(group_id, size, (err, my_incidents_list) => {
               if (err) console.log(err);
 
@@ -149,34 +181,5 @@ const handler = (payload, res) => {
 module.exports = { pattern: /mine/ig, handler: handler };
 
 
- // if (size == 1) {
-      // group_id = ids[0].toString();
-    // } else {
-      // var found = false;
-      // var count = 0;
-      // while((count < size) || (found === false)) {
-      //   console.log('CURRENT ID: ' + ids[count] + '\n');
-      //   group_path += (ids[count] + '.json');
-      //   console.log('GROUP_PATH: ' + group_path + '\n');
-
-      //   var group_request = https.get(group_path, function (group_response) {
-      //     var group_body = "";
-      //     group_response.on('data', function (chunk) {
-      //       group_body += chunk;
-      //     });
-
-      //     group_response.on('end', function () {
-      //       var parsed = JSON.parse(group_body);
-      //       console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-      //       if (parsed.is_user) {
-      //         group_id = ids[count].toString();
-      //         found = true;
-      //         console.log('GROUP_ID FOUND: ' + group_id + '\n');
-      //       }
-      //     });
-      //   });
-      //   group_request.end();
-      //   count++;
-      // }
-    // }
+ 
 
