@@ -88,7 +88,7 @@ const handler = (payload, res) => {
             group_id = ids[0].toString();
             console.log('GROUP ID (before pass off to my_incidents): ' + group_id + '\n');
             
-            var my_incidents_list = Samanage.my_incidents(group_id, size);
+            var my_incidents_list = JSON.parse(Samanage.my_incidents(group_id, size));
 
             console.log('\nMY_INCIDENTS: ' + JSON.stringify(my_incidents_list) + '\n');
             attachments = my_incidents_list.slice(0, size).map((incident) => {
