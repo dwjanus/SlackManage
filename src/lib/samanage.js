@@ -56,16 +56,16 @@ module.exports.my_incidents = function (group_id, size) {
         console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
         my_incidents.push(current);
       }
-      console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents) + ' ' + typeof my_incidents + '\n');
-
-      return my_incidents;
+      console.log('MY INCIDENT LIST: ' + JSON.stringify(JSON.parse(my_incidents)) + ' ' + typeof my_incidents + '\n');
     });
   });
   request.end();
   
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
-  });  
+  });
+
+  return my_incidents;
 };
 
 
