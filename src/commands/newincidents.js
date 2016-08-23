@@ -15,8 +15,8 @@ const handler = (payload, res) => {
 
   Samanage.new_incidents((err, incidents) => {
     if (err) console.log(err);
-    
-    var attachments = incidents.slice(0, 4).map((incident) => {
+
+    var attachments = incidents.slice(0, 5).map((incident) => {
       return {
         title: `${incident.title}\n`,
         title_link: `${incident.title_link}`,
