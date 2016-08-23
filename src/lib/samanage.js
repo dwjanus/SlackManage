@@ -41,27 +41,42 @@ function my_incidents (group_id, callback) {
         size++;
       }
 
-      for (var i = 0; i < size; i++) {
-        var color = "#0067B3";
-        if (parsedResponse[i].state == "In Progress")
-          color = "#FF6692";
-        if (parsedResponse[i].state == "Resolved")
-          color = "#AEFF99";
-        if (parsedResponse[i].state == "Closed")
-          color = "#E3E4E6";
+      if (size > 0) {
+        for (var i = 0; i < size; i++) {
+          var color = "#0067B3";
+          if (parsedResponse[i].state == "In Progress")
+            color = "#FF6692";
+          if (parsedResponse[i].state == "Resolved")
+            color = "#AEFF99";
+          if (parsedResponse[i].state == "Closed")
+            color = "#E3E4E6";
 
-        var current = {
-          "title" : parsedResponse[i].name,
-          "number" : parsedResponse[i].number,
-          "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
-          "description" : parsedResponse[i].description_no_html,
-          "requester" : parsedResponse[i].requester.name,
-          "state" : parsedResponse[i].state,
-          "priority" : parsedResponse[i].priority,
-          "ts" : parsedResponse[i].due_at,
-          "color" : color
-        };
-        console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
+          var current = {
+            "title" : parsedResponse[i].name,
+            "number" : parsedResponse[i].number,
+            "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
+            "description" : parsedResponse[i].description_no_html,
+            "requester" : parsedResponse[i].requester.name,
+            "state" : parsedResponse[i].state,
+            "priority" : parsedResponse[i].priority,
+            "ts" : parsedResponse[i].due_at,
+            "color" : color
+          };
+          console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
+          my_incidents_list.push(current);
+        }
+      } else {
+        let current = {
+            "title" : "No Incidents",
+            "number" : "000000",
+            "title_link" : "http://app.samanage.com/incidents/",
+            "description" : "There are currently no incidents assigned to you",
+            "requester" : "none",
+            "state" : "none",
+            "priority" : "none",
+            "ts" : "000000000",
+            "color" : "#E3E4E6"
+          };
         my_incidents_list.push(current);
       }
       console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents_list) + ' ' + typeof my_incidents_list + '\n');
