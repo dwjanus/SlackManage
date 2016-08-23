@@ -82,9 +82,10 @@ const handler = (payload, res) => {
 
           group_response.on('end', function () {
             var parsed_group = JSON.parse(group_body);
-            group_id = ids[0].toString();
-            
-            if (size > 1) {
+
+            if (size == 1) {
+              group_id = ids[0].toString();
+            } else {
               var found = false;
               var count = 0;
               while((count < size) || (found === false)) {
