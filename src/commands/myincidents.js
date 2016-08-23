@@ -89,6 +89,39 @@ const handler = (payload, res) => {
             group_id = ids[0].toString();
             console.log('GROUP ID (before pass off to my_incidents): ' + group_id + '\n');
             
+            var my_incidents_list = Samanage.my_incidents(group_id, size);
+
+            console.log('\nMY_INCIDENTS: ' + my_incidents_list + '\n');
+            attachments = my_incidents_list.slice(0, size).map((incident) => {
+              return {
+                title: `${incident.title}\n`,
+                title_link: `${incident.title_link}`,
+                pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+                color: `${incident.color}`,
+                text: `${incident.description}\n\n`,
+                fields: [
+                  {
+                    title: 'State',
+                    value: `${incident.state}`,
+                    short: true
+                  },
+                  {
+                    title: 'Priority',
+                    value: `${incident.priority}`,
+                    short: true
+                  }
+                ],
+                footer: 'due on: ',
+                ts: `${incident.ts}`,
+                mrkdown_in: ['text', 'pretext']
+              }                
+            });  
+              
+            msg = _.defaults({
+              channel: payload.channel_name,
+              attachments: attachments
+            }, msgDefaults);
+            
           });
         });
         group_request.end();
@@ -105,40 +138,6 @@ const handler = (payload, res) => {
       console.log('problem with request: ' + e.message);
     });
   });
-
-  var my_incidents_list = Samanage.my_incidents(group_id, size);
-
-  console.log('\nMY_INCIDENTS: ' + my_incidents_list + '\n');
-  
-  attachments = my_incidents_list.slice(0, size).map((incident) => {
-    return {
-      title: `${incident.title}\n`,
-      title_link: `${incident.title_link}`,
-      pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-      color: `${incident.color}`,
-      text: `${incident.description}\n\n`,
-      fields: [
-        {
-          title: 'State',
-          value: `${incident.state}`,
-          short: true
-        },
-        {
-          title: 'Priority',
-          value: `${incident.priority}`,
-          short: true
-        }
-      ],
-      footer: 'due on: ',
-      ts: `${incident.ts}`,
-      mrkdown_in: ['text', 'pretext']
-    }                
-  });  
-    
-  msg = _.defaults({
-    channel: payload.channel_name,
-    attachments: attachments
-  }, msgDefaults);
 
   res.set('content-type', 'application/json');
   res.status(200).json(msg);
