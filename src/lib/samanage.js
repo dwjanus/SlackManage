@@ -97,8 +97,6 @@ module.exports.new_incidents = function () {
       var parsedResponse = JSON.parse(body);
 
       for (var i = 0; i <= 4; i++) {
-        console.log('BODY: ' + JSON.stringify(parsedResponse[i]) + '\n'); // this is here so we can figure out the assignee issue
-
         var color = "#0067B3";
         if (parsedResponse[i].state == "In Progress")
           color = "#FF6692";
