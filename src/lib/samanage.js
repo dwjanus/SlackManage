@@ -208,3 +208,4 @@ function new_incidents (callback) {
 
 module.exports.my_incidents = my_incidents;
 module.exports.new_incidents = new_incidents;
+module.exports.find_group = find_group;
