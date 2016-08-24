@@ -89,11 +89,10 @@ const handler = (payload, res) => {
               var found = false;
               var count = 0;
               while((count < size) || (found === false)) {
-                group_id = ids[count].toString();
-
+                
                 var group_id_options = {
                   host: 'api.samanage.com',
-                  path: '/groups/' + group_id + '.json',
+                  path: '/groups/' + ids[count] + '.json',
                   method: 'GET',
                   headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
                   auth: username + ':' + password
@@ -110,6 +109,7 @@ const handler = (payload, res) => {
                     console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
                     if (parsed.is_user) {
                       found = true;
+                      group_id = ids[count].toString();
                       console.log('GROUP_ID FOUND: ' + group_id + '\n');
                     }
                   });
