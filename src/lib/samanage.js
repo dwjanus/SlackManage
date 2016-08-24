@@ -8,6 +8,58 @@ var https = require('https');
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
 
+
+function find_group (ids, callback) {
+  if (ids.length === 0) {
+    return callback(new Error("No Group Ids"));
+  }
+
+  var group_id = ids[0];
+
+  if (ids.length == 1) {
+    callback(null, ids[0].toString());
+  } else {
+    var count = 0;
+    let found = false;
+
+    while(!found || (count < ids.length)) {
+      var group_id_options = {
+        host: 'api.samanage.com',
+        path: '/groups/' + ids[count].toString() + '.json',
+        method: 'GET',
+        headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+        auth: username + ':' + password
+      };
+
+      var group_id_request = https.get(group_id_options, function (group_id_response) {
+        var group_id_body = "";
+        group_id_response.on('data', function (chunk) {
+          group_id_body += chunk;
+        });
+
+        group_id_response.on('end', function () {
+          var parsed = JSON.parse(group_body);
+          console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+          found = parsed.is_user;
+          if (found)
+            callback(null, ids[count].toString());
+          else
+            count++;
+        });
+      });
+      group_id_request.end();
+
+      group_id_request.on('error', function (e) {
+        console.log('problem with request: ' + e.message);
+      });
+    }
+  }
+}
+
+
+// ---------------------------------------------------------------
+// This guy is gonna handle the request for the a user's incidents
+// ---------------------------------------------------------------
 function my_incidents (group_id, callback) {
   if (group_id == 0) {
     return callback(new Error("Incorrect group_id"));

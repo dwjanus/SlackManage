@@ -83,81 +83,53 @@ const handler = (payload, res) => {
           group_response.on('end', function () {
             var parsed_group = JSON.parse(group_body);
 
-            if (size == 1) {
-              group_id = ids[0].toString();
-            } else {
-              var found = false;
-              var count = 0;
-              while((count < size) || (found === false)) {
-                
-                var group_id_options = {
-                  host: 'api.samanage.com',
-                  path: '/groups/' + ids[count] + '.json',
-                  method: 'GET',
-                  headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-                  auth: username + ':' + password
-                };
-
-                var group_id_request = https.get(group_id_options, function (group_id_response) {
-                  var group_id_body = "";
-                  group_id_response.on('data', function (chunk) {
-                    group_id_body += chunk;
-                  });
-
-                  group_id_response.on('end', function () {
-                    var parsed = JSON.parse(group_body);
-                    console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-                    if (parsed.is_user) {
-                      found = true;
-                      group_id = ids[count].toString();
-                      console.log('GROUP_ID FOUND: ' + group_id + '\n');
-                    }
-                  });
-                });
-                group_id_request.end();
-                count++;
-              }
-            }
-
-            Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
+            // if (size == 1) {
+            //   group_id = ids[0].toString();
+            // } else {
+            Samanage.find_group(ids, (err, group_id) => {
               if (err) console.log(err);
 
-              console.log('\nMY_INCIDENTS: ' + JSON.stringify(my_incidents_list) + '\n');
-              attachments = my_incidents_list.slice(0, list_size).map((incident) => {
-                return {
-                  title: `${incident.title}\n`,
-                  title_link: `${incident.title_link}`,
-                  pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-                  color: `${incident.color}`,
-                  text: `${incident.description}\n\n`,
-                  fields: [
-                    {
-                      title: 'State',
-                      value: `${incident.state}`,
-                      short: true
-                    },
-                    {
-                      title: 'Priority',
-                      value: `${incident.priority}`,
-                      short: true
-                    }
-                  ],
-                  footer: 'due on: ',
-                  ts: `${incident.ts}`,
-                  mrkdown_in: ['text', 'pretext']
-                }                
-              }); 
+              Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
+                if (err) console.log(err);
 
-              let msg = _.defaults({
-                channel: payload.channel_name,
-                attachments: attachments
-              }, msgDefaults);
+                console.log('\nMY_INCIDENTS: ' + JSON.stringify(my_incidents_list) + '\n');
+                attachments = my_incidents_list.slice(0, list_size).map((incident) => {
+                  return {
+                    title: `${incident.title}\n`,
+                    title_link: `${incident.title_link}`,
+                    pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+                    color: `${incident.color}`,
+                    text: `${incident.description}\n\n`,
+                    fields: [
+                      {
+                        title: 'State',
+                        value: `${incident.state}`,
+                        short: true
+                      },
+                      {
+                        title: 'Priority',
+                        value: `${incident.priority}`,
+                        short: true
+                      }
+                    ],
+                    footer: 'due on: ',
+                    ts: `${incident.ts}`,
+                    mrkdown_in: ['text', 'pretext']
+                  }                
+                }); 
 
-              res.set('content-type', 'application/json');
-              res.status(200).json(msg);
-              return
+                let msg = _.defaults({
+                  channel: payload.channel_name,
+                  attachments: attachments
+                }, msgDefaults);
+
+                res.set('content-type', 'application/json');
+                res.status(200).json(msg);
+                return
+              });
+
             });
-            
+            // } 
           });
         });
         group_request.end();
