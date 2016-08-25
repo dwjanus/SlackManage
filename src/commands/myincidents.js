@@ -29,7 +29,7 @@ const handler = (payload, res) => {
   var size;
   var group_id; //= '1858000'; // this will be blank soon
 
-  https.post(payload.response_url, (url_res) => {
+  //https.post(payload.response_url, (url_res) => {
 
     // get user slack id, then use that to retrieve email info
     var user = api.users.info(options, function (err, respo) {
@@ -148,7 +148,7 @@ const handler = (payload, res) => {
       }); 
 
     });
-  });
+  //});
 
 };
 
