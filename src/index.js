@@ -28,7 +28,6 @@ app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
-  console.log(JSON.stringify(payload));
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
               '   Is your Slack slash token correctly configured?';
@@ -42,7 +41,6 @@ app.post('/commands/samanage', (req, res) => {
   }, helpCommand);
 
   cmd.handler(payload, res);
-
 });
 
 app.listen(config('PORT'), (err) => {
