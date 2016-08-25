@@ -13,15 +13,14 @@ const password = 'BenHobgood666';
 
 var api = slack.api.client(config('SLACK_TOKEN'));
 
+const msgDefaults = {
+  response_type: 'in_channel',
+  username: 'mine',
+  icon_emoji: config('ICON_EMOJI')
+};
+
 const handler = (payload, res) => {
 
-  const msgDefaults = {
-    response_url: payload.response_url;
-    response_type: 'in_channel',
-    username: 'mine',
-    icon_emoji: config('ICON_EMOJI')
-   };
- 
   var userid = payload.user_id;
   var options = {user: userid};
   var attachments = [];
