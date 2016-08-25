@@ -116,7 +116,7 @@ const handler = (payload, res) => {
                 }); 
 
                 let msg = _.defaults({
-                  response_url: "https://hooks.slack.com/commands/T1W57GYUU/73098847445/mweWQvEOqdf03l8IPrAGBDbo",
+                  response_url: payload.response_url,
                   channel: payload.channel_name,
                   attachments: attachments
                 }, msgDefaults);
