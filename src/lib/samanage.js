@@ -23,7 +23,7 @@ function makeRequest(options, callback) {
       var parsed = JSON.parse(group_id_body);
       console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
       group_id_response.status(200);
-      return callback(null, parsed.is_user);
+      callback(null, parsed.is_user);
     });
   });
   group_id_request.end();
