@@ -42,7 +42,7 @@ app.post('/commands/samanage', (req, res) => {
   }, helpCommand);
 
   app.post(payload.request_url, (request, response) => {
-    cmd.handler(payload, response);
+    res.send(cmd.handler(payload, response));
   });
 });
 
