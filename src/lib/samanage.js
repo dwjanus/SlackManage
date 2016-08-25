@@ -75,7 +75,6 @@ function find_group (ids, callback) {
       });
     }
   }
-  setTimeout(find_group, 10000);
 }
 
 
