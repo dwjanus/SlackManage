@@ -4,6 +4,7 @@
 const _ = require('lodash');
 const config = require('../config');
 var https = require('https');
+var http = require('http');
 
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
