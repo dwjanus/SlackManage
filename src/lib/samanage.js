@@ -31,7 +31,7 @@ function find_group (ids, callback) {
         auth: username + ':' + password
       };
 
-      var group_id_request = https.get(group_id_options, function (group_id_response) {
+      var group_id_request = https.request(group_id_options, function (group_id_response) {
         var group_id_body = "";
         group_id_response.on('data', function (chunk) {
           group_id_body += chunk;
