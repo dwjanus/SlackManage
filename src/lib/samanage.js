@@ -31,25 +31,25 @@ function makeRequest(options, callback) {
   });
 }
 
-function find_group(ids, callback) {
-  if (ids === null) {
+function find_group(params, callback) {
+  if (params.length === null) {
     return callback(new Error("No Group Ids"));
   }
 
   makeRequest({
     host: 'api.samanage.com',
-    path: '/groups/' + ids[count].toString() + '.json',
+    path: '/groups/' + params[count].toString() + '.json',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
   }, (err, found) => {
     if (found)
-      return callback(null, ids[count].toString());
+      return callback(null, params[count].toString());
     else
       count++;
   });
   
-  setTimeout(find_group, 20000);
+  //setTimeout(find_group, 200);
 }
 
 // function find_group (ids, callback) {
