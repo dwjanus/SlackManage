@@ -48,7 +48,7 @@ function find_group(params, callback) {
   });
   count++;
   
-  setTimeout(makeRequest, 2999);
+  setTimeout(find_group, 10000);
 }
 
 // function find_group (ids, callback) {
