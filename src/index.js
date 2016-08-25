@@ -28,22 +28,21 @@ app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
-  app.post(payload.request_url, (request, response) => {
-    console.log(JSON.stringify(payload));
-    if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
-      let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
-                '   Is your Slack slash token correctly configured?';
-      console.log(err);
-      res.status(401).end(err);
-      return;
-    }
+  console.log(JSON.stringify(payload));
+  if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
+    let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
+              '   Is your Slack slash token correctly configured?';
+    console.log(err);
+    res.status(401).end(err);
+    return;
+  }
 
-    let cmd = _.reduce(commands, (a, cmd) => {
-      return payload.text.match(cmd.pattern) ? cmd : a
-    }, helpCommand);
- 
-    cmd.handler(payload, res);
-  });
+  let cmd = _.reduce(commands, (a, cmd) => {
+    return payload.text.match(cmd.pattern) ? cmd : a
+  }, helpCommand);
+
+  cmd.handler(payload, res);
+
 });
 
 app.listen(config('PORT'), (err) => {
