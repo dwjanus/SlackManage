@@ -12,7 +12,7 @@ const password = 'BenHobgood666';
 var count = 0;
 var found = false;
 
-function makeRequest(options, url, callback) {
+function makeRequest(options, callback) {
   var group_id_request = https.request(options, function (group_id_response) {
     var group_id_body = "";
     group_id_response.on('data', function (chunk) {
@@ -22,8 +22,6 @@ function makeRequest(options, url, callback) {
     group_id_response.on('end', function () {
       var parsed = JSON.parse(group_id_body);
       console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-      group_id_response.set('content-type', 'application/json');
-      group_id_response.status(200);
       callback(null, parsed.is_user);
     });
   });
