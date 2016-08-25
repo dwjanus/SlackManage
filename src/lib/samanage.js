@@ -44,12 +44,12 @@ function find_group(params, callback) {
     auth: username + ':' + password
   }, (err, found) => {
     if (found)
-      return callback(null, params[count].toString());
+      callback(null, params[count].toString());
     else
       count++;
   });
   
-  //setTimeout(find_group, 200);
+  setTimeout(find_group, 299);
 }
 
 // function find_group (ids, callback) {
