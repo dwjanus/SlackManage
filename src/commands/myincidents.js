@@ -13,7 +13,7 @@ const password = 'BenHobgood666';
 
 const msgDefaults = {
   response_type: 'in_channel',
-  //response_url: 'slackmanage.herokuapp.com/commands/samanage',
+  response_url: "https://hooks.slack.com/commands/T1W57GYUU/73098847445/mweWQvEOqdf03l8IPrAGBDbo",
   username: 'mine',
   icon_emoji: config('ICON_EMOJI')
 };
