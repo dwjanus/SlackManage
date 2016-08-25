@@ -34,7 +34,7 @@ function makeRequest(options, callback) {
 }
 
 function find_group(params, callback) {
-  if ((params === null) || (count > params.length)) {
+  if (params === null) {
     return callback(new Error("No Group Ids"));
   }
 
@@ -46,9 +46,10 @@ function find_group(params, callback) {
     auth: username + ':' + password
   }, (err, found) => {
     if (found)
-      callback(null, params[count].toString());
+      return callback(null, params[count].toString());
+    else
+      count++;
   });
-  count++;
   
   setTimeout(find_group, 10000);
 }
