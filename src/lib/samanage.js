@@ -49,7 +49,7 @@ function find_group(params, callback) {
       count++;
   });
   
-  setTimeout(find_group, 29999);
+  setTimeout(find_group, 2999);
 }
 
 // function find_group (ids, callback) {
