@@ -12,7 +12,7 @@ const password = 'BenHobgood666';
 var count = 0;
 var found = false;
 
-function makeRequest(options, callback) {
+function makeRequest(options, url, callback) {
   var group_id_request = https.request(options, function (group_id_response) {
     var group_id_body = "";
     group_id_response.on('data', function (chunk) {
