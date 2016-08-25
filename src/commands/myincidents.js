@@ -88,8 +88,6 @@ const handler = (payload, res) => {
               Samanage.find_group(ids, (err, group_id) => {
                 if (err) console.log(err);
 
-                url_res.status(200);
-
                 Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
                   if (err) console.log(err);
 
