@@ -37,11 +37,14 @@ app.post('/commands/samanage', (req, res) => {
     return;
   }
 
-  let cmd = _.reduce(commands, (a, cmd) => {
-    return payload.text.match(cmd.pattern) ? cmd : a
-  }, helpCommand);
+  app.post(payload.request_url, (request, response) => {
+    
+    let cmd = _.reduce(commands, (a, cmd) => {
+      return payload.text.match(cmd.pattern) ? cmd : a
+    }, helpCommand);
 
-  cmd.handler(payload, res);
+    cmd.handler(payload, response);
+  });
 });
 
 app.listen(config('PORT'), (err) => {

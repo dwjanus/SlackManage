@@ -29,6 +29,8 @@ const handler = (payload, res) => {
   var size;
   var group_id; //= '1858000'; // this will be blank soon
 
+  // try wrapping this whole thing in a post request to request_url
+
   // get user slack id, then use that to retrieve email info
   var user = api.users.info(options, function (err, respo) {
     if (err) console.log(err);
