@@ -21,7 +21,7 @@ function makeRequest(options, callback) {
     group_id_response.on('end', function () {
       var parsed = JSON.parse(group_id_body);
       console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
-      return callback(null, parsed.is_user);
+      callback(null, parsed.is_user);
     });
   });
   group_id_request.end();
@@ -36,20 +36,20 @@ function find_group(ids, callback) {
     return callback(new Error("No Group Ids"));
   }
 
-  if (found)
-    return callback(null, ids[count].toString());
-  else {
-    makeRequest({
-      host: 'api.samanage.com',
-      path: '/groups/' + ids[count].toString() + '.json',
-      method: 'GET',
-      headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-      auth: username + ':' + password
-    }, found);
-
-    count++;
-    setTimeout(find_group, 10000);
-  }
+  makeRequest({
+    host: 'api.samanage.com',
+    path: '/groups/' + ids[count].toString() + '.json',
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+    auth: username + ':' + password
+  }, (err, found) => {
+    if (found)
+      return callback(null, ids[count].toString());
+    else
+      count++;
+  });
+  
+  setTimeout(find_group, 10000);
 }
 
 // function find_group (ids, callback) {
