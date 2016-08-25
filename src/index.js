@@ -42,7 +42,7 @@ app.post('/commands/samanage', (req, res) => {
       return payload.text.match(cmd.pattern) ? cmd : a
     }, helpCommand);
  
-    cmd.handler(payload, response);
+    cmd.handler(payload, res);
   });
 });
 
