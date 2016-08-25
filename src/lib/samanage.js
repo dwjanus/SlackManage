@@ -34,9 +34,9 @@ function makeRequest(options, callback) {
 }
 
 function find_group(params, callback) {
-  // if ((params.length === null) || (count > params.length)) {
-  //   return callback(new Error("No Group Ids"));
-  // }
+  if ((params === null) || (count > params.length)) {
+    return callback(new Error("No Group Ids"));
+  }
 
   makeRequest({
     host: 'api.samanage.com',
@@ -50,7 +50,7 @@ function find_group(params, callback) {
   });
   count++;
   
-  setTimeout(find_group, 10000);
+  //setTimeout(find_group, 10000);
 }
 
 // function find_group (ids, callback) {
