@@ -29,13 +29,14 @@ function makeRequest(options, callback) {
 
   group_id_request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
+    return callback(new Error("Problem with request"));
   });
 }
 
 function find_group(params, callback) {
-  if ((params.length === null) || (count > params.length)) {
-    return callback(new Error("No Group Ids"));
-  }
+  // if ((params.length === null) || (count > params.length)) {
+  //   return callback(new Error("No Group Ids"));
+  // }
 
   makeRequest({
     host: 'api.samanage.com',
