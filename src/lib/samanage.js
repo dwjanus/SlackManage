@@ -9,6 +9,27 @@ const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
 
 
+// function makeRequest(options, callback) {
+//   var group_id_request = https.request(options, function (group_id_response) {
+//     var group_id_body = "";
+//     group_id_response.on('data', function (chunk) {
+//       group_id_body += chunk;
+//     });
+
+//     group_id_response.on('end', function () {
+//       var parsed = JSON.parse(group_body);
+//       console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+//       callback(null, parsed.is_user);
+//     });
+//   });
+//   group_id_request.end();
+
+//   group_id_request.on('error', function (e) {
+//     console.log('problem with request: ' + e.message);
+//   });
+// }
+
+
 function find_group (ids, callback) {
   if (ids.length === 0) {
     return callback(new Error("No Group Ids"));
@@ -38,7 +59,7 @@ function find_group (ids, callback) {
         });
 
         group_id_response.on('end', function () {
-          var parsed = JSON.parse(group_body);
+          var parsed = JSON.parse(group_id_body);
           console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
           found = parsed.is_user;
           if (found)
@@ -54,6 +75,7 @@ function find_group (ids, callback) {
       });
     }
   }
+  setTimeout(find_group, 1000);
 }
 
 
@@ -201,9 +223,6 @@ function new_incidents (callback) {
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   });
-
-  // console.log('INCIDENT LIST: ' +  incident_list + ' ' + typeof incident_list + '\n');
-  // return incident_list;
 }
 
 module.exports.my_incidents = my_incidents;

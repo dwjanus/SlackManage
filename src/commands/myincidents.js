@@ -83,9 +83,6 @@ const handler = (payload, res) => {
           group_response.on('end', function () {
             var parsed_group = JSON.parse(group_body);
 
-            // if (size == 1) {
-            //   group_id = ids[0].toString();
-            // } else {
             Samanage.find_group(ids, (err, group_id) => {
               if (err) console.log(err);
 
@@ -128,8 +125,7 @@ const handler = (payload, res) => {
                 return
               });
 
-            });
-            // } 
+            }); 
           });
         });
         group_request.end();
