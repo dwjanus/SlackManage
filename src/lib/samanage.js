@@ -49,10 +49,8 @@ function find_group(params, callback) {
   }, (err, found) => {
     if (found)
       return callback(null, params[count].toString());
-    else
-      count++;
   });
-  // count++;
+  count++;
   
   //setTimeout(find_group, 10000);
 }
@@ -107,7 +105,7 @@ function find_group(params, callback) {
 // This guy is gonna handle the request for the a user's incidents
 // ---------------------------------------------------------------
 function my_incidents (group_id, callback) {
-  if (group_id == 0) {
+  if (group_id === 0) {
     return callback(new Error("Incorrect group_id"));
   }
 
