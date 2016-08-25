@@ -32,7 +32,7 @@ function makeRequest(options, callback) {
 }
 
 function find_group(ids, callback) {
-  if (ids.length === 0) {
+  if (ids === null) {
     return callback(new Error("No Group Ids"));
   }
 
@@ -49,7 +49,7 @@ function find_group(ids, callback) {
       count++;
   });
   
-  setTimeout(find_group, 10000);
+  setTimeout(find_group, 20000);
 }
 
 // function find_group (ids, callback) {
