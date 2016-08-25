@@ -41,9 +41,9 @@ function find_group (ids, callback) {
     callback(null, ids[0].toString());
   } else {
     var count = 0;
-    let found = false;
+    var found = false;
 
-    while(!found || (count < ids.length)) {
+    while((found === false) || (count < ids.length)) {
       var group_id_options = {
         host: 'api.samanage.com',
         path: '/groups/' + ids[count].toString() + '.json',
@@ -75,7 +75,7 @@ function find_group (ids, callback) {
       });
     }
   }
-  setTimeout(find_group, 1000);
+  setTimeout(find_group, 10000);
 }
 
 
