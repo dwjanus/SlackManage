@@ -44,7 +44,7 @@ function find_group(params, callback) {
     auth: username + ':' + password
   }, (err, found) => {
     if (found)
-      callback(null, params[count].toString());
+      return callback(null, params[count].toString());
     else
       count++;
   });
