@@ -29,7 +29,7 @@ const handler = (payload, res) => {
   var size;
   var group_id; //= '1858000'; // this will be blank soon
 
-  https.post(payload.response_url, (url_req, url_res) => {
+  https.post(payload.response_url, (url_res) => {
 
     // get user slack id, then use that to retrieve email info
     var user = api.users.info(options, function (err, respo) {
@@ -89,7 +89,7 @@ const handler = (payload, res) => {
                 if (err) console.log(err);
 
                 url_res.status(200);
-                
+
                 Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
                   if (err) console.log(err);
 
