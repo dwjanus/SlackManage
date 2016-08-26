@@ -25,8 +25,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
-app.post('/commands/samanage', (req, res) => {
-  let payload = req.body;
+var payload;
+var delay;
+var cmd;
+
+app.get('/commands/samanage', (req, res) => {
+  payload = res.body;
+  delay = payload.request_url;
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
@@ -36,14 +41,14 @@ app.post('/commands/samanage', (req, res) => {
     return;
   }
 
-  let cmd = _.reduce(commands, (a, cmd) => {
+  cmd = _.reduce(commands, (a, cmd) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  app.post(payload.request_url, (request, response) => {
+});
 
-    cmd.handler(payload, response);
-  });
+app.post(delay, (req, res) => {
+  cmd.handler(payload, res);
 });
 
 app.listen(config('PORT'), (err) => {
