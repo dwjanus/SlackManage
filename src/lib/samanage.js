@@ -86,12 +86,11 @@ function find_group(ids, size, callback) {
     if (err) console.log(err);
     
     if (found)
-      callback(null, ids[count].toString());
-    else
-      count++;
+      return callback(null, ids[count]);
   });
+  count++;
   
-  setTimeout(find_group, 20000);
+  //setTimeout(find_group, 20000);
 }
 
 
