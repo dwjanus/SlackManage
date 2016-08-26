@@ -22,15 +22,10 @@ if (config('PROXY_URI')) {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-var delay;
 
-app.get('/', (req, res) => { 
-  delay = res.body.request_url;
-  console.log(JSON.stringify(delay));
-  res.send('\n 👋 🌍 \n'); 
-});
+app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
-app.post(delay, (req, res) => {
+app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
@@ -45,7 +40,10 @@ app.post(delay, (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  cmd.handler(payload, response);
+  app.post(payload.request_url, (request, response) => {
+
+    cmd.handler(payload, response);
+  });
 });
 
 app.listen(config('PORT'), (err) => {
