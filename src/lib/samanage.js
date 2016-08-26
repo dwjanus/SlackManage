@@ -37,7 +37,8 @@ function find_group(ids, size, callback) {
   if (ids === null || count >= size) {
     return callback(new Error("No Group Ids"));
   }
-
+  console.log(count + '\n');
+  
   makeRequest({
     host: 'api.samanage.com',
     path: '/groups/' + ids[count].toString() + '.json',
@@ -48,7 +49,7 @@ function find_group(ids, size, callback) {
     if (err) console.log(err);
     
     if (found)
-      return callback(null, ids[count].toString());
+      callback(null, ids[count].toString());
   });
   count++;
   
