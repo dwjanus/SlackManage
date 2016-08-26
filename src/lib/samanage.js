@@ -12,22 +12,45 @@ const password = 'BenHobgood666';
 var count = 0;
 var found = false;
 
-function makeRequest(options, callback) {
-  var group_id_request = https.request(options, function (group_id_response) {
-    var group_id_body = "";
-    group_id_response.on('data', function (chunk) {
-      group_id_body += chunk;
+function getUserInfo(options, callback) {
+  var request = https.request(options, function (response) {
+    console.log('STATUS: ' + response.statusCode);
+    response.setEncoding('utf8');
+
+    var body = "";
+    response.on('data', function (chunk) {
+      body += chunk;
     });
 
-    group_id_response.on('end', function () {
-      var parsed = JSON.parse(group_id_body);
-      console.log('PARSED: ' + JSON.stringify(parsed) + '\n');
+    response.on('end', function () {
+      var parsed = JSON.parse(body);
+      var ids = parsed[0].group_ids;
+      callback(null, ids);
+    });
+  });
+  request.end();
+
+  request.on('error', function (e) {
+    console.log('problem with request: ' + e.message);
+  });
+}
+
+function groupRequest(options, callback) {
+  var request = https.request(options, function (response) {
+    var body = "";
+    response.on('data', function (chunk) {
+      body += chunk;
+    });
+
+    response.on('end', function () {
+      var parsed = JSON.parse(body);
+      console.log('PARSED GROUP: ' + JSON.stringify(parsed) + '\n');
       callback(null, parsed.is_user);
     });
   });
-  group_id_request.end();
+  request.end();
 
-  group_id_request.on('error', function (e) {
+  request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
     return callback(new Error("Problem with request"));
   });
@@ -39,7 +62,7 @@ function find_group(ids, size, callback) {
   }
   console.log(count + '\n');
 
-  makeRequest({
+  groupRequest({
     host: 'api.samanage.com',
     path: '/groups/' + ids[count].toString() + '.json',
     method: 'GET',
