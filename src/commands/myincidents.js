@@ -31,7 +31,7 @@ const handler = (payload, res) => {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
-
+  
     console.log('EMAIL: ' + email + '\n');
 
     // get the correct user from Samanage via their email
@@ -89,7 +89,6 @@ const handler = (payload, res) => {
         });
       });
     });
-    respo.status(200).end;
   });
 };
 
