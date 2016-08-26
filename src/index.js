@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
 app.post('/commands/samanage', (req, res) => {
-  payload = req.body;
+  let payload = req.body;
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
