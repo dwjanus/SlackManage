@@ -25,7 +25,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var delay;
 
 app.get('/', (req, res) => { 
-  delay = req.body.request_url;
+  delay = res.body.request_url;
+  console.log(JSON.stringify(delay));
   res.send('\n 👋 🌍 \n'); 
 });
 
