@@ -24,7 +24,6 @@ const handler = (payload, res) => {
   var userid = payload.user_id;
   var options = {user: userid};
   var email = "";
-  var group_id; //= '1858000'; // this will be blank soon
   var attachments = [];
 
   // get user slack id, then use that to retrieve email info
@@ -33,6 +32,8 @@ const handler = (payload, res) => {
 
     email = respo.user.profile.email;
   });
+
+  console.log('EMAIL: ' email + '\n');
 
   // get the correct user from Samanage via their email
   Samanage.getUserInfo({
@@ -50,7 +51,7 @@ const handler = (payload, res) => {
 
       Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
         if (err) console.log(err);
-
+        
         console.log('\nMY_INCIDENTS: ' + JSON.stringify(my_incidents_list) + '\n');
         attachments = my_incidents_list.slice(0, list_size).map((incident) => {
           return {
@@ -78,7 +79,7 @@ const handler = (payload, res) => {
         }); 
 
         let msg = _.defaults({
-          response_url: payload.response_url,
+          // response_url: payload.response_url,
           channel: payload.channel_name,
           attachments: attachments
         }, msgDefaults);

@@ -3,8 +3,7 @@
 
 const _ = require('lodash');
 const config = require('../config');
-var https = require('https');
-var http = require('http');
+const https = require('https');
 
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
@@ -21,6 +20,7 @@ function getUserInfo(options, callback) {
     console.log('STATUS: ' + response.statusCode);
     response.setEncoding('utf8');
 
+    var ids = [];
     var body = "";
     response.on('data', function (chunk) {
       body += chunk;
@@ -28,7 +28,8 @@ function getUserInfo(options, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      var ids = parsed[0].group_ids;
+      ids = parsed[0].group_ids;
+      console.log('IDS Array: ' + JSON.stringify(ids) + '\n');
       callback(null, ids);
     });
   });
@@ -36,6 +37,7 @@ function getUserInfo(options, callback) {
 
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
+    return callback(new Error("Problem with request"));
   });
 }
 
@@ -84,7 +86,7 @@ function find_group(ids, size, callback) {
     if (err) console.log(err);
     
     if (found)
-      return callback(null, ids[count].toString());
+      callback(null, ids[count].toString());
     else
       count++;
   });
