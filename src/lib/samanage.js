@@ -78,7 +78,7 @@ function find_group(ids, size, callback) {
 
   groupRequest({
     host: 'api.samanage.com',
-    path: '/groups/' + ids[count].toString() + '.json',
+    path: '/groups/' + ids[count] + '.json',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
@@ -169,7 +169,6 @@ function my_incidents (group_id, callback) {
           };
         my_incidents_list.push(none);
       }
-      console.log('MY INCIDENT LIST: ' + JSON.stringify(my_incidents_list) + ' ' + typeof my_incidents_list + '\n');
       callback(null, my_incidents_list, size);
     });
   });

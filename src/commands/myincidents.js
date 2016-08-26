@@ -33,7 +33,7 @@ const handler = (payload, res) => {
     email = respo.user.profile.email;
   });
 
-  console.log('EMAIL: ' email + '\n');
+  console.log('EMAIL: ' + email + '\n');
 
   // get the correct user from Samanage via their email
   Samanage.getUserInfo({
@@ -51,7 +51,7 @@ const handler = (payload, res) => {
 
       Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
         if (err) console.log(err);
-        
+
         console.log('\nMY_INCIDENTS: ' + JSON.stringify(my_incidents_list) + '\n');
         attachments = my_incidents_list.slice(0, list_size).map((incident) => {
           return {
