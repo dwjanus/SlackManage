@@ -29,14 +29,13 @@ const handler = (payload, res) => {
   var size;
   var group_id; //= '1858000'; // this will be blank soon
 
-  // try wrapping this whole thing in a post request to request_url
+  // try wrapping this whole thing in a post request to request_url?
 
   // get user slack id, then use that to retrieve email info
   var user = api.users.info(options, function (err, respo) {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
-    console.log('EMAIL: ' + email + '\n');
 
     // get the correct user from Samanage via their email
     var useroptions = {
@@ -60,11 +59,7 @@ const handler = (payload, res) => {
         var parsed = JSON.parse(body);
         
         ids = parsed[0].group_ids;
-        console.log('GROUP_IDS: ' + ids + '\n');
-
-        // get the correct group_id from the Samanage user
         size = ids.length;
-        console.log('SIZE OF GROUP ARRAY: ' + size + '\n');
 
         var group_options = {
           host: 'api.samanage.com',
@@ -74,6 +69,7 @@ const handler = (payload, res) => {
           auth: username + ':' + password
         };
 
+        // get the correct group_id from the Samanage user
         var group_request = https.request(group_options, function (group_response) {
           group_response.setEncoding('utf8');
 
@@ -85,7 +81,7 @@ const handler = (payload, res) => {
           group_response.on('end', function () {
             var parsed_group = JSON.parse(group_body);
 
-            Samanage.find_group(ids, (err, group_id) => {
+            Samanage.find_group(ids, size, (err, group_id) => {
               if (err) console.log(err);
 
               Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
