@@ -31,6 +31,7 @@ const handler = (payload, res) => {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
+    respo.status(200).end;
 
     console.log('EMAIL: ' + email + '\n');
 

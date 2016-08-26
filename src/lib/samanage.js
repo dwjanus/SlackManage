@@ -102,8 +102,6 @@ function my_incidents (group_id, callback) {
     return callback(new Error("Incorrect group_id"));
   }
 
-  console.log('Now in my_incidents function!\n' + 'GROUP_ID: ' + group_id + '\nSize: ' + size + '\n');
-
   var my_incidents_list = [];
   var size = 0;
 
