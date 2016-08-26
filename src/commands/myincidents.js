@@ -58,7 +58,7 @@ const handler = (payload, res) => {
     response.on('end', function () {
       var parsed = JSON.parse(body);
       
-      ids = parsed[0].group_ids;
+      ids = parsed.group_ids;
       size = ids.length;
     });
   });
