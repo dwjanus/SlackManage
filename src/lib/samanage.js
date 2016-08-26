@@ -12,6 +12,10 @@ const password = 'BenHobgood666';
 var count = 0;
 var found = false;
 
+
+// ------------------------------------------------------------
+// This pal is going to grab the user's Samanage info via email
+// ------------------------------------------------------------
 function getUserInfo(options, callback) {
   var request = https.request(options, function (response) {
     console.log('STATUS: ' + response.statusCode);
@@ -35,6 +39,10 @@ function getUserInfo(options, callback) {
   });
 }
 
+
+// ---------------------------------------------------------------------
+// This guy is gonna make the actual request given the specific group_id
+// ---------------------------------------------------------------------
 function groupRequest(options, callback) {
   var request = https.request(options, function (response) {
     var body = "";
@@ -56,6 +64,10 @@ function groupRequest(options, callback) {
   });
 }
 
+
+// -------------------------------------------------------------------
+// This one is gonna iterate through each group_id until user is found
+// -------------------------------------------------------------------
 function find_group(ids, size, callback) {
   if (ids === null || count >= size) {
     return callback(new Error("No Group Ids"));
@@ -227,6 +239,7 @@ function new_incidents (callback) {
   });
 }
 
+module.exports.getUserInfo = getUserInfo;
+module.exports.find_group = find_group;
 module.exports.my_incidents = my_incidents;
 module.exports.new_incidents = new_incidents;
-module.exports.find_group = find_group;
