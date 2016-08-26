@@ -40,7 +40,13 @@ app.post('/commands/samanage', (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  cmd.handler(payload, res);
+  var delay = url.parse(payload.request_url, false, true);
+
+  app.post(delay, (request, response) => {
+    let payload = request.body;
+
+    cmd.handler(payload, response);
+  });
 });
 
 app.listen(config('PORT'), (err) => {

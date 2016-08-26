@@ -45,11 +45,12 @@ function find_group(ids, size, callback) {
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
   }, (err, found) => {
+    if (err) console.log(err);
+    
     if (found)
       return callback(null, ids[count].toString());
-    else
-      count++;
   });
+  count++;
   
   setTimeout(find_group, 20000);
 }
