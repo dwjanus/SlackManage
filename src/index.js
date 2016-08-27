@@ -53,14 +53,12 @@ app.post('/commands/samanage', (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  // res.sendStatus(200);
   
   //if pattern == mine then invoke other function with throws a quick output to current res, 
   // then invoke cmd.handler within a post request to postOptions (request_url)
   app.post(post, (request, response) => {
-    payload = req.body;
-
-    res.status(200).send(cmd.handler(payload, response));
+    res.sendStatus(200);
+    res.send(cmd.handler(payload, response));
   });
 });
 
