@@ -57,7 +57,8 @@ app.post('/commands/samanage', (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  res.status(200).end(delay());
+  res.send('Processing request...');
+  delay();
 });
 
 function delay() {
