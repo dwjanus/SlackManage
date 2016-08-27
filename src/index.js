@@ -58,7 +58,7 @@ app.post('/commands/samanage', (req, res) => {
   }, helpCommand);
 
   res.send('Processing request...');
-  res.send(delay());
+  delay();
 });
 
 function delay() {
