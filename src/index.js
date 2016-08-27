@@ -58,14 +58,12 @@ app.post('/commands/samanage', (req, res) => {
   }, helpCommand);
 
   res.send('Processing request...');
-  delay();
-});
-
-function delay() {
+  
   app.post(post, (req, res) => {
     cmd.handler(payload, res);
   });
-}
+  
+});
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err;
