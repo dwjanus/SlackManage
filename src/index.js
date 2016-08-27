@@ -56,8 +56,6 @@ app.post('/commands/samanage', (req, res) => {
   cmd = _.reduce(commands, (a, cmd) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
-
-  res.write('Processing request...');
   
   cmd.handler(payload, res);
 
