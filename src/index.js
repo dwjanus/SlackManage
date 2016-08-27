@@ -59,10 +59,8 @@ app.post('/commands/samanage', (req, res) => {
 
   res.send('Processing request...');
   
-  app.post(post, (req, res) => {
-    cmd.handler(payload, res);
-  });
-  
+  cmd.handler(payload, res);
+
 });
 
 app.listen(config('PORT'), (err) => {
