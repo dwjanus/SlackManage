@@ -29,15 +29,7 @@ var cmd;
 var host;
 var post;
 
-app.get('/commands/samanage', (req, res) => {
-  var hostus = req.body;
-  var url = hostus.response_url;
-  post = '/' + url.split('.com/')[1];
-  console.log('RESPONSE_URL: ' + url + '\n');
-  console.log('RESPONSE_URL parsed: ' + post + '\n');
-});
-
-app.post(post, (req, res) => {
+app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
   
   let url = payload.response_url;
