@@ -25,6 +25,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
+var cmd;
+var host;
+var post;
+
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
   
@@ -36,8 +40,8 @@ app.post('/commands/samanage', (req, res) => {
   //    path: '/' + url.split('.com/')[1]
   // };
 
-  var host = url.split('.com/')[0] + '.com';
-  var post = '/' + url.split('.com/')[1];
+  host = url.split('.com/')[0] + '.com';
+  post = '/' + url.split('.com/')[1];
 
   console.log('RESPONSE_URL parsed: ' + host + '\n' + post + '\n');
 
@@ -49,16 +53,19 @@ app.post('/commands/samanage', (req, res) => {
     return;
   }
 
-  let cmd = _.reduce(commands, (a, cmd) => {
+  cmd = _.reduce(commands, (a, cmd) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  //res.sendStatus(200);
-
-  app.post(post, (request, response) => { 
-    res.status(200).end(cmd.handler(payload, response));
-  });
+  res.sendStatus(200);
+  delay();
 });
+
+function delay() {
+  app.post(post, (req, res) => { 
+    cmd.handler(payload, response));
+  });
+}
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err;
