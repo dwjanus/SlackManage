@@ -62,7 +62,7 @@ app.post('/commands/samanage', (req, res) => {
 
 function delay() {
   app.post(post, (req, res) => {
-    cmd.handler(payload, response);
+    cmd.handler(payload, res);
   });
 }
 
