@@ -31,8 +31,8 @@ const handler = (payload, res) => {
 
   var postOptions = {
      host: url.split('.com/')[0] + '.com',
-     path: '/' + url.split('.com/')[1]
-     method: 'POST';
+     path: '/' + url.split('.com/')[1],
+     method: 'POST'
   };
   
   var post = https.request(postOptions, function (postResponse) {
