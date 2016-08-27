@@ -21,6 +21,8 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
+  res.status(200);
+
   var userid = payload.user_id;
   var options = {user: userid};
   var email = "";
@@ -84,7 +86,7 @@ const handler = (payload, res) => {
           }, msgDefaults);
 
           res.set('content-type', 'application/json');
-          res.status(200).json(msg);
+          res.json(msg);
           return
         });
       });
