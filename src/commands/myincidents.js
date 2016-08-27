@@ -105,10 +105,10 @@ const handler = (payload, res) => {
   });
   post.end();
 
-  post.on('error', function (er) {
+  post.on('error', function (e) {
     console.log('ERROR: ' + e.message);
   });
-  
+
   return
 };
 
