@@ -39,7 +39,7 @@ app.post('/commands/samanage', (req, res) => {
   var host = url.split('.com/')[0] + '.com';
   var post = '/' + url.split('.com/')[1];
 
-  console.log('RESPONSE_URL parsed: ' + host + '\n' + path + '\n');
+  console.log('RESPONSE_URL parsed: ' + host + '\n' + post + '\n');
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
