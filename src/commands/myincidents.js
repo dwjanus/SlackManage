@@ -31,7 +31,7 @@ const handler = (payload, res) => {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
-  
+
     console.log('EMAIL: ' + email + '\n');
 
     // get the correct user from Samanage via their email
@@ -78,13 +78,14 @@ const handler = (payload, res) => {
           }); 
 
           let msg = _.defaults({
-            // response_url: payload.response_url,
+            response_url: payload.response_url,
             channel: payload.channel_name,
             attachments: attachments
           }, msgDefaults);
 
+          res.setHeader('Location', payload.request_url);  // 'http://' + req.headers['host'] + ('/' !== req.url)? ( '/' + req.url) : ''
           res.set('content-type', 'application/json');
-          res.status(200).json(msg);
+          res.status(302).json(msg);
           return
         });
       });
