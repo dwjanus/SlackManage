@@ -35,7 +35,7 @@ const handler = (payload, res) => {
      method: 'POST'
   };
   
-  var post = https.request(postOptions, function (postResponse) {
+  var post = https.request(postOptions, function (error, postResponse) {
 
     // get user slack id, then use that to retrieve email info
     var user = api.users.info(options, function (err, respo) {
@@ -103,6 +103,12 @@ const handler = (payload, res) => {
     });
   
   });
+  post.end();
+
+  post.on('error', function (er) {
+    console.log('ERROR: ' + e.message);
+  });
+  
   return
 };
 
