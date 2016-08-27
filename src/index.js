@@ -27,15 +27,19 @@ app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
+  
   let url = payload.response_url;
   console.log('RESPONSE_URL: ' + url + '\n');
 
-  var options = {
-     host: url.split('.com/')[0] + '.com',
-     path: '/' + url.split('.com/')[1]
-  }; 
+  // var options = {
+  //    host: url.split('.com/')[0] + '.com',
+  //    path: '/' + url.split('.com/')[1]
+  // };
 
-  console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
+  var host = url.split('.com/')[0] + '.com';
+  var post = '/' + url.split('.com/')[1];
+
+  console.log('RESPONSE_URL parsed: ' + host + '\n' + path + '\n');
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
@@ -49,7 +53,14 @@ app.post('/commands/samanage', (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  cmd.handler(payload, res);
+  res.sendStatus(200);
+  //if pattern == mine then invoke other function with throws a quick output to current res, 
+  // then invoke cmd.handler within a post request to postOptions (request_url)
+  app.post(post, (request, response) => {
+    payload = req.body;
+
+    cmd.handler(payload, response);
+  });
 });
 
 app.listen(config('PORT'), (err) => {
