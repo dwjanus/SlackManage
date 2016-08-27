@@ -30,6 +30,13 @@ app.post('/commands/samanage', (req, res) => {
   let url = payload.response_url;
   console.log('RESPONSE_URL: ' + url + '\n');
 
+  var options = {
+     host: url.split('.com/')[0] + '.com',
+     path: '/' + url.split('.com/')[1]
+  }; 
+
+  console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
+
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
               '   Is your Slack slash token correctly configured?';
