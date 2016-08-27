@@ -29,7 +29,15 @@ var cmd;
 var host;
 var post;
 
-app.post('/commands/samanage', (req, res) => {
+app.get('/commands/samanage', (req, res) => {
+  var hostus = req.body;
+  var url = hostus.response_url;
+  post = '/' + url.split('.com/')[1];
+  console.log('RESPONSE_URL: ' + url + '\n');
+  console.log('RESPONSE_URL parsed: ' + post + '\n');
+});
+
+app.post(post, (req, res) => {
   let payload = req.body;
   
   let url = payload.response_url;
@@ -58,7 +66,6 @@ app.post('/commands/samanage', (req, res) => {
   }, helpCommand);
   
   cmd.handler(payload, res);
-
 });
 
 app.listen(config('PORT'), (err) => {
