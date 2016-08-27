@@ -31,7 +31,7 @@ var post;
 
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
-  
+  res.setTimeout(50000);
   let url = payload.response_url;
   console.log('RESPONSE_URL: ' + url + '\n');
 
