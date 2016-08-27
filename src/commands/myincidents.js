@@ -104,7 +104,7 @@ const handler = (payload, res) => {
   
   });
   return
-});
+};
 
 module.exports = { pattern: /mine/ig, handler: handler };
 
