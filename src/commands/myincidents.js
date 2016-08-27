@@ -83,9 +83,8 @@ const handler = (payload, res) => {
             attachments: attachments
           }, msgDefaults);
 
-          res.setHeader('Location', payload.request_url);  // 'http://' + req.headers['host'] + ('/' !== req.url)? ( '/' + req.url) : ''
           res.set('content-type', 'application/json');
-          res.status(302).json(msg);
+          res.status(200).json(msg);
           return
         });
       });
