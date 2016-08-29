@@ -25,6 +25,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
+var cmd;
+var url;
+
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
@@ -36,28 +39,22 @@ app.post('/commands/samanage', (req, res) => {
     return;
   }
 
-  let cmd = _.reduce(commands, (a, cmd) => {
+  cmd = _.reduce(commands, (a, cmd) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
-  
-  res.status(200);
 
-  // we invoke our delayed response here
-  let url = payload.response_url;
+  url = payload.response_url;
   console.log('RESPONSE_URL: ' + url + '\n');
 
-  var options = {
-     host: url.split('.com/')[0] + '.com',
-     path: '/' + url.split('.com/')[1],
-     method: 'POST'
-  };
+  // var options = {
+  //    host: url.split('.com/')[0] + '.com',
+  //    path: '/' + url.split('.com/')[1],
+  //    method: 'POST'
+  // };
 
-  console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
-
-
-  app.post(options.path, (request, response) => {
-    cmd.handler(payload, response)
-  });
+  var host = url.split('.com/')[0] + '.com';
+  var path = '/' + url.split('.com/')[1];
+  console.log('RESPONSE_URL parsed: ' + host + '\n' + path + ' ' + typeof path + '\n');
 
 //   var request = https.request(options, function (response) {
 //     response.setEncoding('utf8');
@@ -72,7 +69,14 @@ app.post('/commands/samanage', (req, res) => {
 //     console.log('Problem with delayed request: ' + e.message);
 //   });
 
-});
+res.setStatus(200);
+}, delay(path));
+
+function delay (path) {
+  app.post(path, (request, response) => {
+    cmd.handler(payload, response);
+  });
+}
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err;
