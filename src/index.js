@@ -40,7 +40,7 @@ app.post('/commands/samanage', (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  cmd.handler(payload, res);
+  // cmd.handler(payload, res);
 
   // we invoke our delayed response here
   let url = payload.response_url;
@@ -54,7 +54,8 @@ app.post('/commands/samanage', (req, res) => {
 
   console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
 
-  res.send(200);
+  // res.set('content-type', 'application/json');
+  // res.send(200);
 
   var request = https.request(options, function (response) {
     var body = "";
