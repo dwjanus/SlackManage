@@ -62,6 +62,7 @@ app.post('/commands/samanage', (req, res) => {
 
   var request = https.request(options, function (response) {
     console.log('you are in the post request now!' + '\n');
+    payload = request.body;
     var body = "";
     response.on('data', function (chunk) {
       console.log(chunk);
@@ -70,7 +71,7 @@ app.post('/commands/samanage', (req, res) => {
 
     response.on('end', function () {
       console.log(body);
-      cmd.handler('payload', response);
+      cmd.handler(payload, response);
     });
 
   });
