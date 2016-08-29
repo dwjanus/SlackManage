@@ -28,6 +28,7 @@ function getUserInfo(options, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
+      console.log('PARSED: ' + JSON.stringify(parsed));
       ids = parsed[0].group_ids;
       console.log('IDS Array: ' + JSON.stringify(ids) + '\n');
       callback(null, ids);
