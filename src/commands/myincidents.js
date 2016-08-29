@@ -108,7 +108,7 @@ const handler = (payload, res) => {
           request.on('error', function (e) {
             console.log('problem with request: ' + e.message);
           });
-          request.write(msg);
+          request.write(JSON.stringify(msg));
           request.end();
           return;
         });
