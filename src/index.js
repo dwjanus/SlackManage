@@ -48,7 +48,7 @@ app.post('/commands/samanage', (req, res) => {
   console.log('RESPONSE_URL: ' + url + '\n');
 
   var options = {
-     hostname: url.split('.com/')[0] + '.com',
+     host: 'hooks.slack.com',
      path: '/' + url.split('.com/')[1],
      method: 'POST'
   };
