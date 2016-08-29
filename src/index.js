@@ -54,19 +54,24 @@ app.post('/commands/samanage', (req, res) => {
 
   console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
 
-  var request = https.request(options, function (response) {
-    response.setEncoding('utf8');
-    var body = "";
-    response.on('data', function (chunk) {
-      console.log('Response: ' + chunk);
-    });
+
+  app.post(options.path, (request, response) => {
+    cmd.handler(payload, response)
   });
-  request.write(cmd.handler(payload, response));
-  request.end();
-  request.on('error', function (e) {
-    console.log('Problem with delayed request: ' + e.message);
-  });
-});
+
+//   var request = https.request(options, function (response) {
+//     response.setEncoding('utf8');
+//     var body = "";
+//     response.on('data', function (chunk) {
+//       console.log('Response: ' + chunk);
+//     });
+//   });
+//   request.write(cmd.handler(payload, response));
+//   request.end();
+//   request.on('error', function (e) {
+//     console.log('Problem with delayed request: ' + e.message);
+//   });
+// });
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err;
