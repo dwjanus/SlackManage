@@ -71,7 +71,8 @@ app.post('/commands/samanage', (req, res) => {
 //   request.on('error', function (e) {
 //     console.log('Problem with delayed request: ' + e.message);
 //   });
-// });
+
+});
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err;
