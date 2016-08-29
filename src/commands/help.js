@@ -32,8 +32,8 @@ const handler = (payload, res) => {
     attachments: attachments
   }, msgDefaults);
 
-  res.set('content-type', 'application/json');
-  res.status(200).json(msg);
+  res.setHeader(200, {'content-type': 'application/json'});
+  res.write(msg).end();
   return;
 };
 
