@@ -102,7 +102,9 @@ const handler = (payload, res) => {
           
           var request = https.request(post_options, function (response) {
             response.setEncoding('utf8');
+
             console.log('you are in the post request now!' + '\n');
+            console.log('RESPONSE HEADERS: ' + response.headers)
           });
 
           request.on('error', function (e) {
