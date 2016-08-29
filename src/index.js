@@ -64,9 +64,11 @@ app.post('/commands/samanage', (req, res) => {
       console.log('Response: ' + chunk);
     });
   });
-
   request.write(cmd.handler(payload, res));
   request.end();
+  request.on('error', function (e) {
+    console.log('Problem with delayed request: ' + e.message);
+  });
 });
 
 app.listen(config('PORT'), (err) => {
