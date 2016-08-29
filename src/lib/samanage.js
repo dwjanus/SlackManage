@@ -91,7 +91,7 @@ function find_group(ids, size, callback) {
   });
   count++;
   
-  //setTimeout(find_group, 20000);
+  setTimeout(find_group, 20000);
 }
 
 
