@@ -40,23 +40,26 @@ app.post('/commands/samanage', (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  // we invoke our delayed response here
-  let url = payload.response_url;
-  console.log('RESPONSE_URL: ' + url + '\n');
+  cmd.handler(payload, res);
 
-  var options = {
-     host: url.split('.com/')[0] + '.com',
-     path: '/' + url.split('.com/')[1],
-     method: 'POST'
-  };
+  // // we invoke our delayed response here
+  // let url = payload.response_url;
+  // console.log('RESPONSE_URL: ' + url + '\n');
 
-  console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
+  // var options = {
+  //    host: url.split('.com/')[0] + '.com',
+  //    path: '/' + url.split('.com/')[1],
+  //    method: 'POST'
+  // };
 
-  res.status(200);
+  // console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
 
-  app.post(options.path.toString(), (request, response) => {
-    cmd.handler(payload, response);
-  });
+  // res.send(200);
+
+  // app.post(options.path.toString(), (request, response) => {
+  //   payload = request.body;
+  //   cmd.handler(payload, response);
+  // });
 });
 
 app.listen(config('PORT'), (err) => {
