@@ -25,20 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
-var cmd;
-var url;
-var host;
-var post_path;
-
-app.get('/commands/samanage', (req, res) => {
-  let payload = req.body;
-  url = payload.response_url;
-  console.log('RESPONSE_URL: ' + url + '\n');
-  host = url.split('.com/')[0] + '.com';
-  post_path = '/' + url.split('.com/')[1];
-});
-
-app.post(post_path.toString(), (req, res) => {
+app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
@@ -49,13 +36,29 @@ app.post(post_path.toString(), (req, res) => {
     return;
   }
 
-  cmd = _.reduce(commands, (a, cmd) => {
+  let cmd = _.reduce(commands, (a, cmd) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
   
-  console.log('RESPONSE_URL parsed: ' + host + '\n' + path + ' ' + typeof path + '\n');
+  res.status(200);
 
-  cmd.handler(payload, res);
+  // we invoke our delayed response here
+  let url = payload.response_url;
+  console.log('RESPONSE_URL: ' + url + '\n');
+
+  var options = {
+     host: url.split('.com/')[0] + '.com',
+     path: '/' + url.split('.com/')[1],
+     method: 'POST'
+  };
+
+  console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
+
+  res.setStatus(200);
+
+  app.post(options.path.toString(), (request, response) => {
+    cmd.handler(payload, response);
+  });
 });
 
 app.listen(config('PORT'), (err) => {
