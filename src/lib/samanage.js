@@ -73,7 +73,7 @@ function groupRequest(options, callback) {
 // -------------------------------------------------------------------
 function find_group(ids, size, callback) {
   var self = this;
-  if (self === undefined)
+  if (self.count === undefined)
     this.count = 0;
   else 
     this.count++;
