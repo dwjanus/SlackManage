@@ -31,19 +31,8 @@ var post;
 
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
-  res.setTimeout(50000);
-  let url = payload.response_url;
-  console.log('RESPONSE_URL: ' + url + '\n');
 
-  // var options = {
-  //    host: url.split('.com/')[0] + '.com',
-  //    path: '/' + url.split('.com/')[1]
-  // };
-
-  host = url.split('.com/')[0] + '.com';
-  post = '/' + url.split('.com/')[1];
-
-  console.log('RESPONSE_URL parsed: ' + host + '\n' + post + '\n');
+  console.log('PAYLOAD: ' + JSON.stringify(payload) + '\n');
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
@@ -57,6 +46,18 @@ app.post('/commands/samanage', (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
   
+
+  // we invoke our delayed response here
+  let url = payload.response_url;
+  console.log('RESPONSE_URL: ' + url + '\n');
+
+  var options = {
+     host: url.split('.com/')[0] + '.com',
+     path: '/' + url.split('.com/')[1],
+     method: 'POST'
+  };
+
+  console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
   cmd.handler(payload, res);
 });
 
