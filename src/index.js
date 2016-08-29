@@ -26,13 +26,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
 var cmd;
-var host;
-var post;
+var url;
 
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
-
-  console.log('PAYLOAD: ' + JSON.stringify(payload) + '\n');
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
@@ -46,9 +43,10 @@ app.post('/commands/samanage', (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
   
+  res.status(200);
 
   // we invoke our delayed response here
-  let url = payload.response_url;
+  url = payload.response_url;
   console.log('RESPONSE_URL: ' + url + '\n');
 
   var options = {
@@ -58,7 +56,17 @@ app.post('/commands/samanage', (req, res) => {
   };
 
   console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
-  cmd.handler(payload, res);
+
+  var request = https.request(options, function (response) {
+    response.setEncoding('utf8');
+    var body = "";
+    res.on('data', function (chunk) {
+      console.log('Response: ' + chunk);
+    });
+  });
+
+  request.write(cmd.handler(payload, res));
+  request.end();
 });
 
 app.listen(config('PORT'), (err) => {
