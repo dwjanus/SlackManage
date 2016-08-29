@@ -25,9 +25,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
-var cmd;
-var url;
-
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
@@ -39,14 +36,14 @@ app.post('/commands/samanage', (req, res) => {
     return;
   }
 
-  cmd = _.reduce(commands, (a, cmd) => {
+  let cmd = _.reduce(commands, (a, cmd) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
   
   res.status(200);
 
   // we invoke our delayed response here
-  url = payload.response_url;
+  let url = payload.response_url;
   console.log('RESPONSE_URL: ' + url + '\n');
 
   var options = {
@@ -64,7 +61,7 @@ app.post('/commands/samanage', (req, res) => {
       console.log('Response: ' + chunk);
     });
   });
-  request.write(cmd.handler(payload, res));
+  request.write(cmd.handler(payload, response));
   request.end();
   request.on('error', function (e) {
     console.log('Problem with delayed request: ' + e.message);
