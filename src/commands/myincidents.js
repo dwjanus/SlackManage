@@ -81,7 +81,6 @@ const handler = (payload, res) => {
           }); 
 
           let msg = _.defaults({
-            response_url: payload.response_url,
             channel: payload.channel_name,
             attachments: attachments
           }, msgDefaults);
