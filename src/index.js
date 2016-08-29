@@ -39,8 +39,6 @@ app.post('/commands/samanage', (req, res) => {
   let cmd = _.reduce(commands, (a, cmd) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
-  
-  res.status(200);
 
   // we invoke our delayed response here
   let url = payload.response_url;
@@ -54,7 +52,7 @@ app.post('/commands/samanage', (req, res) => {
 
   console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
 
-  res.setStatus(200);
+  res.status(200);
 
   app.post(options.path.toString(), (request, response) => {
     cmd.handler(payload, response);
