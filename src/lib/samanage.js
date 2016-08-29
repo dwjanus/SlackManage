@@ -72,14 +72,21 @@ function groupRequest(options, callback) {
 // This one is gonna iterate through each group_id until user is found
 // -------------------------------------------------------------------
 function find_group(ids, size, callback) {
-  if (ids === null || count >= size) {
+  if (this.count === undefined)
+    this.count = 0;
+  else 
+    this.count++;
+
+  var scopeCount = this.count;
+
+  if (ids === null || count > size) {
     return callback(new Error("No Group Ids"));
   }
   console.log(count + '\n');
 
   groupRequest({
     host: 'api.samanage.com',
-    path: '/groups/' + ids[count] + '.json',
+    path: '/groups/' + ids[this.count] + '.json',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
@@ -87,11 +94,12 @@ function find_group(ids, size, callback) {
     if (err) console.log(err);
     
     if (found)
-      return callback(null, ids[count]);
+      return callback(null, ids[scopeCount]);
+    else {
+      scopeCount++;
+      setTimeout(find_group, 5000);
+    }
   });
-  count++;
-  
-  setTimeout(find_group, 20000);
 }
 
 

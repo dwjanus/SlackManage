@@ -104,7 +104,7 @@ const handler = (payload, res) => {
             response.setEncoding('utf8');
 
             console.log('you are in the post request now!' + '\n');
-            console.log('RESPONSE HEADERS: ' + response.headers)
+            console.log('RESPONSE HEADERS: ' + JSON.stringify(response.headers));
           });
 
           request.on('error', function (e) {
