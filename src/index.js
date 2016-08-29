@@ -38,7 +38,7 @@ app.get('/commands/samanage', (req, res) => {
   post_path = '/' + url.split('.com/')[1];
 });
 
-app.post(post_path, (req, res) => {
+app.post(post_path.toString(), (req, res) => {
   let payload = req.body;
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
