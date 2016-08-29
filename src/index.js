@@ -42,24 +42,37 @@ app.post('/commands/samanage', (req, res) => {
 
   cmd.handler(payload, res);
 
-  // // we invoke our delayed response here
-  // let url = payload.response_url;
-  // console.log('RESPONSE_URL: ' + url + '\n');
+  // we invoke our delayed response here
+  let url = payload.response_url;
+  console.log('RESPONSE_URL: ' + url + '\n');
 
-  // var options = {
-  //    host: url.split('.com/')[0] + '.com',
-  //    path: '/' + url.split('.com/')[1],
-  //    method: 'POST'
-  // };
+  var options = {
+     host: url.split('.com/')[0] + '.com',
+     path: '/' + url.split('.com/')[1],
+     method: 'POST'
+  };
 
-  // console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
+  console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
 
-  // res.send(200);
+  res.send(200);
 
-  // app.post(options.path.toString(), (request, response) => {
-  //   payload = request.body;
-  //   cmd.handler(payload, response);
-  // });
+  var request = https.request(options, function (response) {
+    var body = "";
+    response.on('data', function (chunk) {
+      body += chunk;
+    });
+
+    response.on('end', function () {
+      console.log(body);
+    });
+
+    cmd.handler(payload, response);
+  });
+  request.end();
+
+  request.on('error', function (e) {
+    console.log('problem with request: ' + e.message);
+  });
 });
 
 app.listen(config('PORT'), (err) => {
