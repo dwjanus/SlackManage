@@ -72,14 +72,13 @@ function groupRequest(options, callback) {
 // This one is gonna iterate through each group_id until user is found
 // -------------------------------------------------------------------
 function find_group(ids, size, callback) {
-  if (this.count === undefined)
+  var self = this;
+  if (self === undefined)
     this.count = 0;
   else 
     this.count++;
 
-  var scopeCount = this.count;
-
-  if (ids === null || count > size) {
+  if (ids === null || this.count > size) {
     return callback(new Error("No Group Ids"));
   }
   console.log(count + '\n');
@@ -94,12 +93,9 @@ function find_group(ids, size, callback) {
     if (err) console.log(err);
     
     if (found)
-      return callback(null, ids[scopeCount]);
-    else {
-      scopeCount++;
-      setTimeout(find_group, 5000);
-    }
+      return callback(null, ids[self.count]);
   });
+  setTimeout(find_group, 5000);
 }
 
 
