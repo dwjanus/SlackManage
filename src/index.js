@@ -70,7 +70,7 @@ app.post('/commands/samanage', (req, res) => {
 
     response.on('end', function () {
       console.log(body);
-      cmd.handler(payload, response);
+      cmd.handler('payload', response);
     });
 
   });
