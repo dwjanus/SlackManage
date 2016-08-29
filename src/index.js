@@ -57,7 +57,7 @@ app.post('/commands/samanage', (req, res) => {
   var request = https.request(options, function (response) {
     response.setEncoding('utf8');
     var body = "";
-    res.on('data', function (chunk) {
+    response.on('data', function (chunk) {
       console.log('Response: ' + chunk);
     });
   });
