@@ -104,15 +104,13 @@ const handler = (payload, res) => {
           var request = https.request(post_options, function (response) {
             response.setEncoding('utf8');
             console.log('you are in the post request now!' + '\n');
-
-            response.end(msg);
           });
-          request.end();
 
           request.on('error', function (e) {
             console.log('problem with request: ' + e.message);
           });
-
+          request.write(msg);
+          request.end();
           return;
         });
       });
