@@ -61,11 +61,13 @@ app.post('/commands/samanage', (req, res) => {
   
 
   var request = https.request(options, function (response) {
+    response.setEncoding('utf8');
     console.log('you are in the post request now!' + '\n');
     payload = request.body;
+
+    console.log('PAYLOAD: ' + payload);
     var body = "";
     response.on('data', function (chunk) {
-      console.log(chunk);
       body += chunk;
     });
 
