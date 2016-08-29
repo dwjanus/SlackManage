@@ -27,6 +27,7 @@ app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
 var cmd;
 var url;
+var post_path;
 
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
@@ -53,7 +54,7 @@ app.post('/commands/samanage', (req, res) => {
   // };
 
   var host = url.split('.com/')[0] + '.com';
-  var path = '/' + url.split('.com/')[1];
+  post_path = '/' + url.split('.com/')[1];
   console.log('RESPONSE_URL parsed: ' + host + '\n' + path + ' ' + typeof path + '\n');
 
 //   var request = https.request(options, function (response) {
@@ -70,7 +71,7 @@ app.post('/commands/samanage', (req, res) => {
 //   });
 
 res.setStatus(200);
-}, delay(path));
+}, delay(post_path));
 
 function delay (path) {
   app.post(path, (request, response) => {
