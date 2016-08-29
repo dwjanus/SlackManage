@@ -8,9 +8,7 @@ const https = require('https');
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
 
-var count = 0;
 var found = false;
-
 
 // ------------------------------------------------------------
 // This pal is going to grab the user's Samanage info via email
@@ -71,8 +69,9 @@ function groupRequest(options, callback) {
 // -------------------------------------------------------------------
 // This one is gonna iterate through each group_id until user is found
 // -------------------------------------------------------------------
-function find_group(ids, size, callback) {
-
+function find_group(ids, size, callback, count) {
+  if (count === undefined)
+    count = 0;
   if (ids === null || count > size) {
     return callback(new Error("No Group Ids"));
   }
@@ -91,7 +90,7 @@ function find_group(ids, size, callback) {
       return callback(null, ids[count]);
   });
   count++;
-  find_group(ids, size, callback);
+  find_group(ids, size, callback, count);
 }
 
 
