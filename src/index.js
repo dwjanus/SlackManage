@@ -54,15 +54,17 @@ app.post('/commands/samanage', (req, res) => {
   };
 
   console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
-  console.log(util.inspect(options));
+  console.log(util.inspect(options) + '\n');
 
   // res.set('content-type', 'application/json');
   res.status(200).json('One Second...');
   
 
   var request = https.request(options, function (response) {
+    console.log('you are in the post request now!' + '\n');
     var body = "";
     response.on('data', function (chunk) {
+      console.log(chunk);
       body += chunk;
     });
 
