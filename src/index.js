@@ -48,7 +48,6 @@ app.post('/commands/samanage', (req, res) => {
   console.log('RESPONSE_URL: ' + url + '\n');
 
   var options = {
-     host: url.split('.com/')[0] + '.com',
      path: '/' + url.split('.com/')[1],
      method: 'POST'
   };
@@ -59,7 +58,6 @@ app.post('/commands/samanage', (req, res) => {
   // res.set('content-type', 'application/json');
   res.status(200).json('One Second...');
   
-
   var request = https.request(options, function (response) {
     console.log('you are in the post request now!' + '\n');
     var body = "";
