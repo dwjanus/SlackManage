@@ -3,6 +3,7 @@
 
 const _ = require('lodash');
 const config = require('../config');
+const https = require('https');
 
 const msgDefaults = {
   response_type: 'in_channel',
