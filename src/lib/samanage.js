@@ -4,6 +4,7 @@
 const _ = require('lodash');
 const config = require('../config');
 const https = require('https');
+const utils = require('utils');
 
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
@@ -52,6 +53,7 @@ function groupRequest(options, callback) {
     });
 
     response.on('end', function () {
+      console.log('BODY: ' + utils.inspect(body) + '\n');
       var parsed = JSON.parse(body);
       console.log('PARSED GROUP: ' + JSON.stringify(parsed) + '\n');
       callback(null, parsed.is_user);
