@@ -55,8 +55,9 @@ app.post('/commands/samanage', (req, res) => {
   console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
 
   // res.set('content-type', 'application/json');
-  // res.send(200);
-  return;
+  res.status(200).json('One Second...');
+  
+
   var request = https.request(options, function (response) {
     var body = "";
     response.on('data', function (chunk) {
