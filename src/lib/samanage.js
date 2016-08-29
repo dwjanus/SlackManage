@@ -74,7 +74,7 @@ function groupRequest(options, callback) {
 function find_group(ids, size, callback) {
 
   if (ids === null || count > size) {
-    return this.args.callback(new Error("No Group Ids"));
+    return callback(new Error("No Group Ids"));
   }
   console.log(count + '\n');
 
