@@ -21,6 +21,9 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
+  res.set('content-type', 'application/json');
+  res.status(200);
+
   var userid = payload.user_id;
   var options = {user: userid};
   var email = "";
@@ -83,9 +86,34 @@ const handler = (payload, res) => {
             attachments: attachments
           }, msgDefaults);
 
-          res.set('content-type', 'application/json');
-          res.status(200).json(msg);
-          return
+
+          let url = payload.response_url;
+          console.log('RESPONSE_URL: ' + url + '\n');
+
+          var post_options = {
+             host: 'hooks.slack.com',
+             path: '/' + url.split('.com/')[1],
+             method: 'POST',
+             headers: { 'Content-Type' : 'application/json' },
+             port: 443
+          };
+
+          console.log('RESPONSE_URL parsed: ' + post_options.host + '\n' + post_options.path + '\n');
+          console.log(util.inspect(options) + '\n');
+          
+          var request = https.request(post_options, function (response) {
+            response.setEncoding('utf8');
+            console.log('you are in the post request now!' + '\n');
+
+            response.end(msg);
+          });
+          request.end();
+
+          request.on('error', function (e) {
+            console.log('problem with request: ' + e.message);
+          });
+
+          return;
         });
       });
     });
@@ -93,6 +121,13 @@ const handler = (payload, res) => {
 };
 
 module.exports = { pattern: /mine/ig, handler: handler };
+
+
+
+
+
+
+  
 
 
  

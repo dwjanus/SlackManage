@@ -3,7 +3,6 @@
 
 const _ = require('lodash');
 const config = require('../config');
-const https = require('https');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -33,8 +32,8 @@ const handler = (payload, res) => {
     attachments: attachments
   }, msgDefaults);
 
-  res.writeHead(200);
-  res.end(msg);
+  res.set('content-type', 'application/json');
+  res.status(200).json(msg);
   return;
 };
 

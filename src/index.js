@@ -41,47 +41,7 @@ app.post('/commands/samanage', (req, res) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
 
-  // cmd.handler(payload, res);
-
-  // we invoke our delayed response here
-  let url = payload.response_url;
-  console.log('RESPONSE_URL: ' + url + '\n');
-
-  var options = {
-     host: 'hooks.slack.com',
-     path: '/' + url.split('.com/')[1],
-     method: 'POST'
-  };
-
-  console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
-  console.log(util.inspect(options) + '\n');
-
-  // res.set('content-type', 'application/json');
-  res.status(200).json('One Second...');
-  
-
-  var request = https.request(options, function (response) {
-    response.setEncoding('utf8');
-    console.log('you are in the post request now!' + '\n');
-    payload = request.body;
-
-    console.log('PAYLOAD: ' + payload);
-    var body = "";
-    response.on('data', function (chunk) {
-      body += chunk;
-    });
-
-    response.on('end', function () {
-      console.log(body);
-      cmd.handler(payload, response);
-    });
-
-  });
-  request.end();
-
-  request.on('error', function (e) {
-    console.log('problem with request: ' + e.message);
-  });
+  cmd.handler(payload, res);
 });
 
 app.listen(config('PORT'), (err) => {
