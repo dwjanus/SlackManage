@@ -92,7 +92,7 @@ function find_group(ids, size, callback) {
 
   groupRequest({
     host: 'api.samanage.com',
-    path: '/groups/' + this.args.ids[this.count] + '.json',
+    path: '/groups/' + self.args.ids[self.count] + '.json',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
