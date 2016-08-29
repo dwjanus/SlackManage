@@ -9,6 +9,7 @@ const https = require('https');
 const config = require('./config');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
+const util = require('util');
 
 let bot = require('./bot');
 
@@ -53,6 +54,7 @@ app.post('/commands/samanage', (req, res) => {
   };
 
   console.log('RESPONSE_URL parsed: ' + options.host + '\n' + options.path + '\n');
+  console.log(util.inspect(options));
 
   // res.set('content-type', 'application/json');
   res.status(200).json('One Second...');
