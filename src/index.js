@@ -27,9 +27,18 @@ app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
 var cmd;
 var url;
+var host;
 var post_path;
 
-app.post('/commands/samanage', (req, res) => {
+app.get('/commands/samanage', (req, res) => {
+  let payload = req.body;
+  url = payload.response_url;
+  console.log('RESPONSE_URL: ' + url + '\n');
+  host = url.split('.com/')[0] + '.com';
+  post_path = '/' + url.split('.com/')[1];
+});
+
+app.post(post_path, (req, res) => {
   let payload = req.body;
 
   if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
@@ -43,38 +52,10 @@ app.post('/commands/samanage', (req, res) => {
   cmd = _.reduce(commands, (a, cmd) => {
     return payload.text.match(cmd.pattern) ? cmd : a
   }, helpCommand);
-
-  url = payload.response_url;
-  console.log('RESPONSE_URL: ' + url + '\n');
-
-  // var options = {
-  //    host: url.split('.com/')[0] + '.com',
-  //    path: '/' + url.split('.com/')[1],
-  //    method: 'POST'
-  // };
-
-  var host = url.split('.com/')[0] + '.com';
-  post_path = '/' + url.split('.com/')[1];
+  
   console.log('RESPONSE_URL parsed: ' + host + '\n' + path + ' ' + typeof path + '\n');
 
-//   var request = https.request(options, function (response) {
-//     response.setEncoding('utf8');
-//     var body = "";
-//     response.on('data', function (chunk) {
-//       console.log('Response: ' + chunk);
-//     });
-//   });
-//   request.write(cmd.handler(payload, response));
-//   request.end();
-//   request.on('error', function (e) {
-//     console.log('Problem with delayed request: ' + e.message);
-//   });
-
-  res.setStatus(200);
-});
-
-app.post(post_path, (request, response) => {
-  cmd.handler(payload, response);
+  cmd.handler(payload, res);
 });
 
 app.listen(config('PORT'), (err) => {
