@@ -70,14 +70,12 @@ app.post('/commands/samanage', (req, res) => {
 //     console.log('Problem with delayed request: ' + e.message);
 //   });
 
-res.setStatus(200);
-}, delay(post_path));
+  res.setStatus(200);
+});
 
-function delay (path) {
-  app.post(path, (request, response) => {
-    cmd.handler(payload, response);
-  });
-}
+app.post(post_path, (request, response) => {
+  cmd.handler(payload, response);
+});
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err;
