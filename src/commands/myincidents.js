@@ -22,7 +22,7 @@ const msgDefaults = {
 const handler = (payload, res) => {
 
   res.set('content-type', 'application/json');
-  res.status(200);
+  res.send('One Second please...');
 
   var userid = payload.user_id;
   var options = {user: userid};
