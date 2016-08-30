@@ -5,7 +5,7 @@ const _ = require('lodash');
 const config = require('../config');
 const https = require('https');
 const util = require('util');
-var $ = require('jquery');
+var jq = require('jquery');
 
 const username = 'devin.janus@samanage.com';
 const password = 'BenHobgood666';
@@ -136,7 +136,7 @@ function my_incidents (group_id, callback) {
             color = "#E3E4E6";
 
           var image_url = parsedResponse[i].description;
-          var rootElement = $(image_url);
+          var rootElement = jq(image_url);
           rootElement.find('src');
 
           console.log('ELEMENT: ' + util.inspect(rootElement) + '\n');
