@@ -99,19 +99,19 @@ function find_group(ids, size, callback, count) {
   while(count < size) {
     console.log(count + '\n');
     groupRequest({
-    host: 'api.samanage.com',
-    path: '/groups/' + ids[count] + '.json',
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-    auth: username + ':' + password
-  }, (err, found) => {
-    if (err) console.log(err);
-    
-    if (found)
-      return callback(null, ids[count]);
-    }
-  });
-  count++;
+      host: 'api.samanage.com',
+      path: '/groups/' + ids[count] + '.json',
+      method: 'GET',
+      headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+      auth: username + ':' + password
+    }, (err, found) => {
+      if (err) console.log(err);
+      
+      if (found)
+        return callback(null, ids[count]);
+    });
+    count++;
+  }
 }
 
 
