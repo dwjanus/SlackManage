@@ -151,6 +151,7 @@ function my_incidents (group_id, callback) {
             "title" : parsedResponse[i].name,
             "number" : parsedResponse[i].number,
             "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
+            "image_url" : image_url,
             "description" : parsedResponse[i].description_no_html,
             "requester" : parsedResponse[i].requester.name,
             "state" : parsedResponse[i].state,
