@@ -90,6 +90,7 @@ function find_group(ids, size, callback, count) {
     
   //   if (found)
   //     return callback(null, ids[count]);
+  //  }
   // });
   // count++;
   // find_group(ids, size, callback, count);
@@ -108,6 +109,7 @@ function find_group(ids, size, callback, count) {
     
     if (found)
       return callback(null, ids[count]);
+    }
   });
   count++;
 }
