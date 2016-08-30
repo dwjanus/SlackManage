@@ -27,7 +27,6 @@ const handler = (payload, res) => {
   var email = "";
   var attachments = [];
 
-
   // get user slack id, then use that to retrieve email info
   var user = api.users.info(options, function (err, respo) {
     if (err) console.log(err);
@@ -35,8 +34,6 @@ const handler = (payload, res) => {
     email = respo.user.profile.email;
     res.set('content-type', 'application/json');
     res.send('Finding most recently updated incidents for ' + respo.user.profile.real_name + '...');
-
-    console.log('EMAIL: ' + email + '\n');
 
     // get the correct user from Samanage via their email
     Samanage.getUserInfo({
@@ -55,7 +52,6 @@ const handler = (payload, res) => {
         Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
           if (err) console.log(err);
 
-          console.log('\nMY_INCIDENTS: ' + JSON.stringify(my_incidents_list) + '\n');
           attachments = my_incidents_list.slice(0, list_size).map((incident) => {
             return {
               title: `${incident.title}\n`,
@@ -86,9 +82,7 @@ const handler = (payload, res) => {
             attachments: attachments
           }, msgDefaults);
 
-
           let url = payload.response_url;
-          console.log('RESPONSE_URL: ' + url + '\n');
 
           var post_options = {
              host: 'hooks.slack.com',
@@ -97,15 +91,9 @@ const handler = (payload, res) => {
              headers: { 'Content-Type' : 'application/json' },
              port: 443
           };
-
-          console.log('RESPONSE_URL parsed: ' + post_options.host + '\n' + post_options.path + '\n');
-          console.log(util.inspect(options) + '\n');
           
           var request = https.request(post_options, function (response) {
             response.setEncoding('utf8');
-
-            console.log('you are in the post request now!' + '\n');
-            console.log('RESPONSE HEADERS: ' + JSON.stringify(response.headers));
           });
 
           request.on('error', function (e) {

@@ -27,17 +27,14 @@ function getUserInfo(options, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      console.log('PARSED: ' + JSON.stringify(parsed));
       ids = parsed[0].group_ids;
-      console.log('IDS Array: ' + JSON.stringify(ids) + '\n');
       callback(null, ids);
     });
   });
   request.end();
 
   request.on('error', function (e) {
-    console.log('problem with request: ' + e.message);
-    return callback(new Error("Problem with request"));
+    return callback(new Error("Problem with request: " + e.message));
   });
 }
 
@@ -53,17 +50,14 @@ function groupRequest(options, callback) {
     });
 
     response.on('end', function () {
-      console.log('BODY: ' + util.inspect(body) + '\n');
       var parsed = JSON.parse(body);
-      console.log('PARSED GROUP: ' + JSON.stringify(parsed) + '\n');
       callback(null, parsed.is_user);
     });
   });
   request.end();
 
   request.on('error', function (e) {
-    console.log('problem with request: ' + e.message);
-    return callback(new Error("Problem with request"));
+    return callback(new Error("Problem with request: " + e.message));
   });
 }
 
@@ -75,25 +69,8 @@ function find_group(ids, size, callback, count) {
   if (count === undefined)
     count = 0;
   if (ids === null || count >= size) {
-    return callback(new Error("No Group Ids"));
+    return callback(new Error("Group Id not located"));
   }
-  console.log(count + '\n');
-
-  // groupRequest({
-  //   host: 'api.samanage.com',
-  //   path: '/groups/' + ids[count] + '.json',
-  //   method: 'GET',
-  //   headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-  //   auth: username + ':' + password
-  // }, (err, found) => {
-  //   if (err) console.log(err);
-    
-  //   if (found)
-  //     return callback(null, ids[count]);
-  // });
-  // count++;
-  // find_group(ids, size, callback, count);
-
 
   while(count < size) {
     console.log(count + '\n');
@@ -169,7 +146,6 @@ function my_incidents (group_id, callback) {
             "ts" : parsedResponse[i].due_at,
             "color" : color
           };
-          console.log('Current incident - ' + i + ': ' + JSON.stringify(current) + '\n');
           my_incidents_list.push(current);
         }
       } else {
