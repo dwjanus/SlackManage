@@ -16,7 +16,6 @@ var found = false;
 // ------------------------------------------------------------
 function getUserInfo(options, callback) {
   var request = https.request(options, function (response) {
-    console.log('STATUS: ' + response.statusCode);
     response.setEncoding('utf8');
 
     var ids = [];
@@ -120,7 +119,7 @@ function my_incidents (group_id, callback) {
 
     response.on('end', function () {
       var parsedResponse = JSON.parse(output_body);
-      
+      console.log(util.inspect(parsedResponse) + '\n');
       for(var id in parsedResponse) {
         size++;
       }
@@ -217,7 +216,7 @@ function new_incidents (callback) {
           "requester_email" : parsedResponse[i].requester.email,
           "state" : parsedResponse[i].state,
           "priority" : parsedResponse[i].priority,
-          // "assignee" : parsedResponse[i].assignee.name,
+          "assignee" : parsedResponse[i].assignee.name,
           "ts" : parsedResponse[i].due_at,
           "color" : color
         };
