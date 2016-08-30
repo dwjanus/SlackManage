@@ -139,6 +139,7 @@ function my_incidents (group_id, callback) {
             color = "#E3E4E6";
 
           var image_html = parsedResponse[i].description;
+          var image_url;
           if (image_url.indexOf('src') !== -1) {
             image_url = image_html.split('src=').split(/[\s\"]/);
           } 
