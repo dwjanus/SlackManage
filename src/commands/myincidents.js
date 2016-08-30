@@ -108,6 +108,8 @@ const handler = (payload, res) => {
           });
           request.write(JSON.stringify(msg));
           request.end();
+
+          user = ""; // hopefully this will clear the user data in prep for new command
           return;
         });
       });

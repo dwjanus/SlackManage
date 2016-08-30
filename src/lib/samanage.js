@@ -119,10 +119,14 @@ function my_incidents (group_id, callback) {
 
     response.on('end', function () {
       var parsedResponse = JSON.parse(output_body);
+
       console.log(util.inspect(parsedResponse) + '\n');
       for(var id in parsedResponse) {
         size++;
       }
+      
+      if (size > 5)
+        size = 5;
 
       if (size > 0) {
         for (var i = 0; i < size; i++) {
@@ -134,7 +138,7 @@ function my_incidents (group_id, callback) {
           if (parsedResponse[i].state == "Closed")
             color = "#E3E4E6";
 
-          var image_url = parsedResponse[i].description;
+          var image_url = parsedResponse[i].description.toString();
 
           console.log('ELEMENT: ' + util.inspect(image_url) + '\n');
 
