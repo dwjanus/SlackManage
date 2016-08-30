@@ -108,7 +108,7 @@ function find_group(ids, size, callback, count) {
     
     if (found)
       return callback(null, ids[count]);
-  }
+  });
   count++;
 }
 
