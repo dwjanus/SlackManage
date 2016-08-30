@@ -35,7 +35,7 @@ const handler = (payload, res) => {
 
     let pre = _.defaults({
       channel: payload.channel_name,
-      text: 'Finding most recently updated incidents for ' + respo.user.profile.real_name + '...'
+      text: 'Most recently updated incidents for ' + respo.user.profile.real_name + '...'
     }, msgDefaults);
 
     res.set('Content-Type', 'application/json');
