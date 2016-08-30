@@ -34,7 +34,7 @@ const handler = (payload, res) => {
 
     email = respo.user.profile.email;
     res.set('content-type', 'application/json');
-    res.send('Finding most recently updated incidents for ' + respo.user.profile.real_name '...');
+    res.send('Finding most recently updated incidents for ' + respo.user.profile.real_name + '...');
 
     console.log('EMAIL: ' + email + '\n');
 
