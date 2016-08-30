@@ -32,8 +32,14 @@ const handler = (payload, res) => {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
-    res.set('content-type', 'application/json');
-    res.send('Finding most recently updated incidents for ' + respo.user.profile.real_name + '...');
+
+    let pre = _.defaults({
+      channel: payload.channel_name,
+      text: 'Finding most recently updated incidents for ' + respo.user.profile.real_name + '...'
+    }, msgDefaults);
+
+    res.set('Content-Type', 'application/json');
+    res.send(pre);
 
     // get the correct user from Samanage via their email
     Samanage.getUserInfo({
