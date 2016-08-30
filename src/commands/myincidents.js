@@ -93,7 +93,7 @@ const handler = (payload, res) => {
              host: 'hooks.slack.com',
              path: '/' + url.split('.com/')[1],
              method: 'POST',
-             headers: { 'Content-Type' : 'application/json', 'Content-Length' :  JSON.stringify(msg).length },
+             headers: { 'Content-Type' : 'application/json' },
              port: 443
           };
 
