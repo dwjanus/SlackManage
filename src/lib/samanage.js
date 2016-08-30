@@ -141,8 +141,10 @@ function my_incidents (group_id, callback) {
           var image_html = parsedResponse[i].description;
           var image_url;
           if (image_html.indexOf('src') !== -1) {
-            image_url = image_html.split('src=').split(/[\s\"]/);
-            console.log('ELEMENT: ' + util.inspect(image_url) + '\n');
+            image_url = image_html.split('src=');
+            console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
+            image_url = image_url.split(/[\s\"]/);
+            console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
           }
 
           var current = {
