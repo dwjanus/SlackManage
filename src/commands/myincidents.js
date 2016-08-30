@@ -21,19 +21,20 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
-  res.set('content-type', 'application/json');
-  res.send('One Second please...');
 
   var userid = payload.user_id;
   var options = {user: userid};
   var email = "";
   var attachments = [];
 
+
   // get user slack id, then use that to retrieve email info
   var user = api.users.info(options, function (err, respo) {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
+    res.set('content-type', 'application/json');
+    res.send('Finding most recently updated incidents for ' + respo.user.profile.real_name '...');
 
     console.log('EMAIL: ' + email + '\n');
 
