@@ -138,7 +138,10 @@ function my_incidents (group_id, callback) {
           if (parsedResponse[i].state == "Closed")
             color = "#E3E4E6";
 
-          var image_url = parsedResponse[i].description.toString();
+          var image_html = parsedResponse[i].description;
+          if (image_url.indexOf('src') !== -1) {
+            image_url = image_html.split('src=').split(/[\s\"]/);
+          } 
 
           console.log('ELEMENT: ' + util.inspect(image_url) + '\n');
 
