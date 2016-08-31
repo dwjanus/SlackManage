@@ -63,13 +63,14 @@ const handler = (payload, res) => {
               title: `${incident.title}\n`,
               title_link: `${incident.title_link}`,
               pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+              image_url: `${incident.image_url}`,
               color: `${incident.color}`,
-              {
-                title: "Description",
-                text: `${incident.description}\n\n`,
-                image_url: `${incident.image_url}`
-              },
               fields: [
+                {
+                  title: "Description",
+                  value: `${incident.description}\n\n`,
+                  short: false
+                },
                 {
                   title: 'State',
                   value: `${incident.state}`,
