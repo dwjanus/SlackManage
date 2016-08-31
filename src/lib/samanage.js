@@ -159,7 +159,7 @@ function my_incidents (group_id, callback) {
             current["image_url"] = image_url;
           }
 
-          if (current.description === '') {
+          if (current.description.length < 1) {
             current.description = "No description available";
           }
 
