@@ -265,7 +265,7 @@ function new_incidents (callback) {
 function incident(number, callback) {
   var options = {
     host: 'api.samanage.com',
-    path: '/incidents.json?number=' + number + '&per_page=1',
+    path: '/incidents.json?number=' + number,
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
     auth: username + ':' + password
