@@ -64,9 +64,12 @@ const handler = (payload, res) => {
               title_link: `${incident.title_link}`,
               pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
               color: `${incident.color}`,
-              image_url: `${incident.image_url}`,
-              text: `${incident.description}\n\n`,
               fields: [
+                {
+                  image_url: `${incident.image_url}`,
+                  text: `${incident.description}\n\n`,
+                  short: false
+                },
                 {
                   title: 'State',
                   value: `${incident.state}`,
@@ -109,7 +112,7 @@ const handler = (payload, res) => {
           request.write(JSON.stringify(msg));
           request.end();
 
-          user = ""; // hopefully this will clear the user data in prep for new command
+          user = null; // hopefully this will clear the user data in prep for new command
           return;
         });
       });
