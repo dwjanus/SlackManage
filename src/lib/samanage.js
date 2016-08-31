@@ -142,7 +142,7 @@ function my_incidents (group_id, callback) {
             "title" : parsedResponse[i].name,
             "number" : parsedResponse[i].number,
             "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
-            "description" : parsedResponse[i].description,
+            "description" : parsedResponse[i].description_no_html,
             "requester" : parsedResponse[i].requester.name,
             "state" : parsedResponse[i].state,
             "priority" : parsedResponse[i].priority,
@@ -159,14 +159,18 @@ function my_incidents (group_id, callback) {
             current["image_url"] = image_url;
           }
 
+          if (current.description === '') {
+            current.description = "No description available";
+          }
+
           my_incidents_list.push(current);
         }
       } else {
         var none = {
-            "title" : "No Incidents",
+            "title" : "There are currently no incidents assigned to you",
             "number" : "000000",
             "title_link" : "http://app.samanage.com/incidents/",
-            "description" : "There are currently no incidents assigned to you",
+            "description" : "Woo! Go catch up on some reading",
             "requester" : "none",
             "state" : "none",
             "priority" : "none",
