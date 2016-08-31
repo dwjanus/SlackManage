@@ -238,6 +238,16 @@ function new_incidents (callback) {
           "ts" : parsedResponse[i].due_at,
           "color" : color
         };
+
+        var image_html = parsedResponse[i].description;
+        if (image_html.indexOf('src') !== -1) {
+          var image_url = image_html.split('src="')[1];
+          console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
+          image_url = image_url.split(/[\s\"]/)[0];
+          console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
+          current["image_url"] = image_url;
+        }
+          
         incident_list.push(current);
       }
       callback(null, incident_list);
