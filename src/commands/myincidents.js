@@ -68,7 +68,7 @@ const handler = (payload, res) => {
               fields: [
                 {
                   title: "Description",
-                  text: `${incident.description}\n\n`,
+                  value: `${incident.description}\n\n`,
                   short: false
                 },
                 {
