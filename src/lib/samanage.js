@@ -247,7 +247,7 @@ function new_incidents (callback) {
           console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
           current["image_url"] = image_url;
         }
-          
+
         incident_list.push(current);
       }
       callback(null, incident_list);
@@ -259,6 +259,8 @@ function new_incidents (callback) {
     console.log('problem with request: ' + e.message);
   });
 }
+
+function incident() {}
 
 module.exports.getUserInfo = getUserInfo;
 module.exports.find_group = find_group;
