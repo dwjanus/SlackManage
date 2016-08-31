@@ -260,9 +260,72 @@ function new_incidents (callback) {
   });
 }
 
-function incident() {}
+
+
+function incident(number, callback) {
+  var options = {
+    host: 'api.samanage.com',
+    path: '/incidents.json?number=' + number + '&per_page=1',
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
+    auth: username + ':' + password
+  };
+
+  var request = https.request(options, function (response) {
+    response.setEncoding('utf8');
+    var body = "";
+
+    response.on('data', function (chunk) {
+      body += chunk;
+    });
+
+    response.on('end', function () {
+      var parsedResponse = JSON.parse(body);
+
+      var color = "#0067B3";
+      if (parsedResponse[0].state == "In Progress")
+        color = "#FF6692";
+      if (parsedResponse[0].state == "Resolved")
+        color = "#AEFF99";
+      if (parsedResponse[0].state == "Closed")
+        color = "#E3E4E6";
+
+      var current = {
+        "title" : parsedResponse[0].name,
+        "number" : parsedResponse[0].number,
+        "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[0].id,
+        "description" : parsedResponse[0].description,
+        "requester" : parsedResponse[0].requester.name,
+        "requester_email" : parsedResponse[0].requester.email,
+        "state" : parsedResponse[0].state,
+        "priority" : parsedResponse[0].priority,
+        "assignee" : parsedResponse[0].assignee.name,
+        "ts" : parsedResponse[0].due_at,
+        "color" : color
+      };
+
+      var image_html = parsedResponse[0].description;
+      if (image_html.indexOf('src') !== -1) {
+        var image_url = image_html.split('src="')[1];
+        console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
+        image_url = image_url.split(/[\s\"]/)[0];
+        console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
+        current["image_url"] = image_url;
+      }
+
+      callback(null, current);
+    });
+  });
+  request.end();
+
+  request.on('error', function (e) {
+    console.log('problem with request: ' + e.message);
+  });
+
+}
 
 module.exports.getUserInfo = getUserInfo;
 module.exports.find_group = find_group;
 module.exports.my_incidents = my_incidents;
 module.exports.new_incidents = new_incidents;
+module.exports.incident = incident;
