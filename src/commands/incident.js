@@ -22,7 +22,7 @@ const handler = (payload, res) => {
 
   var options = {
     host: 'api.samanage.com',
-    path: '/incidents.json?number=' + number,
+    path: '/incidents.json?=number=' + number + '&per_page=100',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: config('API_USER') + ':' + config('API_PASS')
