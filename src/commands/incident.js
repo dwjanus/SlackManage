@@ -25,7 +25,7 @@ const handler = (payload, res) => {
     path: '/incidents.json?number=' + number,
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-    auth: username + ':' + password
+    auth: config('API_USER') + ':' + config('API_PASS')
   };
 
   if (cmd === '@')

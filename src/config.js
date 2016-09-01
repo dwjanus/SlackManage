@@ -13,7 +13,9 @@ const config = {
   WEBHOOK_URL: process.env.WEBHOOK_URL,
   SAMANAGE_COMMAND_TOKEN: process.env.SAMANAGE_COMMAND_TOKEN,
   SLACK_TOKEN: process.env.SLACK_TOKEN,
-  ICON_EMOJI: ':samanage:'
+  ICON_EMOJI: ':samanage:',
+  API_USER: 'devin.janus@samanage.com',
+  API_PASS: 'BenHobgood666'
 };
 
 module.exports = (key) => {
