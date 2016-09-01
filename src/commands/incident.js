@@ -15,9 +15,9 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
-  var str = payload.text.split(/[\s]/)[1];
-  var cmd = str.split(/(@|#)/)[1];
-  var number = cmd.split(/(@|#)/)[1];
+  var str = payload.text;
+  var cmd = str.split(/(@|#)/)[0];
+  var number = str.split(/(@|#)/)[1];
   console.log('STR: ' + str + '\nCMD: ' + cmd + '\nNUMBER: ' + number + '\n');
 
   var options = {
@@ -75,4 +75,4 @@ const handler = (payload, res) => {
   });
 };
 
-module.exports = { pattern: /ticket\s+(@|#)+[0-9]/ig, handler: handler };
+module.exports = { pattern: /(@|#)+[0-9]/ig, handler: handler };
