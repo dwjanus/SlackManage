@@ -37,7 +37,7 @@ const handler = (payload, res) => {
 
   let pre = _.defaults({
       channel: payload.channel_name,
-      text: 'Finding Incident ' + pre_text + number + '...';
+      text: 'Finding Incident ' + pre_text + number + '...'
     }, msgDefaults);
 
   res.set('Content-Type', 'application/json');
