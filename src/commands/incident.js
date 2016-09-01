@@ -18,18 +18,30 @@ const handler = (payload, res) => {
   var str = payload.text;
   var cmd = str.split(/(@|#)/)[1];
   var number = str.split(/(@|#)/)[2];
+  
   console.log('STR: ' + str + '\nCMD: ' + cmd + '\nNUMBER: ' + number + '\n');
 
   var options = {
     host: 'api.samanage.com',
-    path: '/incidents.json?=number=' + number + '&per_page=100',
+    path: '/incidents.json?=per_page=100&number=' + number,
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: config('API_USER') + ':' + config('API_PASS')
   };
 
-  if (cmd === '@')
+  var pre_text = 'with ticket number: ';
+  if (cmd === '@') {
     options.path = '/incidents/' + number + '.json';
+    pre_text = 'with id: ';
+  }
+
+  let pre = _.defaults({
+      channel: payload.channel_name,
+      text: 'Finding Incident ' + pre_text + number + '...';
+    }, msgDefaults);
+
+  res.set('Content-Type', 'application/json');
+  res.send(pre);
 
   Samanage.incident(options, (err, incident) => {
     if (err) console.log(err);
@@ -69,8 +81,26 @@ const handler = (payload, res) => {
       attachments: attachments
     }, msgDefaults);
 
-    res.set('content-type', 'application/json');
-    res.status(200).json(msg);
+    let url = payload.response_url;
+
+    var post_options = {
+       host: 'hooks.slack.com',
+       path: '/' + url.split('.com/')[1],
+       method: 'POST',
+       headers: { 'Content-Type' : 'application/json' },
+       port: 443
+    };
+    
+    var request = https.request(post_options, function (response) {
+      response.setEncoding('utf8');
+    });
+
+    request.on('error', function (e) {
+      console.log('problem with request: ' + e.message);
+    });
+    request.write(JSON.stringify(msg));
+    request.end();
+
     return;
   });
 };
