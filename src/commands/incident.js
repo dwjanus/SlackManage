@@ -16,9 +16,9 @@ const msgDefaults = {
 const handler = (payload, res) => {
 
   var str = payload.text.split(/[\s]/)[1];
-  var cmd = str.split(/(@|#)/)[0];
-  var number = str.split(/(@|#)/)[1];
-  console.log('CMD: ' + cmd + '\n' + 'NUMBER: ' + number + '\n');
+  var cmd = str.split(/(@|#)/)[1];
+  var number = cmd.split(/(@|#)/)[1];
+  console.log('STR: ' + str + '\nCMD: ' + cmd + '\nNUMBER: ' + number + '\n');
 
   var options = {
     host: 'api.samanage.com',
