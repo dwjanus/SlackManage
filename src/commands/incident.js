@@ -14,10 +14,24 @@ const msgDefaults = {
 };
 
 const handler = (payload, res) => {
-  var ticket_number = payload.text;
-  console.log('TICKET ID: ' + ticket_number + '\n');
 
-  Samanage.incident(ticket_number, (err, incident) => {
+  var str = payload.text.split(/[\s]/)[1];
+  var cmd = str.split(/(@|#)/)[0];
+  var number = str.split(/(@|#)/)[1];
+  console.log('CMD: ' + cmd + '\n' + 'NUMBER: ' + number + '\n');
+
+  var options = {
+    host: 'api.samanage.com',
+    path: '/incidents.json?number=' + number,
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+    auth: username + ':' + password
+  };
+
+  if (cmd === '@')
+    options.path = '/incidents/' + number + '.json';
+
+  Samanage.incident(options, (err, incident) => {
     if (err) console.log(err);
 
     var attachments = [
@@ -61,4 +75,4 @@ const handler = (payload, res) => {
   });
 };
 
-module.exports = { pattern: /[0-9]/ig, handler: handler };
+module.exports = { pattern: /ticket\s+(@|#)+[0-9]/ig, handler: handler };

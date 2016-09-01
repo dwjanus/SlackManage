@@ -262,15 +262,8 @@ function new_incidents (callback) {
 
 
 
-function incident(number, callback) {
-  var options = {
-    host: 'api.samanage.com',
-    path: '/incidents.json?number=' + number,
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
-    auth: username + ':' + password
-  };
-
+function incident(options, callback) {
+  
   var request = https.request(options, function (response) {
     response.setEncoding('utf8');
     var body = "";
@@ -281,6 +274,8 @@ function incident(number, callback) {
 
     response.on('end', function () {
       var parsedResponse = JSON.parse(body);
+
+      console.log(util.inspect(parsedResponse) + '\n');
 
       var color = "#0067B3";
       if (parsedResponse[0].state == "In Progress")
