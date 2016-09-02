@@ -296,9 +296,9 @@ function incidentRequest(options, callback) {
     response.on('end', function () {
       var parsed = JSON.parse(body);
       var count = 0;
-      while(count < parsed.length) {
-        console.log('ID: ' + id + ' NUMBER: ' + number + '\n');
-        callback(null, parsed.number, parsed.id);
+      while(count < 100) {
+        console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
+        callback(null, parsed[count].number, parsed[count].id);
       }
     });
   });
