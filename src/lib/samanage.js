@@ -268,18 +268,19 @@ function find_incident(number) {
   // go through all incidents and look for the one that matches number
   incidentRequest({
     host: 'api.samanage.com',
-    path: '/incidents.json?=per_page=100&page=' + page,
+    path: '/incidents.json?=per_page=25&page=' + page,
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: config('API_USER') + ':' + config('API_PASS')
   }, (err, incident_number, incident_id) => {
     if (err) console.log(err);
     
-    if (incident_number === number)
+    if (incident_number === number) {
+      console.log('\nMATCH FOUND!!\n');
       return incident_id;
+    }
   });
   page++;
-  find_incident(number);
 }
 
 
@@ -296,7 +297,7 @@ function incidentRequest(options, callback) {
     response.on('end', function () {
       var parsed = JSON.parse(body);
       var count = 0;
-      while(count < 100) {
+      while(count < 25) {
         console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
         callback(null, parsed[count].number, parsed[count].id);
       }
