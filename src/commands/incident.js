@@ -18,7 +18,6 @@ const handler = (payload, res) => {
   var str = payload.text;
   var cmd = str.split(/(@|#)/)[1];
   var number = str.split(/(@|#)/)[2];
-  var page = 1;
   
   console.log('STR: ' + str + '\nCMD: ' + cmd + '\nNUMBER: ' + number + '\n');
 
