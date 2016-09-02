@@ -18,12 +18,13 @@ const handler = (payload, res) => {
   var str = payload.text;
   var cmd = str.split(/(@|#)/)[1];
   var number = str.split(/(@|#)/)[2];
+  var page = 1;
   
   console.log('STR: ' + str + '\nCMD: ' + cmd + '\nNUMBER: ' + number + '\n');
 
   var options = {
     host: 'api.samanage.com',
-    path: '/incidents.json?=per_page=100&number=' + number,
+    path: '/incidents/' + number + '.json',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: config('API_USER') + ':' + config('API_PASS')
@@ -31,8 +32,10 @@ const handler = (payload, res) => {
 
   var pre_text = 'with ticket number: ';
   if (cmd === '@') {
-    options.path = '/incidents/' + number + '.json';
     pre_text = 'with id: ';
+  } else {
+    var incident_id = Samanage.find_incident(number);
+    options.path = '/incidents/' + incident_id + '.json';
   }
 
   let pre = _.defaults({

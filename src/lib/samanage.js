@@ -5,11 +5,8 @@ const _ = require('lodash');
 const config = require('../config');
 const https = require('https');
 const util = require('util');
-
-const username = 'devin.janus@samanage.com';
-const password = 'BenHobgood666';
-
-var found = false;
+const username = config('API_USER');
+const password = config('API_PASS');
 
 // ------------------------------------------------------------
 // This pal is going to grab the user's Samanage info via email
@@ -38,32 +35,10 @@ function getUserInfo(options, callback) {
 }
 
 
-// ---------------------------------------------------------------------
-// This guy is gonna make the actual request given the specific group_id
-// ---------------------------------------------------------------------
-function groupRequest(options, callback) {
-  var request = https.request(options, function (response) {
-    var body = "";
-    response.on('data', function (chunk) {
-      body += chunk;
-    });
-
-    response.on('end', function () {
-      var parsed = JSON.parse(body);
-      callback(null, parsed.is_user);
-    });
-  });
-  request.end();
-
-  request.on('error', function (e) {
-    return callback(new Error("Problem with request: " + e.message));
-  });
-}
-
-
 // -------------------------------------------------------------------
 // This one is gonna iterate through each group_id until user is found
 // -------------------------------------------------------------------
+var found = false;
 function find_group(ids, size, callback, count) {
   if (count === undefined)
     count = 0;
@@ -87,6 +62,29 @@ function find_group(ids, size, callback, count) {
     });
     count++;
   }
+}
+
+
+// ---------------------------------------------------------------------
+// This guy is gonna make the actual request given the specific group_id
+// ---------------------------------------------------------------------
+function groupRequest(options, callback) {
+  var request = https.request(options, function (response) {
+    var body = "";
+    response.on('data', function (chunk) {
+      body += chunk;
+    });
+
+    response.on('end', function () {
+      var parsed = JSON.parse(body);
+      callback(null, parsed.is_user);
+    });
+  });
+  request.end();
+
+  request.on('error', function (e) {
+    return callback(new Error("Problem with request: " + e.message));
+  });
 }
 
 
@@ -261,6 +259,52 @@ function new_incidents (callback) {
 }
 
 
+// ------------------------------------------------------------------------
+// This one is gonna iterate through each incident id until number is found
+// ------------------------------------------------------------------------
+var page = 1;
+function find_incident(number) {
+
+  // go through all incidents and look for the one that matches number
+  incidentRequest({
+      host: 'api.samanage.com',
+      path: '/incidents.json?=per_page=100&page=' + page,
+      method: 'GET',
+      headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+      auth: config('API_USER') + ':' + config('API_PASS')
+    }, (err, incident_number, incident_id) => {
+      if (err) console.log(err);
+      
+      if (incident_number === number)
+        return incident_id;
+    });
+  page++;
+  find_incident(number);
+}
+
+
+// ---------------------------------------------------------------------
+// This guy is gonna make the actual request given the specific group_id
+// ---------------------------------------------------------------------
+function incidentRequest(options, callback) {
+  var request = https.request(options, function (response) {
+    var body = "";
+    response.on('data', function (chunk) {
+      body += chunk;
+    });
+
+    response.on('end', function () {
+      var parsed = JSON.parse(body);
+      for (var id in parsed)
+        callback(null, parsed.number, parsed.id);
+    });
+  });
+  request.end();
+
+  request.on('error', function (e) {
+    return callback(new Error("Problem with request: " + e.message));
+  });
+}
 
 function incident(options, callback) {
   
@@ -316,11 +360,11 @@ function incident(options, callback) {
   request.on('error', function (e) {
     console.log('problem with request: ' + e.message);
   });
-
 }
 
 module.exports.getUserInfo = getUserInfo;
 module.exports.find_group = find_group;
 module.exports.my_incidents = my_incidents;
 module.exports.new_incidents = new_incidents;
+module.exports.find_incident = find_incident;
 module.exports.incident = incident;
