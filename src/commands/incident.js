@@ -30,21 +30,29 @@ const handler = (payload, res) => {
     auth: config('API_USER') + ':' + config('API_PASS')
   };
 
-  var pre_text = 'with ticket number: ';
+  var pre_text = 'with id: ';
   if (cmd === '@') {
-    pre_text = 'with id: ';
-  } else {
-    var incident_id = Samanage.find_incident(number);
-    options.path = '/incidents/' + incident_id + '.json';
-  }
-
-  let pre = _.defaults({
+    let pre = _.defaults({
       channel: payload.channel_name,
       text: 'Finding Incident ' + pre_text + number + '...'
     }, msgDefaults);
 
-  res.set('Content-Type', 'application/json');
-  res.send(pre);
+    res.set('Content-Type', 'application/json');
+    res.send(pre);
+
+  } else {
+    pre_text = 'with ticket number: ';
+    let pre = _.defaults({
+      channel: payload.channel_name,
+      text: 'Finding Incident ' + pre_text + number + '...'
+    }, msgDefaults);
+
+    res.set('Content-Type', 'application/json');
+    res.send(pre);
+
+    var incident_id = Samanage.find_incident(number);
+    options.path = '/incidents/' + incident_id + '.json';
+  }
 
   Samanage.incident(options, (err, incident) => {
     if (err) console.log(err);
