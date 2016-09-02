@@ -324,28 +324,28 @@ function incident(options, callback) {
       //console.log(util.inspect(parsedResponse) + '\n');
 
       var color = "#0067B3";
-      if (parsedResponse[0].state == "In Progress")
+      if (parsedResponse.state == "In Progress")
         color = "#FF6692";
-      if (parsedResponse[0].state == "Resolved")
+      if (parsedResponse.state == "Resolved")
         color = "#AEFF99";
-      if (parsedResponse[0].state == "Closed")
+      if (parsedResponse.state == "Closed")
         color = "#E3E4E6";
 
       var current = {
-        "title" : parsedResponse[0].name,
-        "number" : parsedResponse[0].number,
-        "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[0].id,
-        "description" : parsedResponse[0].description_no_html,
-        "requester" : parsedResponse[0].requester.name,
-        "requester_email" : parsedResponse[0].requester.email,
-        "state" : parsedResponse[0].state,
-        "priority" : parsedResponse[0].priority,
-        "assignee" : parsedResponse[0].assignee.name,
-        "ts" : parsedResponse[0].due_at,
+        "title" : parsedResponse.name,
+        "number" : parsedResponse.number,
+        "title_link" : "http://app.samanage.com/incidents/" + parsedResponse.id,
+        "description" : parsedResponse.description_no_html,
+        "requester" : parsedResponse.requester.name,
+        "requester_email" : parsedResponse.requester.email,
+        "state" : parsedResponse.state,
+        "priority" : parsedResponse.priority,
+        "assignee" : parsedResponse.assignee.name,
+        "ts" : parsedResponse.due_at,
         "color" : color
       };
 
-      var image_html = parsedResponse[0].description;
+      var image_html = parsedResponse.description;
       if (image_html.indexOf('src') !== -1) {
         var image_url = image_html.split('src="')[1];
         console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
