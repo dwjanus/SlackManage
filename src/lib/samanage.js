@@ -324,14 +324,14 @@ function incident(options, callback) {
     response.on('end', function () {
       var parsedResponse = JSON.parse(body);
 
-      //console.log(util.inspect(parsedResponse) + '\n');
+      console.log(util.inspect(parsedResponse) + '\n');
 
       var color = "#0067B3";
-      if (parsedResponse.state == "In Progress")
+      if (parsedResponse.state === "In Progress")
         color = "#FF6692";
-      if (parsedResponse.state == "Resolved")
+      if (parsedResponse.state === "Resolved")
         color = "#AEFF99";
-      if (parsedResponse.state == "Closed")
+      if (parsedResponse.state ==="Closed")
         color = "#E3E4E6";
 
       var current = {
