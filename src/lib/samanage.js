@@ -264,11 +264,11 @@ function new_incidents (callback) {
 // ------------------------------------------------------------------------
 var page = 1;
 function find_incident(number) {
-
+  console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
   // go through all incidents and look for the one that matches number
   incidentRequest({
       host: 'api.samanage.com',
-      path: '/incidents.json?=per_page=100&page=' + page,
+      path: '/incidents.json?=per_page=25&page=' + page,
       method: 'GET',
       headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
       auth: config('API_USER') + ':' + config('API_PASS')
@@ -295,8 +295,10 @@ function incidentRequest(options, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      for (var id in parsed)
+      for (var id in parsed) {
+        console.log('ID: ' + id + ' NUMBER: ' + number + '\n');
         callback(null, parsed.number, parsed.id);
+      }
     });
   });
   request.end();
