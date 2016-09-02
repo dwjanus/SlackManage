@@ -263,12 +263,12 @@ function new_incidents (callback) {
 // This one is gonna iterate through each incident id until number is found
 // ------------------------------------------------------------------------
 var page = 1;
-function find_incident(number, page) {
+function find_incident(number) {
   console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
   // go through all incidents and look for the one that matches number
   incidentRequest({
     host: 'api.samanage.com',
-    path: '/incidents.json?=per_page=25&page=' + page,
+    path: '/incidents.json?=per_page=100&page=' + page,
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: config('API_USER') + ':' + config('API_PASS')
@@ -277,11 +277,9 @@ function find_incident(number, page) {
     
     if (incident_number === number)
       return incident_id;
-    else {
-      page++;
-      find_incident(number, page);
-    }
   });
+  page++;
+  find_incident(number);
 }
 
 
