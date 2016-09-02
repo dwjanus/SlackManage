@@ -295,7 +295,8 @@ function incidentRequest(options, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      for (var id in parsed) {
+      var count = 0;
+      while(count < parsed.length) {
         console.log('ID: ' + id + ' NUMBER: ' + number + '\n');
         callback(null, parsed.number, parsed.id);
       }
