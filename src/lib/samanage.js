@@ -283,7 +283,6 @@ function find_incident (number, callback) {
       // }
     });
     page++;
-    find_incident(number, callback);
   }
 }
 
@@ -295,6 +294,7 @@ function incidentRequest (options, number, callback) {
   console.log('Now requesting specific incidents, looking for number ' +  number + '\n');
 
   var request = https.request(options, function (response) {
+    response.setEncoding('utf8');
     var body = "";
     response.on('data', function (chunk) {
       body += chunk;
