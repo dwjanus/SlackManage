@@ -308,7 +308,7 @@ function incidentRequest (options, callback) {
       var count = 0;
       while(count < 25) {
         console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
-        callback(null, ,parsed[count].number, parsed[count].id);
+        callback(null, parsed[count].number, parsed[count].id);
       }
     });
   });
@@ -321,6 +321,8 @@ function incidentRequest (options, callback) {
 
 
 function incident (options, callback) {
+
+  console.log(util.inspect(options) + '\n');
   
   var request = https.request(options, function (response) {
     response.setEncoding('utf8');
