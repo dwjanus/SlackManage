@@ -263,7 +263,7 @@ function new_incidents (callback) {
 // This one is gonna iterate through each incident id until number is found
 // ------------------------------------------------------------------------
 var page = 1;
-function find_incident(number, callback) {
+function find_incident (number, callback) {
   console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
 
   // go through all incidents and look for the one that matches number
@@ -274,13 +274,13 @@ function find_incident(number, callback) {
       method: 'GET',
       headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
       auth: config('API_USER') + ':' + config('API_PASS')
-    }, (err, incident_number, incident_id) => {
+    }, number, (err, incident_id) => {
       if (err) console.log(err);
       
-      if (incident_number === number) {
+      // if (incident_number === number) {
         console.log('\nMATCH FOUND!!\n');
-        return callback(null, incident_number, incident_id);
-      }
+        return callback(null, incident_id);
+      // }
     });
     page++;
     find_incident(number, callback);
@@ -291,8 +291,8 @@ function find_incident(number, callback) {
 // ---------------------------------------------------------------------
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
-function incidentRequest(options, callback) {
-  console.log('Now requesting specific incidents\n');
+function incidentRequest (options, number, callback) {
+  console.log('Now requesting specific incidents, looking for number ' +  number + '\n');
 
   var request = https.request(options, function (response) {
     var body = "";
@@ -306,7 +306,8 @@ function incidentRequest(options, callback) {
       var count = 0;
       while(count < 25) {
         console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
-        callback(null, parsed[count].number, parsed[count].id);
+        if (parsed[count].number === number)
+          callback(null, parsed[count].id);
       }
     });
   });
@@ -318,7 +319,7 @@ function incidentRequest(options, callback) {
 }
 
 
-function incident(options, callback) {
+function incident (options, callback) {
   
   var request = https.request(options, function (response) {
     response.setEncoding('utf8');
@@ -331,7 +332,7 @@ function incident(options, callback) {
     response.on('end', function () {
       var parsedResponse = JSON.parse(body);
 
-      console.log(util.inspect(parsedResponse) + '\n');
+      //console.log(util.inspect(parsedResponse) + '\n');
 
       var color = "#0067B3";
       if (parsedResponse.state === "In Progress")

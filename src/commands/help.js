@@ -14,14 +14,16 @@ let attachments = [
   {
     title: 'Samanagebot will help you view the status of, and modify, your latest incidents',
     color: '#0067B3',
-    text: '[/samanage incidents] returns the 5 newest incidents \n' +
-          '[/samanage my incidents] returns your 5 most recent incidents',
+    text: '/samanage new -- returns the 5 newest incidents\n' +
+          '/samanage mine -- returns your 5 most recent incidents\n' +
+          '/samanage @[number] -- returns specific incident by id\n' +
+          '/samanage #[number] -- returns a specific incident by ticket number\n',
     mrkdown_in: ['text']
   },
   {
     title: 'Configuring Samanagebot',
     color: '#E3E4E6',
-    text: '"/samanage help" ... youre\'re lookin at it! \n',
+    text: '/samanage help -- ... youre\'re lookin at it! \n',
     mrkdown_in: ['text']
   }
 ];
