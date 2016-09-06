@@ -273,7 +273,7 @@ function find_incident (number, callback) {
       path: '/incidents.json?=per_page=25&page=' + page,
       method: 'GET',
       headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
-      auth: config('API_USER') + ':' + config('API_PASS')
+      auth: username + ':' + password
     }, number, (err, incident_number, incident_id) => {
       if (err) console.log(err);
       console.log(incident_id + '  -- ' + incident_number + '\n');
@@ -299,6 +299,7 @@ function incidentRequest (options, number, callback) {
 
     response.on('data', function (chunk) {
       body += chunk;
+      console.log(chunk + '\n');
     });
 
     console.log(util.inspect(body) + '\n');
