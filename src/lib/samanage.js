@@ -263,7 +263,7 @@ function new_incidents (callback) {
 // This one is gonna iterate through each incident id until number is found
 // ------------------------------------------------------------------------
 var page = 1;
-function find_incident(number) {
+function find_incident(number, callback) {
   console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
 
   // go through all incidents and look for the one that matches number
@@ -290,6 +290,8 @@ function find_incident(number) {
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
 function incidentRequest(options, callback) {
+  console.log('Now requesting specific incidents\n');
+  
   var request = https.request(options, function (response) {
     var body = "";
     response.on('data', function (chunk) {
@@ -353,9 +355,7 @@ function incident(options, callback) {
       var image_html = parsedResponse.description;
       if (image_html.indexOf('src') !== -1) {
         var image_url = image_html.split('src="')[1];
-        console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
         image_url = image_url.split(/[\s\"]/)[0];
-        console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
         current["image_url"] = image_url;
       }
 
