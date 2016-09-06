@@ -282,7 +282,7 @@ function find_incident(number, callback) {
     }
   });
   page++;
-  // find_incident(number);
+  find_incident(number);
 }
 
 
@@ -291,7 +291,7 @@ function find_incident(number, callback) {
 // ---------------------------------------------------------------------
 function incidentRequest(options, callback) {
   console.log('Now requesting specific incidents\n');
-  
+
   var request = https.request(options, function (response) {
     var body = "";
     response.on('data', function (chunk) {
@@ -300,6 +300,7 @@ function incidentRequest(options, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
+      console.log(util.inspect(body) + '\n');
       var count = 0;
       while(count < 25) {
         console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
