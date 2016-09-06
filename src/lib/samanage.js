@@ -274,9 +274,9 @@ function find_incident (number, callback) {
       method: 'GET',
       headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
       auth: config('API_USER') + ':' + config('API_PASS')
-    }, (err, incident_number, incident_id) => {
+    }, number, (err, incident_number, incident_id) => {
       if (err) console.log(err);
-      
+      console.log(incident_id + '  -- ' + incident_number + '\n');
       if (incident_number === number) {
         console.log('\nMATCH FOUND!!\n');
         return callback(null, incident_id.toString());
@@ -290,7 +290,7 @@ function find_incident (number, callback) {
 // ---------------------------------------------------------------------
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
-function incidentRequest (options, callback) {
+function incidentRequest (options, number, callback) {
   console.log('Now requesting specific incidents, looking for number\n');
 
   var request = https.request(options, function (response) {
