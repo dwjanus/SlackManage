@@ -291,7 +291,7 @@ function find_incident (number, callback) {
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
 function incidentRequest (options, callback) {
-  console.log('Now requesting specific incidents, looking for number ' +  number + '\n');
+  console.log('Now requesting specific incidents, looking for number\n');
 
   var request = https.request(options, function (response) {
     response.setEncoding('utf8');
