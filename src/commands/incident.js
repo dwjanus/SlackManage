@@ -49,8 +49,9 @@ const handler = (payload, res) => {
     res.set('Content-Type', 'application/json');
     res.send(pre);
 
-    var incident_id = Samanage.find_incident(number);
-    options.path = '/incidents/' + incident_id + '.json';
+    Samanage.find_incident(number, (err, incident_id) => {
+      options.path = '/incidents/' + incident_id + '.json';
+    });
   }
 
   Samanage.incident(options, (err, incident) => {
