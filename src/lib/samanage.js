@@ -302,7 +302,7 @@ function incidentRequest(options, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      console.log(util.inspect(body) + '\n');
+      console.log(util.inspect(parsed) + '\n');
       var count = 0;
       while(count < 25) {
         console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
