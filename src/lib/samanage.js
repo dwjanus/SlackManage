@@ -292,17 +292,20 @@ function find_incident (number, callback) {
 // ---------------------------------------------------------------------
 function incidentRequest (options, number, callback) {
   console.log('Now requesting specific incidents, looking for number ' +  number + '\n');
+  console.log(util.inspect(options) + '\n');
 
   var request = https.request(options, function (response) {
     response.setEncoding('utf8');
     var body = "";
+
     response.on('data', function (chunk) {
       body += chunk;
     });
 
+    console.log(util.inspect(body) + '\n');
+
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      console.log(util.inspect(parsed) + '\n');
       var count = 0;
       while(count < 25) {
         console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
