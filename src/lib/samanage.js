@@ -263,10 +263,11 @@ function new_incidents (callback) {
 // This one is gonna iterate through each incident id until number is found
 // ------------------------------------------------------------------------
 var page = 1;
+var found_id = false;
 function find_incident (number, callback) {
 
   // go through all incidents and look for the one that matches number
-  while (page < 3) {
+  while (!found_id) {
     console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
     incidentRequest({
       host: 'api.samanage.com',
@@ -279,6 +280,7 @@ function find_incident (number, callback) {
       console.log(incident_id + ' -- ' + incident_number + '\n');
       if (incident_number === number) {
         console.log('\nMATCH FOUND!!\n');
+        found_id = true;
         return callback(null, incident_number, incident_id);
       }
     });
@@ -299,7 +301,6 @@ function incidentRequest (options, number, callback) {
 
     response.on('data', function (chunk) {
       body += chunk;
-      console.log(chunk + '\n');
     });
 
     console.log(util.inspect(body) + '\n');
