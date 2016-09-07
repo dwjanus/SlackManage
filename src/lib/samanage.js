@@ -293,11 +293,11 @@ function find_incident (number, callback) {
         address = perpage;
       }
       else {
-        page = Math.ceil(difference/100);
+        page = Math.ceil(difference/100)-1;
         perpage = 100;
         address = perpage - Math.ceil((page - (difference/100)) * 100);
       }
-      console.log('Difference: ' + difference + ' Per Page: ' + perpage + ' Page: ' + page + '\n');
+      console.log('Difference: ' + difference + '\nPer Page: ' + perpage + '\nPage: ' + page + '\nAddress: ' + address + '\n');
 
       // go through all incidents and look for the one that matches number
       console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
