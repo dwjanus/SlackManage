@@ -300,7 +300,7 @@ function find_incident (number, callback) {
 
       incidentRequest({
         host: 'api.samanage.com',
-        path: '/incidents.json?=&per_page=' + (perpage+1) + '&page=' + page,
+        path: '/incidents.json?=&per_page=' + perpage + '&page=' + page,
         method: 'GET',
         headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
         auth: username + ':' + password
@@ -346,7 +346,7 @@ function incidentRequest (options, perpage, number, callback) {
       //   callback(null, parsed[count].number, parsed[count].id);
       //   count++;
       // }
-      return callback(null, parsed[(perpage)].number, parsed[(perpage)].id);
+      return callback(null, parsed[(perpage-1)].number, parsed[(perpage-1)].id);
     });
   });
   request.end();
