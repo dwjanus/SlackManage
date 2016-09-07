@@ -266,6 +266,7 @@ function new_incidents (callback) {
 
 function find_incident (number, callback) {
   var perpage;
+  var address;
   var page = 1;
   var difference = 0;
   // lets do some quick math to get roughly the page we are looking for the incident on
@@ -287,11 +288,14 @@ function find_incident (number, callback) {
       var parsed = JSON.parse(body);
       difference = parsed[0].number - number;
 
-      if (difference <= 100)
+      if (difference <= 100) {
         perpage = difference-1;
+        address = perpage;
+      }
       else {
-        page = difference/100;
+        page = Math.ceil(difference/100);
         perpage = 100;
+        address = perpage - Math.ceil((page - (difference/100)) * 100);
       }
       console.log('Difference: ' + difference + ' Per Page: ' + perpage + ' Page: ' + page + '\n');
 
@@ -304,7 +308,7 @@ function find_incident (number, callback) {
         method: 'GET',
         headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
         auth: username + ':' + password
-      }, perpage, number, (err, incident_number, incident_id) => {
+      }, address, number, (err, incident_number, incident_id) => {
         if (err) console.log(err);
         console.log(incident_id + ' -- ' + incident_number + '\n');
         // if (incident_number === number) {
@@ -325,7 +329,7 @@ function find_incident (number, callback) {
 // ---------------------------------------------------------------------
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
-function incidentRequest (options, perpage, number, callback) {
+function incidentRequest (options, address, number, callback) {
   console.log('Now requesting specific incidents, looking for number\n');
 
   var request = https.request(options, function (response) {
@@ -345,7 +349,7 @@ function incidentRequest (options, perpage, number, callback) {
       //   callback(null, parsed[count].number, parsed[count].id);
       //   count++;
       // }
-      return callback(null, parsed[perpage-1].number, parsed[perpage-1].id);
+      return callback(null, parsed[address-1].number, parsed[address-1].id);
     });
   });
   request.end();
