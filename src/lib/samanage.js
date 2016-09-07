@@ -345,7 +345,7 @@ function incidentRequest (options, perpage, number, callback) {
       //   callback(null, parsed[count].number, parsed[count].id);
       //   count++;
       // }
-      callback(null, parsed[(perpage-1)].number, parsed[(perpage)-1].id);
+      callback(null, parsed[(perpage-2)].number, parsed[(perpage-2)].id);
     });
   });
   request.end();
