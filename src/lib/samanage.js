@@ -265,13 +265,12 @@ function new_incidents (callback) {
 
 
 function find_incident (number, callback) {
-  var perpage = 25;
   var page = 1;
   var difference = 0;
   // lets do some quick math to get roughly the page we are looking for the incident on
   var request = https.request({
       host: 'api.samanage.com',
-      path: '/incidents.json?=per_page=1&page=1',
+      path: '/incidents.json?=&per_page=1',
       method: 'GET',
       headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
       auth: username + ':' + password
@@ -286,7 +285,8 @@ function find_incident (number, callback) {
     response.on('end', function () {
       var parsed = JSON.parse(body);
       console.log('First Incident: ' + util.inspect(parsed) + '\n');
-      difference = parseInt(parsed[0].number) - number;
+      difference = parsed[0].number.Number() - number;
+      console.log('Difference = ' + difference + '\n');
     });
   });
   request.end();
@@ -307,7 +307,7 @@ function find_incident (number, callback) {
   console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
   incidentRequest({
     host: 'api.samanage.com',
-    path: '/incidents.json?=per_page=' + perpage + '&page=' + page,
+    path: '/incidents.json?=&per_page=' + perpage + '&page=' + page,
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
     auth: username + ':' + password
