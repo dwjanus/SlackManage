@@ -283,6 +283,7 @@ function find_incident (number, callback) {
         body += chunk;
     });
 
+    console.log('First Incident: ' + util.inspect(body) + '\n');
     response.on('end', function () {
       var parsed = JSON.parse(body);
       difference = parsed[0].number - number;
