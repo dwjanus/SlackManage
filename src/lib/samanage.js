@@ -310,7 +310,7 @@ function find_incident (number, callback) {
         // if (incident_number === number) {
         //   console.log('\nMATCH FOUND!!\n');
           return callback(null, incident_number, incident_id);
-        }
+        // }
       });
     });
   });
