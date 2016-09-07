@@ -341,10 +341,7 @@ function incidentRequest (options, perpage, callback) {
       var parsed = JSON.parse(body);
       var count = 0;
       while(count <= perpage) {
-        if (parsed[count].number === number)
-          console.log('NUMBER ' + number + ' found!\n');
-
-        console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
+        console.log('Count: ' + count + ' -- ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
         callback(null, parsed[count].number, parsed[count].id);
         count++;
       }
