@@ -197,7 +197,7 @@ function new_incidents (callback) {
 
   var newoptions = {
     host: 'api.samanage.com',
-    path: '/incidents.json?per_page=5&sort_by=updated_at&sort_order=DESC',
+    path: '/incidents.json?=&per_page=5&sort_by=updated_at&sort_order=DESC',
     method: 'GET',
     headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
     auth: username + ':' + password
@@ -288,7 +288,7 @@ function find_incident (number, callback) {
       difference = parsed[0].number - number;
 
       if (difference <= 100)
-        perpage = difference;
+        perpage = difference-1;
       else {
         page = difference/100;
         perpage = 100;
@@ -300,7 +300,7 @@ function find_incident (number, callback) {
 
       incidentRequest({
         host: 'api.samanage.com',
-        path: '/incidents.json?=&per_page=' + (perpage-1) + '&page=' + page,
+        path: '/incidents.json?=&per_page=' + perpage + '&page=' + page,
         method: 'GET',
         headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
         auth: username + ':' + password
@@ -345,7 +345,7 @@ function incidentRequest (options, perpage, number, callback) {
       //   callback(null, parsed[count].number, parsed[count].id);
       //   count++;
       // }
-      return callback(null, parsed[perpage-1].number, parsed[perpage-1].id);
+      return callback(null, parsed[perpage].number, parsed[perpage].id);
     });
   });
   request.end();
