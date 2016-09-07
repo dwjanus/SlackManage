@@ -297,18 +297,19 @@ function find_incident (number, callback) {
 
       // go through all incidents and look for the one that matches number
       console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
+
       incidentRequest({
         host: 'api.samanage.com',
         path: '/incidents.json?=&per_page=' + perpage + '&page=' + page,
         method: 'GET',
         headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
         auth: username + ':' + password
-      }, perpage, (err, incident_number, incident_id) => {
+      }, perpage, number, (err, incident_number, incident_id) => {
         if (err) console.log(err);
         console.log(incident_id + ' -- ' + incident_number + '\n');
         if (incident_number === number) {
           console.log('\nMATCH FOUND!!\n');
-          return callback(null, incident_number, incident_id);
+          callback(null, incident_number, incident_id);
         }
       });
     });
@@ -324,7 +325,7 @@ function find_incident (number, callback) {
 // ---------------------------------------------------------------------
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
-function incidentRequest (options, perpage, callback) {
+function incidentRequest (options, perpage, number, callback) {
   console.log('Now requesting specific incidents, looking for number\n');
 
   var request = https.request(options, function (response) {
@@ -339,12 +340,13 @@ function incidentRequest (options, perpage, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      var count = 0;
-      while(count <= perpage) {
-        console.log('Count: ' + count + ' -- ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
-        callback(null, parsed[count].number, parsed[count].id);
-        count++;
-      }
+      // var count = 0;
+      // while(count < perpage) {
+      //   console.log('Count: ' + count + ' -- ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
+      //   callback(null, parsed[count].number, parsed[count].id);
+      //   count++;
+      // }
+      return callback(null, parsed[perpage].number, parsed[perpage].id);
     });
   });
   request.end();
@@ -356,8 +358,6 @@ function incidentRequest (options, perpage, callback) {
 
 
 function incident (options, callback) {
-
-  console.log(util.inspect(options) + '\n');
   
   var request = https.request(options, function (response) {
     response.setEncoding('utf8');
