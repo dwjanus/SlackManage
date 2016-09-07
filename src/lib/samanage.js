@@ -285,8 +285,8 @@ function find_incident (number, callback) {
     response.on('end', function () {
       var parsed = JSON.parse(body);
       console.log('First Incident: ' + util.inspect(parsed) + '\n');
-      difference = parsed[0].number.Number() - number;
-      console.log('Difference = ' + difference + '\n');
+      difference = parsed[0].number - number;
+      console.log('Difference = ' + difference + ' parsed type: ' + typeof parsed[0].number + '\n');
     });
   });
   request.end();
