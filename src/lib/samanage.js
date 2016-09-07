@@ -295,7 +295,7 @@ function find_incident (number, callback) {
       else {
         page = Math.ceil(difference/100)-1;
         perpage = 100;
-        address = Math.ceil(((difference/100)%10) * page);
+        address = difference%100;
       }
       console.log('Difference: ' + difference + '\nPer Page: ' + perpage + '\nPage: ' + page + '\nAddress: ' + address + '\n');
 
