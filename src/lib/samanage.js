@@ -266,7 +266,7 @@ var page = 1;
 function find_incident (number, callback) {
 
   // go through all incidents and look for the one that matches number
-  while (page < 5) {
+  while (page < 3) {
     console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
     incidentRequest({
       host: 'api.samanage.com',
@@ -276,7 +276,7 @@ function find_incident (number, callback) {
       auth: username + ':' + password
     }, number, (err, incident_number, incident_id) => {
       if (err) console.log(err);
-      console.log(incident_id + '  -- ' + incident_number + '\n');
+      console.log(incident_id + ' -- ' + incident_number + '\n');
       if (incident_number === number) {
         console.log('\nMATCH FOUND!!\n');
         return callback(null, incident_number, incident_id);
@@ -310,7 +310,7 @@ function incidentRequest (options, number, callback) {
       while(count < 25) {
         if (parsed[count].number === number)
           console.log('NUMBER ' + number + ' found!\n');
-        
+
         console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
         callback(null, parsed[count].number, parsed[count].id);
       }
