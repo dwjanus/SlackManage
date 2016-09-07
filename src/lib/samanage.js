@@ -262,37 +262,70 @@ function new_incidents (callback) {
 // ------------------------------------------------------------------------
 // This one is gonna iterate through each incident id until number is found
 // ------------------------------------------------------------------------
-var page = 1;
-var found_id = false;
-function find_incident (number, callback) {
 
-  // go through all incidents and look for the one that matches number
-  while (!found_id) {
-    console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
-    incidentRequest({
+
+function find_incident (number, callback) {
+  var perpage = 25;
+  var page = 1;
+  var difference = 0;
+  // lets do some quick math to get roughly the page we are looking for the incident on
+  var request = https.request({
       host: 'api.samanage.com',
-      path: '/incidents.json?=per_page=25&page=' + page,
+      path: '/incidents.json?=per_page=1&page=1',
       method: 'GET',
       headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
       auth: username + ':' + password
-    }, number, (err, incident_number, incident_id) => {
-      if (err) console.log(err);
-      console.log(incident_id + ' -- ' + incident_number + '\n');
-      if (incident_number === number) {
-        console.log('\nMATCH FOUND!!\n');
-        found_id = true;
-        return callback(null, incident_number, incident_id);
+    }, function (response) {
+      response.setEncoding('utf8');
+      var body = "";
+
+      response.on('data', function (chunk) {
+        body += chunk;
+    });
+
+    response.on('end', function () {
+      var parsed = JSON.parse(body);
+      difference = parsed[0].number - number; 
       }
     });
-    page++;
+  });
+  request.end();
+
+  request.on('error', function (e) {
+    return callback(new Error("Problem with request: " + e.message));
+  });
+
+  console.log('Difference: ' + difference + '\n');
+  if (difference <= 100)
+    perpage = difference;
+  else {
+    page = difference/100;
+    perpage = 100;
   }
+
+  // go through all incidents and look for the one that matches number
+  console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
+  incidentRequest({
+    host: 'api.samanage.com',
+    path: '/incidents.json?=per_page=' + perpage + '&page=' + page,
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+    auth: username + ':' + password
+  }, perpage, (err, incident_number, incident_id) => {
+    if (err) console.log(err);
+    console.log(incident_id + ' -- ' + incident_number + '\n');
+    if (incident_number === number) {
+      console.log('\nMATCH FOUND!!\n');
+      return callback(null, incident_number, incident_id);
+    }
+  });
 }
 
 
 // ---------------------------------------------------------------------
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
-function incidentRequest (options, number, callback) {
+function incidentRequest (options, perpage, callback) {
   console.log('Now requesting specific incidents, looking for number\n');
 
   var request = https.request(options, function (response) {
@@ -308,7 +341,7 @@ function incidentRequest (options, number, callback) {
     response.on('end', function () {
       var parsed = JSON.parse(body);
       var count = 0;
-      while(count < 25) {
+      while(count <= perpage) {
         if (parsed[count].number === number)
           console.log('NUMBER ' + number + ' found!\n');
 
