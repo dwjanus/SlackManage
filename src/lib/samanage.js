@@ -313,6 +313,7 @@ function incidentRequest (options, number, callback) {
 
         console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
         callback(null, parsed[count].number, parsed[count].id);
+        count++;
       }
     });
   });
