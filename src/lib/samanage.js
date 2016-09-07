@@ -336,17 +336,16 @@ function incidentRequest (options, perpage, number, callback) {
       body += chunk;
     });
 
-    console.log(util.inspect(body) + '\n');
-
     response.on('end', function () {
       var parsed = JSON.parse(body);
+      console.log(util.inspect(parsed) + '\n');
       // var count = 0;
       // while(count < perpage) {
       //   console.log('Count: ' + count + ' -- ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
       //   callback(null, parsed[count].number, parsed[count].id);
       //   count++;
       // }
-      return callback(null, parsed[(perpage-1)].number, parsed[(perpage-1)].id);
+      return callback(null, parsed[(perpage)].number, parsed[(perpage)].id);
     });
   });
   request.end();
