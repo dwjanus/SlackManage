@@ -350,7 +350,6 @@ function incidentRequest (options, address, number, callback) {
         else
           count++;
       }
-      // return callback(null, parsed[address-1].number, parsed[address-1].id);
     });
   });
   request.end();
