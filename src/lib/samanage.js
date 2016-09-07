@@ -295,7 +295,7 @@ function find_incident (number, callback) {
       else {
         page = Math.ceil(difference/100)-1;
         perpage = 100;
-        address = difference%100;
+        address = (difference%100)-1;
       }
       console.log('Difference: ' + difference + '\nPer Page: ' + perpage + '\nPage: ' + page + '\nAddress: ' + address + '\n');
 
@@ -342,14 +342,15 @@ function incidentRequest (options, address, number, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      console.log(util.inspect(parsed) + '\n');
-      // var count = 0;
-      // while(count < perpage) {
-      //   console.log('Count: ' + count + ' -- ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
-      //   callback(null, parsed[count].number, parsed[count].id);
-      //   count++;
-      // }
-      return callback(null, parsed[address-1].number, parsed[address-1].id);
+      var count = 0;
+      while(count < address) {
+        console.log('Count: ' + count + ' -- ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
+        if (parsed[count].number == number) 
+          return callback(null, parsed[count].number, parsed[count].id);
+        else
+          count++;
+      }
+      // return callback(null, parsed[address-1].number, parsed[address-1].id);
     });
   });
   request.end();
