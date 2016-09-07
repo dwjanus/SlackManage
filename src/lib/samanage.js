@@ -293,7 +293,7 @@ function find_incident (number, callback) {
         page = difference/100;
         perpage = 100;
       }
-      console.log('Difference: ' + difference + ' Per Page: ' + perpage + ' Page: ' + page '\n');
+      console.log('Difference: ' + difference + ' Per Page: ' + perpage + ' Page: ' + page + '\n');
 
       // go through all incidents and look for the one that matches number
       console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
