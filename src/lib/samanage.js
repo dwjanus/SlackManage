@@ -265,6 +265,7 @@ function new_incidents (callback) {
 
 
 function find_incident (number, callback) {
+  var perpage;
   var page = 1;
   var difference = 0;
   // lets do some quick math to get roughly the page we are looking for the incident on
