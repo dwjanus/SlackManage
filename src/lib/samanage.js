@@ -285,8 +285,7 @@ function find_incident (number, callback) {
 
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      difference = parsed[0].number - number; 
-      }
+      difference = parsed[0].number - number;
     });
   });
   request.end();
