@@ -309,7 +309,7 @@ function find_incident (number, callback) {
         console.log(incident_id + ' -- ' + incident_number + '\n');
         if (incident_number === number) {
           console.log('\nMATCH FOUND!!\n');
-          callback(null, incident_number, incident_id);
+          return callback(null, incident_number, incident_id);
         }
       });
     });
