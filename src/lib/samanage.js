@@ -279,7 +279,7 @@ function find_incident (number, callback) {
       console.log(incident_id + '  -- ' + incident_number + '\n');
       if (incident_number === number) {
         console.log('\nMATCH FOUND!!\n');
-        return callback(null, incident_id.toString());
+        return callback(null, incident_number, incident_id);
       }
     });
     page++;
@@ -308,6 +308,9 @@ function incidentRequest (options, number, callback) {
       var parsed = JSON.parse(body);
       var count = 0;
       while(count < 25) {
+        if (parsed[count].number === number)
+          console.log('NUMBER ' + number + ' found!\n');
+        
         console.log('ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
         callback(null, parsed[count].number, parsed[count].id);
       }

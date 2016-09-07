@@ -49,8 +49,12 @@ const handler = (payload, res) => {
     res.set('Content-Type', 'application/json');
     res.send(pre);
 
-    Samanage.find_incident(number, (err, incident_id) => {
+    Samanage.find_incident(number, (err, incident_number, incident_id) => {
+      if(err) console.log(err);
       options.path = '/incidents/' + incident_id + '.json';
+
+      console.log(util.inspect(options) + '\n');
+
       Samanage.incident(options, (err, incident) => {
         if (err) console.log(err);
 
@@ -114,66 +118,66 @@ const handler = (payload, res) => {
     });
   }
 
-  Samanage.incident(options, (err, incident) => {
-    if (err) console.log(err);
+  // Samanage.incident(options, (err, incident) => {
+  //   if (err) console.log(err);
 
-    var attachments = [
-      {
-        title: `${incident.title}\n`,
-        title_link: `${incident.title_link}`,
-        pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-        color: `${incident.color}`,
-        text: `${incident.description}\n\n`,
-        fields: [
-          {
-            title: 'Assigned To',
-            value: `${incident.assignee}`,
-            short: true
-          },
-          {
-            title: 'State',
-            value: `${incident.state}`,
-            short: true
-          },
-          {
-            title: 'Priority',
-            value: `${incident.priority}`,
-            short: true
-          }
-        ],
-        footer: 'due on: ',
-        ts: `${incident.ts}`,
-        mrkdown_in: ['text', 'pretext']
-      }
-    ];  
+  //   var attachments = [
+  //     {
+  //       title: `${incident.title}\n`,
+  //       title_link: `${incident.title_link}`,
+  //       pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+  //       color: `${incident.color}`,
+  //       text: `${incident.description}\n\n`,
+  //       fields: [
+  //         {
+  //           title: 'Assigned To',
+  //           value: `${incident.assignee}`,
+  //           short: true
+  //         },
+  //         {
+  //           title: 'State',
+  //           value: `${incident.state}`,
+  //           short: true
+  //         },
+  //         {
+  //           title: 'Priority',
+  //           value: `${incident.priority}`,
+  //           short: true
+  //         }
+  //       ],
+  //       footer: 'due on: ',
+  //       ts: `${incident.ts}`,
+  //       mrkdown_in: ['text', 'pretext']
+  //     }
+  //   ];  
 
-    let msg = _.defaults({
-      channel: payload.channel_name,
-      attachments: attachments
-    }, msgDefaults);
+  //   let msg = _.defaults({
+  //     channel: payload.channel_name,
+  //     attachments: attachments
+  //   }, msgDefaults);
 
-    let url = payload.response_url;
+  //   let url = payload.response_url;
 
-    var post_options = {
-       host: 'hooks.slack.com',
-       path: '/' + url.split('.com/')[1],
-       method: 'POST',
-       headers: { 'Content-Type' : 'application/json' },
-       port: 443
-    };
+  //   var post_options = {
+  //      host: 'hooks.slack.com',
+  //      path: '/' + url.split('.com/')[1],
+  //      method: 'POST',
+  //      headers: { 'Content-Type' : 'application/json' },
+  //      port: 443
+  //   };
     
-    var request = https.request(post_options, function (response) {
-      response.setEncoding('utf8');
-    });
+  //   var request = https.request(post_options, function (response) {
+  //     response.setEncoding('utf8');
+  //   });
 
-    request.on('error', function (e) {
-      console.log('problem with request: ' + e.message);
-    });
-    request.write(JSON.stringify(msg));
-    request.end();
+  //   request.on('error', function (e) {
+  //     console.log('problem with request: ' + e.message);
+  //   });
+  //   request.write(JSON.stringify(msg));
+  //   request.end();
 
-    return;
-  });
+  //   return;
+  // });
 };
 
 module.exports = { pattern: /(@|#)+[0-9]/ig, handler: handler };
