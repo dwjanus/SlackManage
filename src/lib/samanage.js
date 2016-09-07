@@ -307,8 +307,8 @@ function find_incident (number, callback) {
       }, perpage, number, (err, incident_number, incident_id) => {
         if (err) console.log(err);
         console.log(incident_id + ' -- ' + incident_number + '\n');
-        if (incident_number === number) {
-          console.log('\nMATCH FOUND!!\n');
+        // if (incident_number === number) {
+        //   console.log('\nMATCH FOUND!!\n');
           return callback(null, incident_number, incident_id);
         }
       });
