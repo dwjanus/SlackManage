@@ -103,7 +103,7 @@ function my_incidents (group_id, callback) {
     host: 'api.samanage.com',
     path: '/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5',
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache' },
     auth: username + ':' + password
   };
 
