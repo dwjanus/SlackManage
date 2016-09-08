@@ -92,7 +92,7 @@ function groupRequest(options, callback) {
 // This guy is gonna handle the request for the a user's incidents
 // ---------------------------------------------------------------
 function my_incidents (group_id, callback) {
-  if (group_id === 0) {
+  if (group_id === undefined) {
     return callback(new Error("Incorrect group_id"));
   }
 
@@ -103,7 +103,7 @@ function my_incidents (group_id, callback) {
     host: 'api.samanage.com',
     path: '/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5',
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
     auth: username + ':' + password
   };
 
