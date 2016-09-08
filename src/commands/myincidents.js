@@ -23,7 +23,7 @@ const handler = (payload, res) => {
   var userid = payload.user_id;
   var options = {user: userid};
   var email = "";
-  var attachments = [];
+  // var attachments = [];
 
   // get user slack id, then use that to retrieve email info
   let user = api.users.info(options, function (err, respo) {
@@ -56,7 +56,7 @@ const handler = (payload, res) => {
         Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
           if (err) console.log(err);
 
-          attachments = my_incidents_list.slice(0, list_size).map((incident) => {
+          var attachments = my_incidents_list.slice(0, list_size).map((incident) => {
             return {
               title: `${incident.title}\n`,
               title_link: `${incident.title_link}`,
