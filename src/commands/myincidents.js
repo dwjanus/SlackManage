@@ -97,7 +97,7 @@ const handler = (payload, res) => {
              host: 'hooks.slack.com',
              path: '/' + url.split('.com/')[1],
              method: 'POST',
-             headers: { 'Content-Type' : 'application/json' },
+             headers: { 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
              port: 443
           };
           
@@ -110,6 +110,7 @@ const handler = (payload, res) => {
           });
           request.write(JSON.stringify(msg));
           request.end();
+          user = null;
           return;
         });
       });
