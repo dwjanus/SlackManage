@@ -109,6 +109,7 @@ function my_incidents (group_id, callback) {
 
   var request = https.request(options, function (response) {
     response.setEncoding('utf8');
+    response.setHeader('Cache-Control', 'no-cache, no-store');
     
     var output_body = "";
     response.on('data', function (chunk) {
