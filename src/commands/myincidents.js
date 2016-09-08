@@ -24,10 +24,9 @@ const handler = (payload, res) => {
   var options = {user: userid};
   var email = "";
   var attachments = [];
-  var user = null;
 
   // get user slack id, then use that to retrieve email info
-  user = api.users.info(options, function (err, respo) {
+  var user = api.users.info(options, function (err, respo) {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
@@ -111,6 +110,7 @@ const handler = (payload, res) => {
           });
           request.write(JSON.stringify(msg));
           request.end();
+          user = null;
           return;
         });
       });
