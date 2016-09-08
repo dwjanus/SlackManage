@@ -92,7 +92,7 @@ function groupRequest(options, callback) {
 // This guy is gonna handle the request for the a user's incidents
 // ---------------------------------------------------------------
 function my_incidents (group_id, callback) {
-  if (group_id === undefined) {
+  if (group_id === 0) {
     return callback(new Error("Incorrect group_id"));
   }
 
