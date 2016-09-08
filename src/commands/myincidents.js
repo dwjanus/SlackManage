@@ -110,7 +110,6 @@ const handler = (payload, res) => {
           });
           request.write(JSON.stringify(msg));
           request.end();
-          user = null;
           return;
         });
       });
