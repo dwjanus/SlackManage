@@ -8,9 +8,8 @@ const util = require('util');
 const slack = require('slack');
 const https = require('https');
 
-const username = 'devin.janus@samanage.com';
-const password = 'BenHobgood666';
-
+const username = config('API_USER');
+const password = config('API_PASS');
 var api = slack.api.client(config('SLACK_TOKEN'));
 
 const msgDefaults = {
@@ -21,14 +20,14 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
-
   var userid = payload.user_id;
   var options = {user: userid};
   var email = "";
   var attachments = [];
+  var user = null;
 
   // get user slack id, then use that to retrieve email info
-  let user = api.users.info(options, function (err, respo) {
+  user = api.users.info(options, function (err, respo) {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
@@ -44,7 +43,7 @@ const handler = (payload, res) => {
     // get the correct user from Samanage via their email
     Samanage.getUserInfo({
       host: 'api.samanage.com',
-      path: '/users.json?email=' + email,
+      path: '/users.json?=&email=' + email,
       method: 'GET',
       headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
       auth: username + ':' + password
@@ -99,7 +98,7 @@ const handler = (payload, res) => {
              host: 'hooks.slack.com',
              path: '/' + url.split('.com/')[1],
              method: 'POST',
-             headers: { 'Content-Type' : 'application/json' },
+             headers: { 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
              port: 443
           };
           
@@ -112,8 +111,6 @@ const handler = (payload, res) => {
           });
           request.write(JSON.stringify(msg));
           request.end();
-
-          user = null; // hopefully this will clear the user data in prep for new command
           return;
         });
       });

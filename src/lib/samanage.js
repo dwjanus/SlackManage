@@ -373,8 +373,6 @@ function incident (options, callback) {
     response.on('end', function () {
       var parsedResponse = JSON.parse(body);
 
-      //console.log(util.inspect(parsedResponse) + '\n');
-
       var color = "#0067B3";
       if (parsedResponse.state === "In Progress")
         color = "#FF6692";
