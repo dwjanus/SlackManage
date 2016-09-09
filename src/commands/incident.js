@@ -190,22 +190,15 @@ const handler = (payload, res) => {
         if (incident.comments_num > 0) {
           attachments.push({
             fallback: "Would you like to view the comments?",
-            title: "Would you like to view the comments?",
             callback_id: "comments_btn",
             color: "#3AA3E3",
             attachment_type: "default",
             actions: [
               {
-                  name: "View",
-                  text: "View",
-                  type: "button",
-                  value: "view"
-              },
-              {
-                  name: "No Thanks",
-                  text: "No Thanks",
-                  type: "button",
-                  value: "no"
+                name: "View",
+                text: "View Comments",
+                type: "button",
+                value: "view"
               }
             ]
           });
