@@ -44,11 +44,15 @@ const handler = (payload, res) => {
 
       var attachments = [
         {
+          fallback: `${incident.fallback}`,
+          color: `${incident.color}`,
+          pretext: `Ticket: ${incident.number}`, 
+          author_name: `Requested by: ${incident.requester} -- ${incident.requester_email}\n`,
+          author_icon: `${incident.requester_icon}`,
           title: `${incident.title}\n`,
           title_link: `${incident.title_link}`,
-          pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-          color: `${incident.color}`,
           text: `${incident.description}\n\n`,
+          image_url: `${incident.image_url}`,
           fields: [
             {
               title: 'Assigned To',
@@ -66,11 +70,40 @@ const handler = (payload, res) => {
               short: true
             }
           ],
+        },
+        {
           footer: 'due on: ',
           ts: `${incident.ts}`,
-          mrkdown_in: ['text', 'pretext']
+          mrkdown_in: ['text', 'pretext'],
+          response_url = payload.response_url
         }
       ];  
+
+      if (${incident.comments_num} > 0) {
+        attachments.push({
+          fallback : "Would you like to view the comments?",
+          title : "Would you like to view the comments?",
+          callback_id : "comments_btn",
+          color : "#3AA3E3",
+          attachment_type : "default",
+          actions : [
+            {
+                name : "View",
+                text : "View",
+                type : "button",
+                value : "view"
+            },
+            {
+                name: "No Thanks",
+                text: "No Thanks",
+                type: "button",
+                value: "no"
+            }
+          ]
+        });
+      } else {
+        attachments.push({text : "No Comments Attached"});
+      }
 
       let msg = _.defaults({
         channel: payload.channel_name,
@@ -119,11 +152,15 @@ const handler = (payload, res) => {
 
         var attachments = [
           {
+            fallback: `${incident.fallback}`,
+            color: `${incident.color}`,
+            pretext: `Ticket: ${incident.number}`, 
+            author_name: `Requested by: ${incident.requester} -- ${incident.requester_email}\n`,
+            author_icon: `${incident.requester_icon}`,
             title: `${incident.title}\n`,
             title_link: `${incident.title_link}`,
-            pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-            color: `${incident.color}`,
             text: `${incident.description}\n\n`,
+            image_url: `${incident.image_url}`,
             fields: [
               {
                 title: 'Assigned To',
@@ -141,11 +178,40 @@ const handler = (payload, res) => {
                 short: true
               }
             ],
+          },
+          {
             footer: 'due on: ',
             ts: `${incident.ts}`,
-            mrkdown_in: ['text', 'pretext']
+            mrkdown_in: ['text', 'pretext'],
+            response_url = payload.response_url
           }
         ];  
+
+        if (${incident.comments_num} > 0) {
+          attachments.push({
+            fallback : "Would you like to view the comments?",
+            title : "Would you like to view the comments?",
+            callback_id : "comments_btn",
+            color : "#3AA3E3",
+            attachment_type : "default",
+            actions : [
+              {
+                  name : "View",
+                  text : "View",
+                  type : "button",
+                  value : "view"
+              },
+              {
+                  name: "No Thanks",
+                  text: "No Thanks",
+                  type: "button",
+                  value: "no"
+              }
+            ]
+          });
+        } else {
+          attachments.push({text : "No Comments Attached"});
+        } 
 
         let msg = _.defaults({
           channel: payload.channel_name,

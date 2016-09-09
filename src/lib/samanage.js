@@ -388,6 +388,7 @@ function incident (options, callback) {
         "description" : parsedResponse.description_no_html,
         "requester" : parsedResponse.requester.name,
         "requester_email" : parsedResponse.requester.email,
+        "requester_icon" : parsedResponse.created_by.avatar,
         "state" : parsedResponse.state,
         "priority" : parsedResponse.priority,
         "assignee" : parsedResponse.assignee.name,
@@ -402,6 +403,11 @@ function incident (options, callback) {
         current["image_url"] = image_url;
       }
 
+      if (parsedResponse.number_of_comments >= 1) {
+        var comments_num = parsedResponse.number_of_comments;
+        
+        current["comments_num"] = comments_num;
+      }
       callback(null, current);
     });
   });
