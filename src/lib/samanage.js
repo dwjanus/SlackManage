@@ -392,7 +392,7 @@ function incident (options, callback) {
         "state" : parsedResponse.state,
         "priority" : parsedResponse.priority,
         "assignee" : parsedResponse.assignee.name,
-        "comments_num" : parsedResponse.number_of_comments;
+        "comments_num" : parsedResponse.number_of_comments,
         "ts" : parsedResponse.due_at,
         "color" : color
       };
