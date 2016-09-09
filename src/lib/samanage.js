@@ -293,7 +293,7 @@ function find_incident (number, callback) {
         address = perpage;
       }
       else {
-        page = Math.ceil(difference/100)-1;
+        page = Math.ceil(difference/100);
         perpage = 100;
         address = (difference%100)-1;
       }
