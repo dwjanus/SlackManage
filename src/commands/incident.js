@@ -25,7 +25,7 @@ const handler = (payload, res) => {
     host: 'api.samanage.com',
     path: '/incidents/' + number + '.json',
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
     auth: config('API_USER') + ':' + config('API_PASS')
   };
 

@@ -52,7 +52,7 @@ function find_group(ids, size, callback, count) {
       host: 'api.samanage.com',
       path: '/groups/' + ids[count] + '.json',
       method: 'GET',
-      headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+      headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
       auth: username + ':' + password
     }, (err, found) => {
       if (err) console.log(err);
@@ -103,7 +103,7 @@ function my_incidents (group_id, callback) {
     host: 'api.samanage.com',
     path: '/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5',
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
     auth: username + ':' + password
   };
 
@@ -199,7 +199,7 @@ function new_incidents (callback) {
     host: 'api.samanage.com',
     path: '/incidents.json?=&per_page=5&sort_by=updated_at&sort_order=DESC',
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json', 'Cache-Control' : 'no-store' },
     auth: username + ':' + password
   };
 
@@ -274,7 +274,7 @@ function find_incident (number, callback) {
     host: 'api.samanage.com',
     path: '/incidents.json?=&per_page=1',
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
     auth: username + ':' + password
   }, function (response) {
     response.setEncoding('utf8');
@@ -306,7 +306,7 @@ function find_incident (number, callback) {
         host: 'api.samanage.com',
         path: '/incidents.json?=&per_page=' + perpage + '&page=' + page,
         method: 'GET',
-        headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json' },
+        headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
         auth: username + ':' + password
       }, address, number, (err, incident_number, incident_id) => {
         if (err) console.log(err);
