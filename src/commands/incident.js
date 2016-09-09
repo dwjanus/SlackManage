@@ -75,23 +75,23 @@ const handler = (payload, res) => {
           footer: 'due on: ',
           ts: `${incident.ts}`,
           mrkdown_in: ['text', 'pretext'],
-          response_url = payload.response_url
+          response_url: payload.response_url
         }
       ];  
 
       if (${incident.comments_num} > 0) {
         attachments.push({
-          fallback : "Would you like to view the comments?",
-          title : "Would you like to view the comments?",
-          callback_id : "comments_btn",
-          color : "#3AA3E3",
-          attachment_type : "default",
-          actions : [
+          fallback: "Would you like to view the comments?",
+          title: "Would you like to view the comments?",
+          callback_id: "comments_btn",
+          color: "#3AA3E3",
+          attachment_type: "default",
+          actions: [
             {
-                name : "View",
-                text : "View",
-                type : "button",
-                value : "view"
+                name: "View",
+                text: "View",
+                type: "button",
+                value: "view"
             },
             {
                 name: "No Thanks",
@@ -102,7 +102,7 @@ const handler = (payload, res) => {
           ]
         });
       } else {
-        attachments.push({text : "No Comments Attached"});
+        attachments.push({text: "No Comments Attached"});
       }
 
       let msg = _.defaults({
@@ -183,23 +183,23 @@ const handler = (payload, res) => {
             footer: 'due on: ',
             ts: `${incident.ts}`,
             mrkdown_in: ['text', 'pretext'],
-            response_url = payload.response_url
+            response_url : payload.response_url
           }
         ];  
 
         if (${incident.comments_num} > 0) {
           attachments.push({
-            fallback : "Would you like to view the comments?",
-            title : "Would you like to view the comments?",
-            callback_id : "comments_btn",
-            color : "#3AA3E3",
-            attachment_type : "default",
-            actions : [
+            fallback: "Would you like to view the comments?",
+            title: "Would you like to view the comments?",
+            callback_id: "comments_btn",
+            color: "#3AA3E3",
+            attachment_type: "default",
+            actions: [
               {
-                  name : "View",
-                  text : "View",
-                  type : "button",
-                  value : "view"
+                  name: "View",
+                  text: "View",
+                  type: "button",
+                  value: "view"
               },
               {
                   name: "No Thanks",
@@ -210,7 +210,7 @@ const handler = (payload, res) => {
             ]
           });
         } else {
-          attachments.push({text : "No Comments Attached"});
+          attachments.push({text: "No Comments Attached"});
         } 
 
         let msg = _.defaults({
