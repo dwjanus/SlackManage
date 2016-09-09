@@ -79,7 +79,7 @@ const handler = (payload, res) => {
         }
       ];  
 
-      if (${incident.comments_num} > 0) {
+      if (incident.comments_num > 0) {
         attachments.push({
           fallback: "Would you like to view the comments?",
           title: "Would you like to view the comments?",
@@ -187,7 +187,7 @@ const handler = (payload, res) => {
           }
         ];  
 
-        if (${incident.comments_num} > 0) {
+        if (incident.comments_num > 0) {
           attachments.push({
             fallback: "Would you like to view the comments?",
             title: "Would you like to view the comments?",

@@ -392,6 +392,7 @@ function incident (options, callback) {
         "state" : parsedResponse.state,
         "priority" : parsedResponse.priority,
         "assignee" : parsedResponse.assignee.name,
+        "comments_num" : parsedResponse.number_of_comments;
         "ts" : parsedResponse.due_at,
         "color" : color
       };
@@ -401,12 +402,6 @@ function incident (options, callback) {
         var image_url = image_html.split('src="')[1];
         image_url = image_url.split(/[\s\"]/)[0];
         current["image_url"] = image_url;
-      }
-
-      if (parsedResponse.number_of_comments >= 1) {
-        var comments_num = parsedResponse.number_of_comments;
-        
-        current["comments_num"] = comments_num;
       }
       callback(null, current);
     });
