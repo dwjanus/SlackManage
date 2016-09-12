@@ -20,6 +20,7 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
+  var url = payload.response_url;
   var userid = payload.user_id;
   var options = {user: userid};
   var email = "";
@@ -91,8 +92,6 @@ const handler = (payload, res) => {
           channel: payload.channel_name,
           attachments: attachments
         }, msgDefaults);
-
-        let url = payload.response_url;
 
         var post_options = {
            host: 'hooks.slack.com',
