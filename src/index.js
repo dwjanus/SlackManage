@@ -25,15 +25,23 @@ if (config('PROXY_URI')) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => { 
-  fs.readFile('index.html', function(err, page) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    //res.write('\n 👋 🌍 \n');
-    res.write(page);
-    res.end();
-  });
-});
+app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
+// app.get('/oauth/authorize', (req, res) => { 
+//   let payload = req.body;
+//   console.log('PAYLOAD for oauth: \n' + util.inspect(payload));
+
+//   fs.readFile('index.html', function(err, page) {
+//     res.writeHead(200, {'Content-Type': 'text/html'});
+//     res.write(page);
+//     res.end();
+//   });
+// });
+
+
+//
+// ~~  POST for all incomming slack commands  ~~
+//
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
@@ -52,20 +60,25 @@ app.post('/commands/samanage', (req, res) => {
   cmd.handler(payload, res);
 });
 
+
+//
+// ~~  POST for interractive buttons  ~~
+//
 app.post('/commands/button', (req, res) => {
   let payload = req.body;
+
   console.log('PAYLOAD for button: \n' + util.inspect(payload));
   
-  let code = payload.url;
-  slack.oauth.access(config('CLIENT_ID'), config('CLIENT_SECRET'), code);
-
-  if (!payload || payload.oauth !== config('OAUTH_TOKEN')) {
+  if (!config('CLIENT_ID') || !config('CLIENT_SECRET')) {
     let err = '✋  Dowhatnow? An invalid slack token was provided\n' +
               '   Is your Slack slash token correctly configured?';
     console.log(err);
     res.status(401).end(err);
     return;
   }
+
+  //let code = payload.url;
+  //slack.oauth.access(config('CLIENT_ID'), config('CLIENT_SECRET'), code);
 
   button_action.handler(payload, res);
 });
