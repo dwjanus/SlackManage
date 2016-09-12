@@ -10,6 +10,7 @@ const util = require('util');
 const msgDefaults = {
   response_type: 'in_channel',
   username: 'incident',
+  response_url: payload.response_url,
   icon_emoji: config('ICON_EMOJI')
 };
 
@@ -75,29 +76,21 @@ const handler = (payload, res) => {
           footer: 'due on: ',
           ts: `${incident.ts}`,
           mrkdown_in: ['text', 'pretext'],
-          response_url: payload.response_url
         }
       ];  
 
       if (incident.comments_num > 0) {
         attachments.push({
-          fallback: "Would you like to view the comments?",
-          title: "Would you like to view the comments?",
+          fallback: "No Comments Attached",
           callback_id: "comments_btn",
           color: "#3AA3E3",
           attachment_type: "default",
           actions: [
             {
                 name: "View",
-                text: "View",
+                text: "View Comments",
                 type: "button",
                 value: "view"
-            },
-            {
-                name: "No Thanks",
-                text: "No Thanks",
-                type: "button",
-                value: "no"
             }
           ]
         });
@@ -183,7 +176,6 @@ const handler = (payload, res) => {
             footer: 'due on: ',
             ts: `${incident.ts}`,
             mrkdown_in: ['text', 'pretext'],
-            response_url : payload.response_url
           }
         ];  
 

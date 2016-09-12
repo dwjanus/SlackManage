@@ -20,7 +20,7 @@ bot.message((msg) => {
     icon_emoji: config('ICON_EMOJI'),
     channel: msg.channel,
     username: 'Samanage Command bot',
-    text: `beep boop: What it do tho`
+    text: 'beep boop: What it do tho'
   }, (err, data) => {
     if (err) throw err;
 

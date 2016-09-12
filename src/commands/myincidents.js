@@ -38,81 +38,81 @@ const handler = (payload, res) => {
 
     res.set('Content-Type', 'application/json');
     res.send(pre);
+  });
+    
+  // get the correct user from Samanage via their email
+  Samanage.getUserInfo({
+    host: 'api.samanage.com',
+    path: '/users.json?=&email=' + email,
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
+    auth: username + ':' + password
+  }, (err, ids) => {
+    if (err) console.log(err);
 
-    // get the correct user from Samanage via their email
-    Samanage.getUserInfo({
-      host: 'api.samanage.com',
-      path: '/users.json?=&email=' + email,
-      method: 'GET',
-      headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
-      auth: username + ':' + password
-    }, (err, ids) => {
+    var size = ids.length;
+    Samanage.find_group(ids, size, (err, group_id) => {
       if (err) console.log(err);
 
-      var size = ids.length;
-      Samanage.find_group(ids, size, (err, group_id) => {
+      Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
         if (err) console.log(err);
 
-        Samanage.my_incidents(group_id, (err, my_incidents_list, list_size) => {
-          if (err) console.log(err);
+        let attachments = my_incidents_list.slice(0, list_size).map((incident) => {
+          return {
+            title: `${incident.title}\n`,
+            title_link: `${incident.title_link}`,
+            pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
+            color: `${incident.color}`,
+            image_url: `${incident.image_url}`,
+            fields: [
+              {
+                title: "Description",
+                value: `${incident.description}\n\n`,
+                short: false
+              },
+              {
+                title: 'State',
+                value: `${incident.state}`,
+                short: true
+              },
+              {
+                title: 'Priority',
+                value: `${incident.priority}`,
+                short: true
+              }
+            ],
+            footer: 'due on: ',
+            ts: `${incident.ts}`,
+            mrkdown_in: ['text', 'pretext']
+          }                
+        }); 
 
-          var attachments = my_incidents_list.slice(0, list_size).map((incident) => {
-            return {
-              title: `${incident.title}\n`,
-              title_link: `${incident.title_link}`,
-              pretext: `Ticket: ${incident.number} - Requested by: ${incident.requester}\n`,
-              color: `${incident.color}`,
-              image_url: `${incident.image_url}`,
-              fields: [
-                {
-                  title: "Description",
-                  value: `${incident.description}\n\n`,
-                  short: false
-                },
-                {
-                  title: 'State',
-                  value: `${incident.state}`,
-                  short: true
-                },
-                {
-                  title: 'Priority',
-                  value: `${incident.priority}`,
-                  short: true
-                }
-              ],
-              footer: 'due on: ',
-              ts: `${incident.ts}`,
-              mrkdown_in: ['text', 'pretext']
-            }                
-          }); 
+        let msg = _.defaults({
+          channel: payload.channel_name,
+          attachments: attachments
+        }, msgDefaults);
 
-          let msg = _.defaults({
-            channel: payload.channel_name,
-            attachments: attachments
-          }, msgDefaults);
+        let url = payload.response_url;
 
-          let url = payload.response_url;
-
-          var post_options = {
-             host: 'hooks.slack.com',
-             path: '/' + url.split('.com/')[1],
-             method: 'POST',
-             headers: { 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
-             port: 443
-          };
-          
-          var request = https.request(post_options, function (response) {
-            response.setEncoding('utf8');
-          });
-
-          request.on('error', function (e) {
-            console.log('problem with request: ' + e.message);
-          });
-          request.write(JSON.stringify(msg));
-          request.end();
-          user = null;
-          return;
+        var post_options = {
+           host: 'hooks.slack.com',
+           path: '/' + url.split('.com/')[1],
+           method: 'POST',
+           headers: { 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
+           port: 443
+        };
+        
+        var request = https.request(post_options, function (response) {
+          response.setEncoding('utf8');
         });
+
+        request.on('error', function (e) {
+          console.log('problem with request: ' + e.message);
+        });
+        request.write(JSON.stringify(msg));
+        request.end();
+        user = null;
+        return;
       });
     });
   });
