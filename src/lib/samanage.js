@@ -103,7 +103,7 @@ function my_incidents (group_id, callback) {
     host: 'api.samanage.com',
     path: '/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5',
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
     auth: username + ':' + password
   };
 
@@ -269,6 +269,7 @@ function find_incident (number, callback) {
   var address;
   var page = 1;
   var difference = 0;
+
   // lets do some quick math to get roughly the page we are looking for the incident on
   var request = https.request({
     host: 'api.samanage.com',
@@ -288,9 +289,9 @@ function find_incident (number, callback) {
       var parsed = JSON.parse(body);
       difference = parsed[0].number - number;
 
-      if (difference <= 100) {
-        perpage = difference-1;
-        address = perpage;
+      if (difference < 100) {
+        perpage = difference+1;
+        address = difference;
       }
       else {
         page = Math.ceil(difference/100);
