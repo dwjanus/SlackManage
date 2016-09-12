@@ -10,7 +10,6 @@ const util = require('util');
 const msgDefaults = {
   response_type: 'in_channel',
   username: 'incident',
-  response_url: payload.response_url,
   icon_emoji: config('ICON_EMOJI')
 };
 
@@ -19,6 +18,7 @@ const handler = (payload, res) => {
   var str = payload.text;
   var cmd = str.split(/(@|#)/)[1];
   var number = str.split(/(@|#)/)[2];
+  var url = payload.response_url;
   
   console.log('STR: ' + str + '\nCMD: ' + cmd + '\nNUMBER: ' + number + '\n');
 
@@ -200,10 +200,9 @@ const handler = (payload, res) => {
 
         let msg = _.defaults({
           channel: payload.channel_name,
-          attachments: attachments
+          attachments: attachments,
+          response_url: url.response_url
         }, msgDefaults);
-
-        let url = payload.response_url;
 
         var post_options = {
            host: 'hooks.slack.com',
