@@ -15,10 +15,10 @@ const msgDefaults = {
 const handler = (payload, res) => {
   
   let pre = _.defaults({
-      channel: payload.channel_name,
-      text: 'Pulling Comments...'
-    }, msgDefaults);
+    channel: payload.channel_name,
+    text: 'Pulling Comments...'
+  }, msgDefaults);
 
-    res.set('Content-Type', 'application/json');
-    res.send(pre);
-});
+  res.set('Content-Type', 'application/json');
+  res.send(pre);
+};
