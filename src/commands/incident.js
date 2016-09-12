@@ -15,6 +15,7 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
+  console.log('PAYLOAD:\n' + util.inspect(payload) + '\n');
   var str = payload.text;
   var cmd = str.split(/(@|#)/)[1];
   var number = str.split(/(@|#)/)[2];
@@ -94,6 +95,8 @@ const handler = (payload, res) => {
             }
           ]
         });
+        // make response url = action url ?
+
       } else {
         attachments.push({text: "No Comments Attached"});
       }
@@ -102,8 +105,6 @@ const handler = (payload, res) => {
         channel: payload.channel_name,
         attachments: attachments
       }, msgDefaults);
-
-      let url = payload.response_url;
 
       var post_options = {
          host: 'hooks.slack.com',

@@ -24,10 +24,9 @@ const handler = (payload, res) => {
   var userid = payload.user_id;
   var options = {user: userid};
   var email = "";
-  // var attachments = [];
 
   // get user slack id, then use that to retrieve email info
-  let user = api.users.info(options, function (err, respo) {
+  var user = api.users.info(options, function (err, respo) {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
