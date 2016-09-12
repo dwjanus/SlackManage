@@ -344,9 +344,9 @@ function incidentRequest (options, address, number, callback) {
     response.on('end', function () {
       var parsed = JSON.parse(body);
       var count = 0;
-      while(count < address) {
+      while(count <= address) {
         console.log('Count: ' + count + ' -- ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
-        if (parsed[count].number == number) 
+        if (parsed[count].number == number)
           return callback(null, parsed[count].number, parsed[count].id);
         else
           count++;
