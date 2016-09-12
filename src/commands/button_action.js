@@ -1,10 +1,11 @@
 
 'use strict';
 
+const _ = require('lodash');
+const config = require('../config');
+const Samanage = require('../lib/samanage');
 const https = require('https');
-const config = require('./config');
 const util = require('util');
-var Samanage = require('../lib/samanage');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -21,4 +22,6 @@ const handler = (payload, res) => {
 
   res.set('Content-Type', 'application/json');
   res.send(pre);
+
+  return;
 };
