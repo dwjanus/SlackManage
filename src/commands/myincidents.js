@@ -45,7 +45,7 @@ const handler = (payload, res) => {
     host: 'api.samanage.com',
     path: '/users.json?=&email=' + email,
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
     auth: username + ':' + password
   }, (err, ids) => {
     if (err) console.log(err);

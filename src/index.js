@@ -44,6 +44,22 @@ app.post('/commands/samanage', (req, res) => {
   cmd.handler(payload, res);
 });
 
+app.post('/commands/button', (req, res) => {
+  let payload = req.body;
+
+  console.log('PAYLOAD for button: \n' + util.inspect(payload));
+
+  if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
+    let err = '✋  Dowhatnow? An invalid slack token was provided\n' +
+              '   Is your Slack slash token correctly configured?';
+    console.log(err);
+    res.status(401).end(err);
+    return;
+  }
+
+  button_action.handler(payload, res);
+});
+
 app.listen(config('PORT'), (err) => {
   if (err) throw err;
 
