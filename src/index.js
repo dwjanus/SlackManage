@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, res) => { 
   fs.readFile('index.html', function(err, page) {
     res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write('\n 👋 🌍 \n');
+    //res.write('\n 👋 🌍 \n');
     res.write(page);
     res.end();
   });
