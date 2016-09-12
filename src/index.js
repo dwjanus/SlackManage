@@ -25,15 +25,10 @@ if (config('PROXY_URI')) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
-
-app.get('/oauth/authorize', (req, res) => { 
-  let payload = req.body;
-
-  console.log('PAYLOAD for oauth: \n' + util.inspect(payload));
-
+app.get('/', (req, res) => { 
   fs.readFile('index.html', function(err, page) {
     res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write('\n 👋 🌍 \n');
     res.write(page);
     res.end();
   });

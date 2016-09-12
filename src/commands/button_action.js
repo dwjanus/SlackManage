@@ -9,7 +9,7 @@ const util = require('util');
 
 const msgDefaults = {
   response_type: 'in_channel',
-  username: 'mine',
+  username: 'comments',
   icon_emoji: config('ICON_EMOJI')
 };
 
