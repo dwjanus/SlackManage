@@ -17,6 +17,7 @@ bot.message((msg) => {
 
   slack.chat.postMessage({
     token: config('SLACK_TOKEN'),
+    oauth: config('OAUTH_TOKEN'),
     icon_emoji: config('ICON_EMOJI'),
     channel: msg.channel,
     username: 'Samanage Command bot',

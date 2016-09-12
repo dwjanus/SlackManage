@@ -10,9 +10,10 @@ const config = require('./config');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
 const util = require('util');
+const fs = require('fs');
+const slack = require('slack');
 
 let bot = require('./bot');
-
 let app = express();
 
 if (config('PROXY_URI')) {
@@ -25,6 +26,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
+
+app.get('/oauth/authorize', (req, res) => { 
+  let payload = req.body;
+
+  console.log('PAYLOAD for oauth: \n' + util.inspect(payload));
+
+  fs.readFile('index.html', function(err, page) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(page);
+    res.end();
+  });
+});
 
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
@@ -46,10 +59,12 @@ app.post('/commands/samanage', (req, res) => {
 
 app.post('/commands/button', (req, res) => {
   let payload = req.body;
-
   console.log('PAYLOAD for button: \n' + util.inspect(payload));
+  
+  let code = payload.url;
+  slack.oauth.access(config('CLIENT_ID'), config('CLIENT_SECRET'), code);
 
-  if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
+  if (!payload || payload.oauth !== config('OAUTH_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slack token was provided\n' +
               '   Is your Slack slash token correctly configured?';
     console.log(err);
