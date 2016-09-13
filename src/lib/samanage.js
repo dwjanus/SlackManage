@@ -5,7 +5,7 @@ const _ = require('lodash');
 const config = require('../config');
 const util = require('util');
 const https = require('https');
-const samanage_options = config('samanage_options');
+var samanage_options = config('samanage_options');
 
 // ------------------------------------------------------------
 // This pal is going to grab the user's Samanage info via email

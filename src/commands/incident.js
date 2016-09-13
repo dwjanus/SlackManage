@@ -6,6 +6,9 @@ const config = require('../config');
 const Samanage = require('../lib/samanage');
 const https = require('https');
 const util = require('util');
+const querystring = require("querystring");
+const Botkit = require("botkit");
+const os = require("os");
 var samanage_options = config('samanage_options');
 
 const msgDefaults = {
