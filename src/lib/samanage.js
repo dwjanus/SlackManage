@@ -94,7 +94,7 @@ function my_incidents (group_id, callback) {
   var my_incidents_list = [];
   var size = 0;
   var my_options = samanage_options;
-  my_options.path ='/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5';
+  my_options.path ='/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5&sort_by=updated_at&sort_order=DESC';
   var request = https.request(my_options, (response) => {
     response.setEncoding('utf8');
     
