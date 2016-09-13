@@ -57,7 +57,7 @@ app.get('/auth', (req, res) => {
       response.on('end', (chunk) => {
         var teamInfo = JSON.parse(body);
         console.log(util.inspect(teamInfo) + '\n');
-        if (!err && response.statusCode == 200 && teamInfo.ok == true) {
+        if (teamInfo.ok === true) {
           // save the ACCESS_CODE
           client.set("ACCESS_TOKEN", teamInfo.access_token);
           client.set("WEBHOOK_URL", teamInfo.incoming_webhook.url);
