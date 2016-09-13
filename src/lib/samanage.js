@@ -123,7 +123,7 @@ function my_incidents (group_id, callback) {
             color = "#E3E4E6";
 
           console.log(util.inspect(parsedResponse) + '\n');
-          var image_url = parsedResponse[i].href;
+          var image_html = parsedResponse[i].description;
           var image_url = "";
           if (image_html.indexOf('src') !== -1) {
             image_url = image_html.split('src="')[1];
