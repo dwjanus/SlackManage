@@ -51,9 +51,9 @@ app.get('/auth', (req, res) => {
       console.log(util.inspect(teamInfo) + '\n');
       if (!err && response.statusCode == 200 && teamInfo.ok == true) {
         // save the ACCESS_CODE
-        client.set("SLACK_TOKEN", teamInfo.access_token);
+        client.set("ACCESS_TOKEN", teamInfo.access_token);
         client.set("WEBHOOK_URL", teamInfo.incoming_webhook.url);
-        //client.set("SAMANAGE_COMMAND_TOKEN", teamInfo.command.token);
+        client.set("SLACK_TOKEN", teamInfo.bot.bot_access_token);
       } else {
         // Error
       }
@@ -61,13 +61,12 @@ app.get('/auth', (req, res) => {
   } else {
     // Reroute user back to install page, they denied auth
   }
-  return;
 });
 
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
-  if (!payload || payload.token !== (config('SAMANAGE_COMMAND_TOKEN') || client.get('SAMANAGE_COMMAND_TOKEN'))) {
+  if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
               '   Is your Slack slash token correctly configured?';
     console.log(err);

@@ -4,6 +4,7 @@
 const _ = require('lodash');
 const config = require('./config');
 const slack = require('slack');
+var client = require('redis').createClient(process.env.REDIS_URL);
 
 let bot = slack.rtm.client();
 
@@ -16,7 +17,7 @@ bot.message((msg) => {
   if (!_.includes(msg.text.match(/<@([A-Z0-9])+>/igm), `<@${this.self.id}>`)) return;
 
   slack.chat.postMessage({
-    token: config('SLACK_TOKEN'),
+    token: client.get('SLACK_TOKEN'),
     oauth: config('OAUTH_TOKEN'),
     icon_emoji: config('ICON_EMOJI'),
     channel: msg.channel,
