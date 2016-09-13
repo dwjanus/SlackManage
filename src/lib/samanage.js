@@ -122,44 +122,44 @@ function my_incidents (group_id, callback) {
           if (parsedResponse[i].state == "Closed")
             color = "#E3E4E6";
 
-          var current = {
-            "title" : parsedResponse[i].name,
-            "number" : parsedResponse[i].number,
-            "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
-            "description" : parsedResponse[i].description_no_html,
-            "requester" : parsedResponse[i].requester.name,
-            "state" : parsedResponse[i].state,
-            "priority" : parsedResponse[i].priority,
-            "ts" : parsedResponse[i].due_at,
-            "color" : color
-          };
-
-          let image_html = parsedResponse[i].description;
+          var image_html = parsedResponse[i].description;
+          var image_url = "";
           if (image_html.indexOf('src') !== -1) {
             var image_url = image_html.split('src="')[1];
             console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
             image_url = image_url.split(/[\s\"]/)[0];
             console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
-            current["image_url"] = image_url;
           }
+
+          var current = {
+            "title": parsedResponse[i].name,
+            "number": parsedResponse[i].number,
+            "title_link": "http://app.samanage.com/incidents/" + parsedResponse[i].id,
+            "description": parsedResponse[i].description_no_html,
+            "requester": parsedResponse[i].requester.name,
+            "state": parsedResponse[i].state,
+            "priority": parsedResponse[i].priority,
+            "image_url": image_url,
+            "ts": parsedResponse[i].due_at,
+            "color": color
+          };
 
           if (parsedResponse[i].description_no_html === '') {
             current.description = "No description available";
           }
-
           my_incidents_list.push(current);
         }
       } else {
         var none = {
-            "title" : "There are currently no incidents assigned to you",
-            "number" : "000000",
-            "title_link" : "http://app.samanage.com/incidents/",
-            "description" : "Woo! Go catch up on some reading",
-            "requester" : "none",
-            "state" : "none",
-            "priority" : "none",
-            "ts" : "000000000",
-            "color" : "#E3E4E6"
+            "title": "There are currently no incidents assigned to you",
+            "number": "000000",
+            "title_link": "http://app.samanage.com/incidents/",
+            "description": "Woo! Go catch up on some reading",
+            "requester": "none",
+            "state": "none",
+            "priority": "none",
+            "ts": "000000000",
+            "color": "#E3E4E6"
           };
         my_incidents_list.push(none);
       }
@@ -192,7 +192,7 @@ function new_incidents (callback) {
     });
 
     response.on('end', () => {
-      let parsedResponse = JSON.parse(body);
+      var parsedResponse = JSON.parse(body);
 
       for (var i = 0; i <= 4; i++) {
         var color = "#0067B3";
@@ -203,8 +203,16 @@ function new_incidents (callback) {
         if (parsedResponse[i].state == "Closed")
           color = "#E3E4E6";
 
+        var image_html = parsedResponse[i].description;
+        var image_url = "";
+        if (image_html.indexOf('src') !== -1) {
+          image_url = image_html.split('src="')[1];
+          console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
+          image_url = image_url.split(/[\s\"]/)[0];
+        }
+
         var current = {
-          "title" : parsedResponse[i].name,
+          "title": parsedResponse[i].name,
           "number" : parsedResponse[i].number,
           "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
           "description" : parsedResponse[i].description_no_html,
@@ -212,19 +220,11 @@ function new_incidents (callback) {
           "requester_email" : parsedResponse[i].requester.email,
           "state" : parsedResponse[i].state,
           "priority" : parsedResponse[i].priority,
-          "assignee" : parsedResponse[i].assignee.name,
-          "ts" : parsedResponse[i].due_at,
-          "color" : color
+          "assignee": parsedResponse[i].assignee.name,
+          "image_url": image_url,
+          "ts": parsedResponse[i].due_at,
+          "color": color
         };
-
-        let image_html = parsedResponse[i].description;
-        if (image_html.indexOf('src') !== -1) {
-          var image_url = image_html.split('src="')[1];
-          console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
-          image_url = image_url.split(/[\s\"]/)[0];
-          console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
-          current["image_url"] = image_url;
-        }
 
         incident_list.push(current);
       }
@@ -278,8 +278,7 @@ function find_incident (number, callback) {
       match_options.path = '/incidents.json?=&per_page=' + perpage + '&page=' + page;
       incidentRequest(match_options, address, number, (err, incident_number, incident_id) => {
         if (err) console.log(err);
-        else
-          callback(null, incident_number, incident_id);
+        callback(null, incident_number, incident_id);
       });
     });
   });
@@ -335,7 +334,7 @@ function incident (options, callback) {
     });
 
     response.on('end', () => {
-      let parsedResponse = JSON.parse(body);
+      var parsedResponse = JSON.parse(body);
       var color = "#0067B3";
       if (parsedResponse.state === "In Progress")
         color = "#FF6692";
@@ -344,28 +343,30 @@ function incident (options, callback) {
       if (parsedResponse.state ==="Closed")
         color = "#E3E4E6";
 
+      var image_html = parsedResponse.description;
+      var image_url = "";
+      if (image_html.indexOf('src') !== -1) {
+        image_url = image_html.split('src="')[1];
+        image_url = image_url.split(/[\s\"]/)[0];
+      }
+
       var current = {
-        "title" : parsedResponse.name,
-        "number" : parsedResponse.number,
-        "title_link" : "http://app.samanage.com/incidents/" + parsedResponse.id,
-        "description" : parsedResponse.description_no_html,
-        "requester" : parsedResponse.requester.name,
-        "requester_email" : parsedResponse.requester.email,
-        "requester_icon" : parsedResponse.created_by.avatar,
-        "state" : parsedResponse.state,
-        "priority" : parsedResponse.priority,
-        "assignee" : parsedResponse.assignee.name,
-        "comments_num" : parsedResponse.number_of_comments,
-        "ts" : parsedResponse.due_at,
-        "color" : color
+        "title": parsedResponse.name,
+        "number": parsedResponse.number,
+        "title_link": "http://app.samanage.com/incidents/" + parsedResponse.id,
+        "description": parsedResponse.description_no_html,
+        "requester": parsedResponse.requester.name,
+        "requester_email": parsedResponse.requester.email,
+        "requester_icon": parsedResponse.created_by.avatar,
+        "state": parsedResponse.state,
+        "priority": parsedResponse.priority,
+        "assignee": parsedResponse.assignee.name,
+        "image_url": image_url,
+        "comments_num": parsedResponse.number_of_comments,
+        "ts": parsedResponse.due_at,
+        "color": color
       };
 
-      var image_html = parsedResponse.description;
-      if (image_html.indexOf('src') !== -1) {
-        var image_url = image_html.split('src="')[1];
-        image_url = image_url.split(/[\s\"]/)[0];
-        current["image_url"] = image_url;
-      }
       callback(null, current);
     });
   });
