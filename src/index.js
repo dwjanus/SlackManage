@@ -78,8 +78,6 @@ app.post('/commands/samanage', (req, res) => {
 });
 
 app.post('/action', (req, res) => {
-  res.setHeader('application/x-www-form-urlencoded');
-
   let payload = req.body;
   console.log(util.inspect(payload) + '\n');
   res.send('Button Clicked!');
