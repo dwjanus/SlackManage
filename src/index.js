@@ -61,6 +61,7 @@ app.get('/auth', (req, res) => {
   } else {
     // Reroute user back to install page, they denied auth
   }
+  return;
 });
 
 app.post('/commands/samanage', (req, res) => {
