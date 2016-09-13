@@ -10,11 +10,14 @@ const config = require('./config');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
 const util = require('util');
-const fs = require('fs');
-const slack = require('slack');
+const request = require('request');
+var path_to_access_token = "https://slack.com/api/oauth.access?client_id=" +
+  process.env.CLIENT_ID + "&client_secret=" + process.env.CLIENT_SECRET +
+  "&code="; //Slack URL to call to receive accessToken
 
 let bot = require('./bot');
 let app = express();
+
 
 if (config('PROXY_URI')) {
   app.use(proxy(config('PROXY_URI'), {
@@ -25,7 +28,37 @@ if (config('PROXY_URI')) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
+app.get('/', (req, res) => {
+  res.send('<a href="https://slack.com/oauth/authorize?scope=incoming-webhook,'
+    + 'commands,bot&client_id=64177576980.78861190246"><img alt="Add to Slack" '
+    + 'height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" '
+    + 'srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x,'
+    + 'https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>');
+});
+
+app.get('/auth', (req, res) => {
+  var url = req.url;
+  var codePos = url.indexOf("code="); //index where code starts in the url
+  var codeStart = codePos + 5; //we dont want the 'code=' part
+  var codeEnd = url.indexOf("&"); //we dont need anything else
+  var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
+
+  // Verify user accepted auth request
+  if (codePos > -1) {
+    var completePath = path_to_access_token + accessCode; //Slack API call
+    request(completePath, (err, response, body) => {
+      if (!err && response.statusCode == 200 && teamInfo.ok == true) {
+        var teamInfo = JSON.parse(body);
+        // save the ACCESS_CODE
+      } else {
+        // Error
+      }
+    });
+  } else {
+    // Reroute user back to install page, they denied auth
+  }
+
+});
 
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
