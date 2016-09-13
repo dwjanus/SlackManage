@@ -68,7 +68,7 @@ app.get('/auth', (req, res) => {
     });
     request.end();
 
-    request.on('error' (e) => {
+    request.on('error', (e) => {
       return callback(new Error("Problem with request: " + e.message));
     });
   } else {
