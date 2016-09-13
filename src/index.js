@@ -47,13 +47,13 @@ app.get('/auth', (req, res) => {
   if (codePos > -1) {
     var completePath = path_to_access_token + accessCode; //Slack API call
     request(completePath, (err, response, body) => {
-      if (!err && response.statusCode == 200) {
-        var teamInfo = JSON.parse(body);
+      var teamInfo = JSON.parse(body);
+      if (!err && response.statusCode == 200 && teamInfo.ok == true) {
         // save the ACCESS_CODE
         console.log(util.inspect(teamInfo) + '\n');
-        client.set("SLACK_TOKEN", teamInfo.access_token);
+        client.set("SLACK_TOKEN", teamInfo.bot_access_token);
         client.set("WEBHOOK_URL", teamInfo.incoming_webhook.url);
-        client.set("SAMANAGE_COMMAND_TOKEN", teamInfo.command.token);
+        //client.set("SAMANAGE_COMMAND_TOKEN", teamInfo.command.token);
       } else {
         // Error
       }
