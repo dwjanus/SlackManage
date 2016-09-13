@@ -54,9 +54,9 @@ app.get('/auth', (req, res) => {
         body += chunk;
       });
 
+      console.log(util.inspect(body) + '\n');
       response.on('end', (chunk) => {
         var teamInfo = JSON.parse(body);
-        console.log(util.inspect(teamInfo) + '\n');
         if (teamInfo.ok === true) {
           // save the ACCESS_CODE
           client.set("ACCESS_TOKEN", teamInfo.access_token);
