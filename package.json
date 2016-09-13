@@ -24,6 +24,7 @@
     "express-http-proxy": "^0.6.0",
     "https": "^1.0.0",
     "lodash": "^4.6.1",
+    "redis": "^2.6.2",
     "slack": "^6.1.0"
   },
   "keywords": [

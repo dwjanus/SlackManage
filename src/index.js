@@ -14,10 +14,10 @@ const request = require('request');
 var path_to_access_token = "https://slack.com/api/oauth.access?client_id=" +
   process.env.CLIENT_ID + "&client_secret=" + process.env.CLIENT_SECRET +
   "&code="; //Slack URL to call to receive accessToken
+var client = require('redis').createClient(process.env.REDIS_URL);
 
 let bot = require('./bot');
 let app = express();
-
 
 if (config('PROXY_URI')) {
   app.use(proxy(config('PROXY_URI'), {
@@ -50,6 +50,10 @@ app.get('/auth', (req, res) => {
       if (!err && response.statusCode == 200 && teamInfo.ok == true) {
         var teamInfo = JSON.parse(body);
         // save the ACCESS_CODE
+        console.log(util.inspect(teamInfo) + '\n');
+        client.set("SLACK_TOKEN", teamInfo.access_token);
+        client.set("WEBHOOK_URL", teamInfo.incoming_webhook.url);
+        client.set("SAMANAGE_COMMAND_TOKEN", teamInfo.command.token);
       } else {
         // Error
       }
@@ -62,7 +66,7 @@ app.get('/auth', (req, res) => {
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
-  if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
+  if (!payload || payload.token !== (config('SAMANAGE_COMMAND_TOKEN') || client.get('SAMANAGE_COMMAND_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
               '   Is your Slack slash token correctly configured?';
     console.log(err);
@@ -80,7 +84,8 @@ app.post('/commands/samanage', (req, res) => {
 app.post('/action', (req, res) => {
   let payload = req.body;
   console.log(util.inspect(payload) + '\n');
-  res.send('Button Clicked!');
+  res.set('Content-Type', 'application/json');
+  res.status(200).json('Button Clicked!');
 });
 
 app.listen(config('PORT'), (err) => {

@@ -21,7 +21,7 @@ const config = {
     host: 'api.samanage.com',
     path: '',
     method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
     auth: process.env.API_USER + ':' + process.env.API_PASS
   }
 };
