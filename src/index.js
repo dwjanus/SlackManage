@@ -10,7 +10,6 @@ const config = require('./config');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
 const util = require('util');
-const request = require('request');
 var client = require('redis').createClient(process.env.REDIS_URL);
 
 let bot = require('./bot');
