@@ -57,7 +57,6 @@ app.get('/auth', (req, res) => {
   } else {
     // Reroute user back to install page, they denied auth
   }
-
 });
 
 app.post('/commands/samanage', (req, res) => {
@@ -76,6 +75,14 @@ app.post('/commands/samanage', (req, res) => {
   }, helpCommand);
 
   cmd.handler(payload, res);
+});
+
+app.post('/action', (req, res) => {
+  res.setHeader('application/x-www-form-urlencoded');
+
+  let payload = req.body;
+  console.log(util.inspect(payload) + '\n');
+  res.send('Button Clicked!');
 });
 
 app.listen(config('PORT'), (err) => {
