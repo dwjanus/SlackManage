@@ -123,12 +123,12 @@ function my_incidents (group_id, callback) {
             color = "#E3E4E6";
 
           console.log(util.inspect(parsedResponse) + '\n');
-          var image_html = parsedResponse[i].description;
+          var image_url = parsedResponse[i].href;
           var image_url = "";
           if (image_html.indexOf('src') !== -1) {
             image_url = image_html.split('src="')[1];
             console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
-            image_url = image_url.split(/[\s\"]/)[0];
+            image_url = 'https://s3.amazonaws.com/Production_CustomerData/' + image_url.split(/[\s\"]/)[0];
             console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
           }
 
@@ -209,7 +209,7 @@ function new_incidents (callback) {
         if (image_html.indexOf('src') !== -1) {
           image_url = image_html.split('src="')[1];
           console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
-          image_url = image_url.split(/[\s\"]/)[0];
+          image_url = 'https://s3.amazonaws.com/Production_CustomerData/' + image_url.split(/[\s\"]/)[0];
         }
 
         var current = {
@@ -348,7 +348,7 @@ function incident (options, callback) {
       var image_url = "";
       if (image_html.indexOf('src') !== -1) {
         image_url = image_html.split('src="')[1];
-        image_url = image_url.split(/[\s\"]/)[0];
+        image_url = 'https://s3.amazonaws.com/Production_CustomerData/' + image_url.split(/[\s\"]/)[0];
       }
 
       var current = {
@@ -358,7 +358,7 @@ function incident (options, callback) {
         "description": parsedResponse.description_no_html,
         "requester": parsedResponse.requester.name,
         "requester_email": parsedResponse.requester.email,
-        "requester_icon": parsedResponse.created_by.avatar,
+        "requester_icon": parsedResponse.created_by.avatar.avatar_url,
         "state": parsedResponse.state,
         "priority": parsedResponse.priority,
         "assignee": parsedResponse.assignee.name,
