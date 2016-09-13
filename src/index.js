@@ -46,7 +46,7 @@ app.get('/auth', (req, res) => {
   // Verify user accepted auth request
   if (codePos > -1) {
     var completePath = path_to_access_token + accessCode; //Slack API call
-    request(completePath, (err, response, body) => {
+    request.post(completePath, (err, response, body) => {
       var teamInfo = JSON.parse(body);
       console.log(util.inspect(teamInfo) + '\n');
       if (!err && response.statusCode == 200 && teamInfo.ok == true) {
