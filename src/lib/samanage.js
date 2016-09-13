@@ -3,25 +3,24 @@
 
 const _ = require('lodash');
 const config = require('../config');
-const https = require('https');
 const util = require('util');
-const username = process.env.API_USER;
-const password = process.env.API_PASS;
+const https = require('https');
+const samanage_options = config('samanage_options');
 
 // ------------------------------------------------------------
 // This pal is going to grab the user's Samanage info via email
 // ------------------------------------------------------------
 function getUserInfo(options, callback) {
-  var request = https.request(options, function (response) {
+  var request = https.request(options, (response) => {
     response.setEncoding('utf8');
 
     var ids = [];
     var body = "";
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsed = JSON.parse(body);
       ids = parsed[0].group_ids;
       callback(null, ids);
@@ -29,7 +28,7 @@ function getUserInfo(options, callback) {
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     return callback(new Error("Problem with request: " + e.message));
   });
 }
@@ -48,13 +47,9 @@ function find_group(ids, size, callback, count) {
 
   while(count < size) {
     console.log(count + '\n');
-    groupRequest({
-      host: 'api.samanage.com',
-      path: '/groups/' + ids[count] + '.json',
-      method: 'GET',
-      headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
-      auth: username + ':' + password
-    }, (err, found) => {
+    var group_options = samanage_options;
+    group_options.path = '/groups/' + ids[count] + '.json';
+    groupRequest(group_options, (err, found) => {
       if (err) console.log(err);
       
       if (found)
@@ -69,20 +64,20 @@ function find_group(ids, size, callback, count) {
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
 function groupRequest(options, callback) {
-  var request = https.request(options, function (response) {
+  var request = https.request(options, (response) => {
     var body = "";
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsed = JSON.parse(body);
       callback(null, parsed.is_user);
     });
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     return callback(new Error("Problem with request: " + e.message));
   });
 }
@@ -98,34 +93,25 @@ function my_incidents (group_id, callback) {
 
   var my_incidents_list = [];
   var size = 0;
-
-  var options = {
-    host: 'api.samanage.com',
-    path: '/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5',
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
-    auth: username + ':' + password
-  };
-
-  var request = https.request(options, function (response) {
+  var my_options = samanage_options;
+  my_options.path ='/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5';
+  var request = https.request(my_options, (response) => {
     response.setEncoding('utf8');
     
     var output_body = "";
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       output_body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsedResponse = JSON.parse(output_body);
 
-      console.log(util.inspect(parsedResponse) + '\n');
       for(var id in parsedResponse) {
         size++;
       }
       
       if (size > 5)
         size = 5;
-
       if (size > 0) {
         for (var i = 0; i < size; i++) {
           var color = "#0067B3";
@@ -136,44 +122,44 @@ function my_incidents (group_id, callback) {
           if (parsedResponse[i].state == "Closed")
             color = "#E3E4E6";
 
-          var current = {
-            "title" : parsedResponse[i].name,
-            "number" : parsedResponse[i].number,
-            "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
-            "description" : parsedResponse[i].description_no_html,
-            "requester" : parsedResponse[i].requester.name,
-            "state" : parsedResponse[i].state,
-            "priority" : parsedResponse[i].priority,
-            "ts" : parsedResponse[i].due_at,
-            "color" : color
-          };
-
           var image_html = parsedResponse[i].description;
+          var image_url = "";
           if (image_html.indexOf('src') !== -1) {
-            var image_url = image_html.split('src="')[1];
+            image_url = image_html.split('src="')[1];
             console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
             image_url = image_url.split(/[\s\"]/)[0];
             console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
-            current["image_url"] = image_url;
           }
+
+          var current = {
+            "title": parsedResponse[i].name,
+            "number": parsedResponse[i].number,
+            "title_link": "http://app.samanage.com/incidents/" + parsedResponse[i].id,
+            "description": parsedResponse[i].description_no_html,
+            "requester": parsedResponse[i].requester.name,
+            "state": parsedResponse[i].state,
+            "priority": parsedResponse[i].priority,
+            "image_url": image_url,
+            "ts": parsedResponse[i].due_at,
+            "color": color
+          };
 
           if (parsedResponse[i].description_no_html === '') {
             current.description = "No description available";
           }
-
           my_incidents_list.push(current);
         }
       } else {
         var none = {
-            "title" : "There are currently no incidents assigned to you",
-            "number" : "000000",
-            "title_link" : "http://app.samanage.com/incidents/",
-            "description" : "Woo! Go catch up on some reading",
-            "requester" : "none",
-            "state" : "none",
-            "priority" : "none",
-            "ts" : "000000000",
-            "color" : "#E3E4E6"
+            "title": "There are currently no incidents assigned to you",
+            "number": "000000",
+            "title_link": "http://app.samanage.com/incidents/",
+            "description": "Woo! Go catch up on some reading",
+            "requester": "none",
+            "state": "none",
+            "priority": "none",
+            "ts": "000000000",
+            "color": "#E3E4E6"
           };
         my_incidents_list.push(none);
       }
@@ -182,7 +168,7 @@ function my_incidents (group_id, callback) {
   });
   request.end();
   
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     console.log('problem with request: ' + e.message);
   });
 }
@@ -194,24 +180,18 @@ function my_incidents (group_id, callback) {
 function new_incidents (callback) {
   
   var incident_list = [];
-
-  var newoptions = {
-    host: 'api.samanage.com',
-    path: '/incidents.json?=&per_page=5&sort_by=updated_at&sort_order=DESC',
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json', 'Cache-Control' : 'no-store' },
-    auth: username + ':' + password
-  };
-
-  var request = https.request(newoptions, function (response) {
+  var new_options = samanage_options;
+  new_options.path = '/incidents.json?=&per_page=5&sort_by=updated_at&sort_order=DESC';
+  
+  var request = https.request(new_options, (response) => {
     response.setEncoding('utf8');
     var body = "";
 
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsedResponse = JSON.parse(body);
 
       for (var i = 0; i <= 4; i++) {
@@ -223,8 +203,16 @@ function new_incidents (callback) {
         if (parsedResponse[i].state == "Closed")
           color = "#E3E4E6";
 
+        var image_html = parsedResponse[i].description;
+        var image_url = "";
+        if (image_html.indexOf('src') !== -1) {
+          image_url = image_html.split('src="')[1];
+          console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
+          image_url = image_url.split(/[\s\"]/)[0];
+        }
+
         var current = {
-          "title" : parsedResponse[i].name,
+          "title": parsedResponse[i].name,
           "number" : parsedResponse[i].number,
           "title_link" : "http://app.samanage.com/incidents/" + parsedResponse[i].id,
           "description" : parsedResponse[i].description_no_html,
@@ -232,19 +220,11 @@ function new_incidents (callback) {
           "requester_email" : parsedResponse[i].requester.email,
           "state" : parsedResponse[i].state,
           "priority" : parsedResponse[i].priority,
-          "assignee" : parsedResponse[i].assignee.name,
-          "ts" : parsedResponse[i].due_at,
-          "color" : color
+          "assignee": parsedResponse[i].assignee.name,
+          "image_url": image_url,
+          "ts": parsedResponse[i].due_at,
+          "color": color
         };
-
-        var image_html = parsedResponse[i].description;
-        if (image_html.indexOf('src') !== -1) {
-          var image_url = image_html.split('src="')[1];
-          console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
-          image_url = image_url.split(/[\s\"]/)[0];
-          console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
-          current["image_url"] = image_url;
-        }
 
         incident_list.push(current);
       }
@@ -253,7 +233,7 @@ function new_incidents (callback) {
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     console.log('problem with request: ' + e.message);
   });
 }
@@ -262,30 +242,24 @@ function new_incidents (callback) {
 // ------------------------------------------------------------------------
 // This one is gonna iterate through each incident id until number is found
 // ------------------------------------------------------------------------
-
-
 function find_incident (number, callback) {
   var perpage;
   var address;
   var page = 1;
   var difference = 0;
-
+  var first_options = samanage_options;
+  first_options.path = '/incidents.json?=&per_page=1';
+  
   // lets do some quick math to get roughly the page we are looking for the incident on
-  var request = https.request({
-    host: 'api.samanage.com',
-    path: '/incidents.json?=&per_page=1',
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
-    auth: username + ':' + password
-  }, function (response) {
+  var request = https.request(first_options, (response) => {
     response.setEncoding('utf8');
     var body = "";
 
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsed = JSON.parse(body);
       difference = parsed[0].number - number;
 
@@ -298,30 +272,19 @@ function find_incident (number, callback) {
         perpage = 100;
         address = (difference%100)-1;
       }
-      console.log('Difference: ' + difference + '\nPer Page: ' + perpage + '\nPage: ' + page + '\nAddress: ' + address + '\n');
-
+      
       // go through all incidents and look for the one that matches number
-      console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
-
-      incidentRequest({
-        host: 'api.samanage.com',
-        path: '/incidents.json?=&per_page=' + perpage + '&page=' + page,
-        method: 'GET',
-        headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
-        auth: username + ':' + password
-      }, address, number, (err, incident_number, incident_id) => {
+      var match_options = samanage_options;
+      match_options.path = '/incidents.json?=&per_page=' + perpage + '&page=' + page;
+      incidentRequest(match_options, address, number, (err, incident_number, incident_id) => {
         if (err) console.log(err);
-        console.log(incident_id + ' -- ' + incident_number + '\n');
-        // if (incident_number === number) {
-        //   console.log('\nMATCH FOUND!!\n');
-          return callback(null, incident_number, incident_id);
-        // }
+        callback(null, incident_number, incident_id);
       });
     });
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     return callback(new Error("Problem with request: " + e.message));
   });
 }
@@ -331,21 +294,18 @@ function find_incident (number, callback) {
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
 function incidentRequest (options, address, number, callback) {
-  console.log('Now requesting specific incidents, looking for number\n');
-
-  var request = https.request(options, function (response) {
+  var request = https.request(options, (response) => {
     response.setEncoding('utf8');
     var body = "";
 
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsed = JSON.parse(body);
       var count = 0;
       while(count <= address) {
-        console.log('Count: ' + count + ' -- ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
         if (parsed[count].number == number)
           return callback(null, parsed[count].number, parsed[count].id);
         else
@@ -355,25 +315,26 @@ function incidentRequest (options, address, number, callback) {
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     return callback(new Error("Problem with request: " + e.message));
   });
 }
 
 
+// ----------------------------------------------------------------------
+// This chap is gonna make the actual request given the specific group_id
+// ----------------------------------------------------------------------
 function incident (options, callback) {
-  
-  var request = https.request(options, function (response) {
+  var request = https.request(options, (response) => {
     response.setEncoding('utf8');
     var body = "";
 
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsedResponse = JSON.parse(body);
-
       var color = "#0067B3";
       if (parsedResponse.state === "In Progress")
         color = "#FF6692";
@@ -382,34 +343,36 @@ function incident (options, callback) {
       if (parsedResponse.state ==="Closed")
         color = "#E3E4E6";
 
+      var image_html = parsedResponse.description;
+      var image_url = "";
+      if (image_html.indexOf('src') !== -1) {
+        image_url = image_html.split('src="')[1];
+        image_url = image_url.split(/[\s\"]/)[0];
+      }
+
       var current = {
-        "title" : parsedResponse.name,
-        "number" : parsedResponse.number,
-        "title_link" : "http://app.samanage.com/incidents/" + parsedResponse.id,
-        "description" : parsedResponse.description_no_html,
-        "requester" : parsedResponse.requester.name,
-        "requester_email" : parsedResponse.requester.email,
-        "requester_icon" : parsedResponse.created_by.avatar,
-        "state" : parsedResponse.state,
-        "priority" : parsedResponse.priority,
-        "assignee" : parsedResponse.assignee.name,
-        "comments_num" : parsedResponse.number_of_comments,
-        "ts" : parsedResponse.due_at,
-        "color" : color
+        "title": parsedResponse.name,
+        "number": parsedResponse.number,
+        "title_link": "http://app.samanage.com/incidents/" + parsedResponse.id,
+        "description": parsedResponse.description_no_html,
+        "requester": parsedResponse.requester.name,
+        "requester_email": parsedResponse.requester.email,
+        "requester_icon": parsedResponse.created_by.avatar,
+        "state": parsedResponse.state,
+        "priority": parsedResponse.priority,
+        "assignee": parsedResponse.assignee.name,
+        "image_url": image_url,
+        "comments_num": parsedResponse.number_of_comments,
+        "ts": parsedResponse.due_at,
+        "color": color
       };
 
-      var image_html = parsedResponse.description;
-      if (image_html.indexOf('src') !== -1) {
-        var image_url = image_html.split('src="')[1];
-        image_url = image_url.split(/[\s\"]/)[0];
-        current["image_url"] = image_url;
-      }
       callback(null, current);
     });
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     console.log('problem with request: ' + e.message);
   });
 }
