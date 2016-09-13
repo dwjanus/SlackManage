@@ -11,7 +11,7 @@
   "author": {
     "email": "devin.janus@samanage.com",
     "name": "Devin Janus",
-    "url": "https://facebook.com/devinjanus"
+    "url": "www.samanage.com"
   },
   "bugs": {
     "url": "https://github.com/dwjanus"
@@ -27,6 +27,7 @@
     "slack": "^6.1.0"
   },
   "keywords": [
+    "samanage",
     "slack",
     "slack-bot",
     "bot",

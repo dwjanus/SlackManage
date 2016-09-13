@@ -3,25 +3,24 @@
 
 const _ = require('lodash');
 const config = require('../config');
-const https = require('https');
 const util = require('util');
-const username = config('API_USER');
-const password = config('API_PASS');
+const https = require('https');
+var samanage_options = config('samanage_options');
 
 // ------------------------------------------------------------
 // This pal is going to grab the user's Samanage info via email
 // ------------------------------------------------------------
 function getUserInfo(options, callback) {
-  var request = https.request(options, function (response) {
+  var request = https.request(options, (response) => {
     response.setEncoding('utf8');
 
     var ids = [];
     var body = "";
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsed = JSON.parse(body);
       ids = parsed[0].group_ids;
       callback(null, ids);
@@ -29,7 +28,7 @@ function getUserInfo(options, callback) {
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     return callback(new Error("Problem with request: " + e.message));
   });
 }
@@ -48,13 +47,9 @@ function find_group(ids, size, callback, count) {
 
   while(count < size) {
     console.log(count + '\n');
-    groupRequest({
-      host: 'api.samanage.com',
-      path: '/groups/' + ids[count] + '.json',
-      method: 'GET',
-      headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
-      auth: username + ':' + password
-    }, (err, found) => {
+    var group_options = samanage_options;
+    group_options.path = '/groups/' + ids[count] + '.json';
+    groupRequest(group_options, (err, found) => {
       if (err) console.log(err);
       
       if (found)
@@ -69,20 +64,20 @@ function find_group(ids, size, callback, count) {
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
 function groupRequest(options, callback) {
-  var request = https.request(options, function (response) {
+  var request = https.request(options, (response) => {
     var body = "";
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsed = JSON.parse(body);
       callback(null, parsed.is_user);
     });
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     return callback(new Error("Problem with request: " + e.message));
   });
 }
@@ -98,34 +93,25 @@ function my_incidents (group_id, callback) {
 
   var my_incidents_list = [];
   var size = 0;
-
-  var options = {
-    host: 'api.samanage.com',
-    path: '/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5',
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
-    auth: username + ':' + password
-  };
-
-  var request = https.request(options, function (response) {
+  var my_options = samanage_options;
+  my_options.path ='/incidents.json?=&assigned_to%5B%5D=' + group_id + '&per_page=5';
+  var request = https.request(my_options, (response) => {
     response.setEncoding('utf8');
     
     var output_body = "";
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       output_body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsedResponse = JSON.parse(output_body);
 
-      console.log(util.inspect(parsedResponse) + '\n');
       for(var id in parsedResponse) {
         size++;
       }
       
       if (size > 5)
         size = 5;
-
       if (size > 0) {
         for (var i = 0; i < size; i++) {
           var color = "#0067B3";
@@ -182,7 +168,7 @@ function my_incidents (group_id, callback) {
   });
   request.end();
   
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     console.log('problem with request: ' + e.message);
   });
 }
@@ -194,24 +180,18 @@ function my_incidents (group_id, callback) {
 function new_incidents (callback) {
   
   var incident_list = [];
-
-  var newoptions = {
-    host: 'api.samanage.com',
-    path: '/incidents.json?=&per_page=5&sort_by=updated_at&sort_order=DESC',
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'content_type' : 'application/json', 'Cache-Control' : 'no-store' },
-    auth: username + ':' + password
-  };
-
-  var request = https.request(newoptions, function (response) {
+  var new_options = samanage_options;
+  new_options.path = '/incidents.json?=&per_page=5&sort_by=updated_at&sort_order=DESC';
+  
+  var request = https.request(new_options, (response) => {
     response.setEncoding('utf8');
     var body = "";
 
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsedResponse = JSON.parse(body);
 
       for (var i = 0; i <= 4; i++) {
@@ -253,7 +233,7 @@ function new_incidents (callback) {
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     console.log('problem with request: ' + e.message);
   });
 }
@@ -262,30 +242,24 @@ function new_incidents (callback) {
 // ------------------------------------------------------------------------
 // This one is gonna iterate through each incident id until number is found
 // ------------------------------------------------------------------------
-
-
 function find_incident (number, callback) {
   var perpage;
   var address;
   var page = 1;
   var difference = 0;
-
+  var first_options = samanage_options;
+  first_options.path = '/incidents.json?=&per_page=1';
+  
   // lets do some quick math to get roughly the page we are looking for the incident on
-  var request = https.request({
-    host: 'api.samanage.com',
-    path: '/incidents.json?=&per_page=1',
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
-    auth: username + ':' + password
-  }, function (response) {
+  var request = https.request(first_options, (response) => {
     response.setEncoding('utf8');
     var body = "";
 
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsed = JSON.parse(body);
       difference = parsed[0].number - number;
 
@@ -298,18 +272,11 @@ function find_incident (number, callback) {
         perpage = 100;
         address = (difference%100)-1;
       }
-      console.log('Difference: ' + difference + '\nPer Page: ' + perpage + '\nPage: ' + page + '\nAddress: ' + address + '\n');
-
+      
       // go through all incidents and look for the one that matches number
-      console.log('Now looking for incident number: ' + number + ' on page: ' + page + '\n');
-
-      incidentRequest({
-        host: 'api.samanage.com',
-        path: '/incidents.json?=&per_page=' + perpage + '&page=' + page,
-        method: 'GET',
-        headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
-        auth: username + ':' + password
-      }, address, number, (err, incident_number, incident_id) => {
+      var match_options = samanage_options;
+      match_options.path = '/incidents.json?=&per_page=' + perpage + '&page=' + page;
+      incidentRequest(match_options, address, number, (err, incident_number, incident_id) => {
         if (err) console.log(err);
         console.log(incident_id + ' -- ' + incident_number + '\n');
         // if (incident_number === number) {
@@ -321,7 +288,7 @@ function find_incident (number, callback) {
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     return callback(new Error("Problem with request: " + e.message));
   });
 }
@@ -331,21 +298,18 @@ function find_incident (number, callback) {
 // This guy is gonna make the actual request given the specific group_id
 // ---------------------------------------------------------------------
 function incidentRequest (options, address, number, callback) {
-  console.log('Now requesting specific incidents, looking for number\n');
-
-  var request = https.request(options, function (response) {
+  var request = https.request(options, (response) => {
     response.setEncoding('utf8');
     var body = "";
 
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsed = JSON.parse(body);
       var count = 0;
       while(count <= address) {
-        console.log('Count: ' + count + ' -- ID: ' + parsed[count].id + ' NUMBER: ' + parsed[count].number + '\n');
         if (parsed[count].number == number)
           return callback(null, parsed[count].number, parsed[count].id);
         else
@@ -355,25 +319,26 @@ function incidentRequest (options, address, number, callback) {
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     return callback(new Error("Problem with request: " + e.message));
   });
 }
 
 
+// ----------------------------------------------------------------------
+// This chap is gonna make the actual request given the specific group_id
+// ----------------------------------------------------------------------
 function incident (options, callback) {
-  
-  var request = https.request(options, function (response) {
+  var request = https.request(options, (response) => {
     response.setEncoding('utf8');
     var body = "";
 
-    response.on('data', function (chunk) {
+    response.on('data', (chunk) => {
       body += chunk;
     });
 
-    response.on('end', function () {
+    response.on('end', () => {
       var parsedResponse = JSON.parse(body);
-
       var color = "#0067B3";
       if (parsedResponse.state === "In Progress")
         color = "#FF6692";
@@ -409,7 +374,7 @@ function incident (options, callback) {
   });
   request.end();
 
-  request.on('error', function (e) {
+  request.on('error', (e) => {
     console.log('problem with request: ' + e.message);
   });
 }

@@ -14,11 +14,16 @@ const config = {
   SAMANAGE_COMMAND_TOKEN: process.env.SAMANAGE_COMMAND_TOKEN,
   SLACK_TOKEN: process.env.SLACK_TOKEN,
   ICON_EMOJI: ':samanage:',
-  API_USER: 'devin.janus@samanage.com',
-  API_PASS: 'BenHobgood666',
-  CLIENT_ID: '64177576980.78861190246',
-  CLIENT_SECRET: 'b6b4366f0d5390c7ec62355393147cd9',
-  OAUTH_TOKEN: 'nOlY6PpCYaVbfPEj9U4JEFSd'
+  CLIENT_ID: process.env.CLIENT_ID,
+  CLIENT_SECRET: process.env.CLIENT_SECRET,
+  OAUTH_TOKEN: process.env.OAUTH_TOKEN,
+  samanage_options: {
+    host: 'api.samanage.com',
+    path: '',
+    method: 'GET',
+    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
+    auth: process.env.API_USER + ':' + process.env.API_PASS
+  }
 };
 
 module.exports = (key) => {

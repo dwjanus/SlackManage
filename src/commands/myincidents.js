@@ -8,8 +8,7 @@ const util = require('util');
 const slack = require('slack');
 const https = require('https');
 
-const username = config('API_USER');
-const password = config('API_PASS');
+var samanage_options = config('samanage_options');
 var api = slack.api.client(config('SLACK_TOKEN'));
 
 const msgDefaults = {
@@ -26,7 +25,7 @@ const handler = (payload, res) => {
   var email = "";
 
   // get user slack id, then use that to retrieve email info
-  var user = api.users.info(options, function (err, respo) {
+  var user = api.users.info(options, (err, respo) => {
     if (err) console.log(err);
 
     email = respo.user.profile.email;
@@ -41,13 +40,8 @@ const handler = (payload, res) => {
   });
     
   // get the correct user from Samanage via their email
-  Samanage.getUserInfo({
-    host: 'api.samanage.com',
-    path: '/users.json?=&email=' + email,
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-cache, no-store' },
-    auth: username + ':' + password
-  }, (err, ids) => {
+  samanage_options.path = '/users.json?=&email=' + email;
+  Samanage.getUserInfo(samanage_options, (err, ids) => {
     if (err) console.log(err);
 
     var size = ids.length;
@@ -100,11 +94,11 @@ const handler = (payload, res) => {
            port: 443
         };
         
-        var request = https.request(post_options, function (response) {
+        var request = https.request(post_options, (response) => {
           response.setEncoding('utf8');
         });
 
-        request.on('error', function (e) {
+        request.on('error', (e) => {
           console.log('problem with request: ' + e.message);
         });
         request.write(JSON.stringify(msg));

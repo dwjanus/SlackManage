@@ -6,6 +6,7 @@ const config = require('../config');
 const Samanage = require('../lib/samanage');
 const https = require('https');
 const util = require('util');
+var samanage_options = config('samanage_options');
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -15,23 +16,15 @@ const msgDefaults = {
 
 const handler = (payload, res) => {
 
-  console.log('PAYLOAD:\n' + util.inspect(payload) + '\n');
   var str = payload.text;
   var cmd = str.split(/(@|#)/)[1];
   var number = str.split(/(@|#)/)[2];
   var url = payload.response_url;
+  samanage_options.path = '/incidents/' + number + '.json';
+  var pre_text = 'with id: ';
   
   console.log('STR: ' + str + '\nCMD: ' + cmd + '\nNUMBER: ' + number + '\n');
 
-  var options = {
-    host: 'api.samanage.com',
-    path: '/incidents/' + number + '.json',
-    method: 'GET',
-    headers: { 'accept' : 'application/vnd.samanage.v1.3+json', 'Content-Type' : 'application/json', 'Cache-Control' : 'no-store' },
-    auth: config('API_USER') + ':' + config('API_PASS')
-  };
-
-  var pre_text = 'with id: ';
   if (cmd === '@') {
     let pre = _.defaults({
       channel: payload.channel_name,
@@ -95,8 +88,6 @@ const handler = (payload, res) => {
             }
           ]
         });
-        // make response url = action url ?
-
       } else {
         attachments.push({text: "No Comments Attached"});
       }
@@ -114,16 +105,15 @@ const handler = (payload, res) => {
          port: 443
       };
       
-      var request = https.request(post_options, function (response) {
+      var request = https.request(post_options, (response) => {
         response.setEncoding('utf8');
       });
 
-      request.on('error', function (e) {
+      request.on('error', (e) => {
         console.log('problem with request: ' + e.message);
       });
       request.write(JSON.stringify(msg));
       request.end();
-
       return;
     });
 
@@ -139,7 +129,7 @@ const handler = (payload, res) => {
 
     Samanage.find_incident(number, (err, incident_number, incident_id) => {
       if(err) console.log(err);
-      options.path = '/incidents/' + incident_id + '.json';
+      samanage_options.path = '/incidents/' + incident_id + '.json';
 
       Samanage.incident(options, (err, incident) => {
         if (err) console.log(err);
@@ -213,16 +203,15 @@ const handler = (payload, res) => {
            port: 443
         };
         
-        var request = https.request(post_options, function (response) {
+        var request = https.request(post_options, (response) => {
           response.setEncoding('utf8');
         });
 
-        request.on('error', function (e) {
+        request.on('error', (e) => {
           console.log('problem with request: ' + e.message);
         });
         request.write(JSON.stringify(msg));
         request.end();
-
         return;
       });
     });

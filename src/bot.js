@@ -1,9 +1,9 @@
 
 'use strict';
 
-const slack = require('slack');
 const _ = require('lodash');
 const config = require('./config');
+const slack = require('slack');
 
 let bot = slack.rtm.client();
 
