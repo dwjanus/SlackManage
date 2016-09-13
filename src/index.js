@@ -11,9 +11,6 @@ const commands = require('./commands');
 const helpCommand = require('./commands/help');
 const util = require('util');
 const request = require('request');
-var path_to_access_token = "https://slack.com/api/oauth.access?client_id=" +
-  process.env.CLIENT_ID + "&client_secret=" + process.env.CLIENT_SECRET +
-  "&code="; //Slack URL to call to receive accessToken
 var client = require('redis').createClient(process.env.REDIS_URL);
 
 let bot = require('./bot');
@@ -45,18 +42,35 @@ app.get('/auth', (req, res) => {
 
   // Verify user accepted auth request
   if (codePos > -1) {
-    var completePath = path_to_access_token + accessCode; //Slack API call
-    request.post(completePath, (err, response, body) => {
-      var teamInfo = JSON.parse(body);
-      console.log(util.inspect(teamInfo) + '\n');
-      if (!err && response.statusCode == 200 && teamInfo.ok == true) {
-        // save the ACCESS_CODE
-        client.set("ACCESS_TOKEN", teamInfo.access_token);
-        client.set("WEBHOOK_URL", teamInfo.incoming_webhook.url);
-        client.set("SLACK_TOKEN", teamInfo.bot.bot_access_token);
-      } else {
-        // Error
-      }
+    var options = {
+      host: 'slack.com',
+      path: '/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
+      method: 'POST'
+    };
+    var request = https.request(options, (err, response) => {
+      var body = "";
+
+      response.on('data', (chunk) => {
+        body += chunk;
+      });
+
+      response.on('end', (chunk) => {
+        var teamInfo = JSON.parse(body);
+        console.log(util.inspect(teamInfo) + '\n');
+        if (!err && response.statusCode == 200 && teamInfo.ok == true) {
+          // save the ACCESS_CODE
+          client.set("ACCESS_TOKEN", teamInfo.access_token);
+          client.set("WEBHOOK_URL", teamInfo.incoming_webhook.url);
+          client.set("SLACK_TOKEN", teamInfo.bot.bot_access_token);
+        } else {
+          // Error
+        }
+      }); 
+    });
+    request.end();
+
+    request.on('error' (e) => {
+      return callback(new Error("Problem with request: " + e.message));
     });
   } else {
     // Reroute user back to install page, they denied auth
