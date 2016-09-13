@@ -20,11 +20,10 @@ const handler = (payload, res) => {
   var cmd = str.split(/(@|#)/)[1];
   var number = str.split(/(@|#)/)[2];
   var url = payload.response_url;
-  samanage_options.path = '/incidents/' + number + '.json';
+  var incident_options = samanage_options;
+  incident_options.path = '/incidents/' + number + '.json';
   var pre_text = 'with id: ';
   
-  console.log('STR: ' + str + '\nCMD: ' + cmd + '\nNUMBER: ' + number + '\n');
-
   if (cmd === '@') {
     let pre = _.defaults({
       channel: payload.channel_name,
@@ -34,7 +33,7 @@ const handler = (payload, res) => {
     res.set('Content-Type', 'application/json');
     res.send(pre);
 
-    Samanage.incident(options, (err, incident) => {
+    Samanage.incident(incident_options, (err, incident) => {
       if (err) console.log(err);
 
       var attachments = [

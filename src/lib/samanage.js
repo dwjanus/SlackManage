@@ -5,7 +5,7 @@ const _ = require('lodash');
 const config = require('../config');
 const util = require('util');
 const https = require('https');
-var samanage_options = config('samanage_options');
+const samanage_options = config('samanage_options');
 
 // ------------------------------------------------------------
 // This pal is going to grab the user's Samanage info via email
@@ -134,7 +134,7 @@ function my_incidents (group_id, callback) {
             "color" : color
           };
 
-          var image_html = parsedResponse[i].description;
+          let image_html = parsedResponse[i].description;
           if (image_html.indexOf('src') !== -1) {
             var image_url = image_html.split('src="')[1];
             console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
@@ -192,7 +192,7 @@ function new_incidents (callback) {
     });
 
     response.on('end', () => {
-      var parsedResponse = JSON.parse(body);
+      let parsedResponse = JSON.parse(body);
 
       for (var i = 0; i <= 4; i++) {
         var color = "#0067B3";
@@ -217,7 +217,7 @@ function new_incidents (callback) {
           "color" : color
         };
 
-        var image_html = parsedResponse[i].description;
+        let image_html = parsedResponse[i].description;
         if (image_html.indexOf('src') !== -1) {
           var image_url = image_html.split('src="')[1];
           console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
@@ -278,11 +278,8 @@ function find_incident (number, callback) {
       match_options.path = '/incidents.json?=&per_page=' + perpage + '&page=' + page;
       incidentRequest(match_options, address, number, (err, incident_number, incident_id) => {
         if (err) console.log(err);
-        console.log(incident_id + ' -- ' + incident_number + '\n');
-        // if (incident_number === number) {
-        //   console.log('\nMATCH FOUND!!\n');
-          return callback(null, incident_number, incident_id);
-        // }
+        else
+          callback(null, incident_number, incident_id);
       });
     });
   });
@@ -338,7 +335,7 @@ function incident (options, callback) {
     });
 
     response.on('end', () => {
-      var parsedResponse = JSON.parse(body);
+      let parsedResponse = JSON.parse(body);
       var color = "#0067B3";
       if (parsedResponse.state === "In Progress")
         color = "#FF6692";
