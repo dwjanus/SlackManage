@@ -5,8 +5,8 @@ const _ = require('lodash');
 const config = require('../config');
 const https = require('https');
 const util = require('util');
-const username = config('API_USER');
-const password = config('API_PASS');
+const username = process.env.API_USER;
+const password = process.env.API_PASS;
 
 // ------------------------------------------------------------
 // This pal is going to grab the user's Samanage info via email
