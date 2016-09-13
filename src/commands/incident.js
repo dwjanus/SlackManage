@@ -130,7 +130,7 @@ const handler = (payload, res) => {
       if(err) console.log(err);
       samanage_options.path = '/incidents/' + incident_id + '.json';
 
-      Samanage.incident(options, (err, incident) => {
+      Samanage.incident(samanage_options, (err, incident) => {
         if (err) console.log(err);
 
         var attachments = [
