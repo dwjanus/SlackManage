@@ -128,7 +128,7 @@ function my_incidents (group_id, callback) {
           if (image_html.indexOf('src') !== -1) {
             image_url = image_html.split('src="')[1];
             console.log('ELEMENT after first split: ' + util.inspect(image_url) + '\n');
-            image_url = 'https://s3.amazonaws.com/Production_CustomerData/' + image_url.split(/[\s\"]/)[0];
+            image_url = 'https://app.samanage.com/' + image_url.split(/[\s\"]/)[0];
             console.log('ELEMENT after second split: ' + util.inspect(image_url) + '\n');
           }
 
