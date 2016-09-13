@@ -46,7 +46,8 @@ app.get('/auth', (req, res) => {
       path: '/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
       method: 'POST'
     };
-    var request = https.request(options, (err, response) => {
+    var request = https.request(options, (response) => {
+      response.setEncoding('utf8');
       var body = "";
 
       response.on('data', (chunk) => {
@@ -64,7 +65,7 @@ app.get('/auth', (req, res) => {
         } else {
           // Error
         }
-      }); 
+      });
     });
     request.end();
 
