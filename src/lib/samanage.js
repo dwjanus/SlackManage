@@ -122,6 +122,7 @@ function my_incidents (group_id, callback) {
           if (parsedResponse[i].state == "Closed")
             color = "#E3E4E6";
 
+          console.log(util.inspect(parsedResponse) + '\n');
           var image_html = parsedResponse[i].description;
           var image_url = "";
           if (image_html.indexOf('src') !== -1) {
