@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') });
 
-// app.get('/oauth/authorize', (req, res) => { 
+// app.get('/oauth', (req, res) => { 
 //   let payload = req.body;
 //   console.log('PAYLOAD for oauth: \n' + util.inspect(payload));
 
@@ -64,24 +64,24 @@ app.post('/commands/samanage', (req, res) => {
 //
 // ~~  POST for interractive buttons  ~~
 //
-app.post('/commands/button', (req, res) => {
-  let payload = req.body;
+// app.post('/commands/button', (req, res) => {
+//   let payload = req.body;
 
-  console.log('PAYLOAD for button: \n' + util.inspect(payload));
-  
-  if (!config('CLIENT_ID') || !config('CLIENT_SECRET')) {
-    let err = '✋  Dowhatnow? An invalid slack token was provided\n' +
-              '   Is your Slack slash token correctly configured?';
-    console.log(err);
-    res.status(401).end(err);
-    return;
-  }
+//   console.log('PAYLOAD for button: \n' + util.inspect(payload));
 
-  //let code = payload.url;
-  //slack.oauth.access(config('CLIENT_ID'), config('CLIENT_SECRET'), code);
+//   if (!config('CLIENT_ID') || !config('CLIENT_SECRET') || !config('PORT')) {
+//     let err = '✋  Dowhatnow? An invalid slack token was provided\n' +
+//               '   Is your Slack slash token correctly configured?';
+//     console.log(err);
+//     res.status(401).end(err);
+//     return;
+//   }
 
-  button_action.handler(payload, res);
-});
+//   let code = payload.url;
+//   slack.oauth.access(config('CLIENT_ID'), config('CLIENT_SECRET'), code);
+
+//   button_action.handler(payload, res);
+// });
 
 app.listen(config('PORT'), (err) => {
   if (err) throw err;
