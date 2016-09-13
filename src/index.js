@@ -44,7 +44,7 @@ app.get('/auth', (req, res) => {
     var options = {
       host: 'slack.com',
       path: '/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
-      method: 'POST'
+      method: 'GET'
     };
     var request = https.request(options, (response) => {
       response.setEncoding('utf8');
