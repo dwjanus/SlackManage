@@ -69,10 +69,10 @@ app.get('/auth', (req, res) => {
   return;
 });
 
-
+var team_id;
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
-  var team_id = payload.team_id;
+  team_id = payload.team_id;
 
   client.hgetall(team_id, function (err, obj) {
     if (err) console.log(err);
@@ -93,7 +93,7 @@ app.post('/commands/samanage', (req, res) => {
     }, helpCommand);
 
     cmd.handler(payload, res);
-  });  
+  });
 });
 
 
