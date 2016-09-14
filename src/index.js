@@ -43,8 +43,9 @@ app.get('/auth', (req, res) => {
   console.log('Access Code: ' + accessCode + '\n');
 
   if (codePos > -1) {
-    var teamInfo = slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode);
-    console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
+    slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode, 'http://slackmanage.herokuapp.com/', (error, teamInfo) => {
+      console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
+    });
   } else {
     // Reroute user back to install page, they denied auth
   }
