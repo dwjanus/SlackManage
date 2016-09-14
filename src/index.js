@@ -47,6 +47,9 @@ app.get('/auth', (req, res) => {
     function (error, response, body) {
       if (error)
         console.log(error);
+
+      console.log('Response: ' + util.inspect(response) + '\n');
+      console.log('Body: ' + util.inspect(body) + '\n');
       var responseJson = JSON.parse(body);
       console.log('ResponseJSON: ' + responseJson + '\n');
       if (responseJson.ok) {
@@ -60,11 +63,9 @@ app.get('/auth', (req, res) => {
           if (err) console.log(err);
           else {
             console.log(replies.length + "replies:");
-            var count = 0;
-            for(var reply in replies) {
-              console.log("   " + count + ": " + reply);
-              count++;
-            };
+            for (var reply in replies) {
+              console.log(reply + ": " + replies[reply]);
+            }
           }
         });
       }
