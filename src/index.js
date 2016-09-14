@@ -48,8 +48,8 @@ app.get('/auth', (req, res) => {
     function (error, response, body) {
       if (error) 
         console.log(error);
-      else
-        response.setStatus(200);
+      // else
+      //   response.send('Authenticating');
       var responseJson = JSON.parse(body);
       console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
       if (responseJson.ok) {
@@ -65,7 +65,7 @@ app.get('/auth', (req, res) => {
         });
       }
   });
-  res.send(200);
+  res.sendStatus(200);
 
   // if (codePos > -1) {
   //   var oauth = slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode, (error, teamInfo) => {
