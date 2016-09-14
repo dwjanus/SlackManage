@@ -48,25 +48,25 @@ app.get('/auth', (req, res) => {
       if (error)
         console.log(error);
 
-      console.log('Body: ' + util.inspect(JSON.parse(body)) + '\n');
+      console.log('Body: ' + util.inspect(body) + '\n\n');
       var responseJson = JSON.parse(body);
-      console.log('ResponseJSON: ' + responseJson + '\n');
+      console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
       if (responseJson.ok) {
         var accessToken = responseJson['access_token'];
         var teamId = responseJson['team_id'];
         var webhookUrl = responseJson['incoming_webhook']['url'];
         var botUserId = responseJson['bot']['bot_user_id'];
         var botAccessToken = responseJson['bot']['bot_access_token'];
+        
         client.hmset(teamId, {
           "access_token": accessToken.toString(),
           "webhook_url": webhookUrl.toString(),
           "bot_access_token": botAccessToken.toString(),
           "bot_user_id": botUserId.toString()
-        }, function (err, replies) {
-          if (err) console.log(err);
-          else {
-            console.log(util.inspect(replies) + '\n');
-          }
+        });
+        
+        client.hgetall(teamId.toString(), function (err, obj) {
+            console.dir(obj);
         });
       }
   });
