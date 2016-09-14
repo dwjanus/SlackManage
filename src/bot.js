@@ -13,7 +13,7 @@ var team = "";
 bot.started((payload) => {
   this.self = payload.self;
   console.log('Bot Payload: ' + util.inspect(payload) + '\n');
-  team = payload.team_id;
+  team = payload.team.id;
 });
 
 bot.message((msg) => {
