@@ -34,8 +34,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/auth', (req, res) => {
-  var request = require('request');
-
   var url = req.url;
   console.log('url: ' + url + '\n');
   var codePos = url.indexOf("code="); //index where code starts in the url
@@ -44,14 +42,14 @@ app.get('/auth', (req, res) => {
   var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
   console.log('Access Code: ' + accessCode + '\n');
 
+  var request = require('request');
   request('https://slack.com/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
     function (error, response, body) {
       if (error) 
         console.log(error);
-      // else
-      //   response.send('Authenticating');
+      
       var responseJson = JSON.parse(body);
-      console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
+      console.log('ResponseJSON: ' + responseJson + '\n');
       if (responseJson.ok) {
         var botAccessToken = responseJson['bot']['bot_access_token'];
         var botUserId = responseJson['bot']['bot_user_id'];
@@ -59,11 +57,17 @@ app.get('/auth', (req, res) => {
         client.hmset(teamId, {
           "bot_access_token": botAccessToken,
           "bot_user_id": botUserId
-        }, function (err, res) {
+        }, function (err, replies) {
           if (err) console.log(err);
-          if (res) console.log(res);
+          else {
+            console.log(replies.length + "replies:");
+            replies.forEach(function (reply, i) {
+              console.log("   " + i + ": " + reply);
+            });
+          }
         });
       }
+      response.send('Authenticated!');
   });
   res.sendStatus(200);
 
