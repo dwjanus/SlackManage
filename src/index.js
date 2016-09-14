@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const _ = require('lodash');
 const https = require('https');
 const config = require('./config');
+const slack = require('slack');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
 const util = require('util');
@@ -34,10 +35,12 @@ app.get('/', (req, res) => {
 
 app.get('/auth', (req, res) => {
   var url = req.url;
+  console.log('url: ' + url + '\n');
   var codePos = url.indexOf("code="); //index where code starts in the url
   var codeStart = codePos + 5; //we dont want the 'code=' part
   var codeEnd = url.indexOf("&"); //we dont need anything else
   var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
+  console.log('Access Code: ' + accessCode + '\n');
 
   // Verify user accepted auth request
   if (codePos > -1) {
@@ -54,9 +57,10 @@ app.get('/auth', (req, res) => {
         body += chunk;
       });
 
-      console.log(util.inspect(body) + '\n');
+      console.log('Body: ' + util.inspect(body) + '\n');
       response.on('end', (chunk) => {
         var teamInfo = JSON.parse(body);
+        console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
         if (teamInfo.ok === true) {
           // save the ACCESS_CODE
           client.set("ACCESS_TOKEN", teamInfo.access_token);
