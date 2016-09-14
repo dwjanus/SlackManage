@@ -47,7 +47,7 @@ app.get('/auth', (req, res) => {
     function (error, response, body) {
       if (error) 
         console.log(error);
-      
+      response.status(200);
       var responseJson = JSON.parse(body);
       console.log('ResponseJSON: ' + responseJson + '\n');
       if (responseJson.ok) {
@@ -67,7 +67,6 @@ app.get('/auth', (req, res) => {
           }
         });
       }
-      response.send('Authenticated!');
   });
   res.sendStatus(200);
 
