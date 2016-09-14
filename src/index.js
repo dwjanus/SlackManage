@@ -48,7 +48,7 @@ app.get('/auth', (req, res) => {
 
       var responseJson = JSON.parse(body);
       if (responseJson.ok) {
-        console.log('ResponseJSON: ' + responseJson + '\n');
+        console.log('ResponseJSON: ' + JSON.stringify(responseJson) + '\n');
 
         var accessToken = responseJson['access_token'];
         var teamId = responseJson['team_id'];
