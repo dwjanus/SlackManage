@@ -44,28 +44,28 @@ app.get('/auth', (req, res) => {
 
   // Verify user accepted auth request
   if (codePos > -1) {
-    var options = {
+    var request = https.request({
       host: 'slack.com',
       path: '/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
-      method: 'POST'
-    };
-    var request = https.request(options, (response) => {
+      method: 'POST',
+    }, (response) => {
       response.setEncoding('utf8');
+      
       var body = "";
-
       response.on('data', (chunk) => {
         body += chunk;
       });
 
       console.log('Body: ' + util.inspect(body) + '\n');
+
       response.on('end', () => {
         var teamInfo = JSON.parse(body);
         console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
         if (teamInfo.ok === true) {
           // save the ACCESS_CODE
           client.set("ACCESS_TOKEN", teamInfo.access_token);
-          client.set("WEBHOOK_URL", teamInfo.incoming_webhook.url);
-          client.set("SLACK_TOKEN", teamInfo.bot.bot_access_token);
+          // client.set("WEBHOOK_URL", teamInfo.incoming_webhook.url);
+          // client.set("SLACK_TOKEN", teamInfo.bot.bot_access_token);
         } else {
           // Error
         }
