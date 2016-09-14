@@ -57,6 +57,9 @@ app.get('/auth', (req, res) => {
         var webhookUrl = responseJson['incoming_webhook']['url'];
         var botUserId = responseJson['bot']['bot_user_id'];
         var botAccessToken = responseJson['bot']['bot_access_token'];
+
+        console.log("    --> " + accessToken + "\n    --> " + teamId + "\n    --> ");
+        console.log(webhookUrl + "\n    --> " + botUserId + "\n    --> " + botAccessToken + '\n');
         
         client.hmset(teamId, {
           "access_token": accessToken.toString(),
