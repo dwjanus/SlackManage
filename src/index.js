@@ -44,7 +44,7 @@ app.get('/auth', (req, res) => {
     var options = {
       host: 'slack.com',
       path: '/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
-      method: 'GET'
+      method: 'POST'
     };
     var request = https.request(options, (response) => {
       response.setEncoding('utf8');
@@ -80,7 +80,7 @@ app.get('/auth', (req, res) => {
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
 
-  if (!payload || payload.token !== config('SAMANAGE_COMMAND_TOKEN')) {
+  if (!payload || payload.token !== client.get('ACCESS_TOKEN')) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
               '   Is your Slack slash token correctly configured?';
     console.log(err);
