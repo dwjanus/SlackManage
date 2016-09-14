@@ -124,10 +124,10 @@ app.post('/commands/samanage', (req, res) => {
   var team_id = payload.team_id;
   var access = "";
 
-  client.get(team_id["access_token"], function (err, reply) {
+  client.hgetall(team_id, function (err, obj) {
     if (err) console.log(err);
-    console.log(reply.toString() +'\n');
-    access = reply.toString();
+    console.log(util.inspect(obj) +'\n');
+    access = obj["access_token"];
   });
 
   if (!payload || payload.token !== access ) {
