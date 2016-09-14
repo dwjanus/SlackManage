@@ -43,7 +43,8 @@ app.get('/auth', (req, res) => {
   console.log('Access Code: ' + accessCode + '\n');
 
   if (codePos > -1) {
-    slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode, 'http://slackmanage.herokuapp.com/', (error, teamInfo) => {
+    slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode, (error, teamInfo) => {
+      if (error) console.log(error);
       console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
     });
   } else {
