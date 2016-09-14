@@ -44,7 +44,7 @@ app.get('/auth', (req, res) => {
   var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
   console.log('Access Code: ' + accessCode + '\n');
 
-  request('https://slack.com/api/oauth.access?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&code=' + accessCode,
+  request('https://slack.com/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
     function (error, response, body) {
       var responseJson = JSON.parse(body);
       console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
