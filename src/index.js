@@ -63,9 +63,10 @@ app.get('/auth', (req, res) => {
         console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
         if (teamInfo.ok === true) {
           // save the ACCESS_CODE
-          client.set("ACCESS_TOKEN", teamInfo.access_token);
+          // client.set("ACCESS_TOKEN", teamInfo.access_token);
           // client.set("WEBHOOK_URL", teamInfo.incoming_webhook.url);
           // client.set("SLACK_TOKEN", teamInfo.bot.bot_access_token);
+          console.log('teamInfo is okay' + '\n');
         } else {
           // Error
         }
