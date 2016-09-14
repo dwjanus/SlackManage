@@ -48,7 +48,7 @@ app.get('/auth', (req, res) => {
 
       var responseJson = JSON.parse(body);
       if (responseJson.ok) {
-        console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
+        console.log('ResponseJSON: ' + responseJson + '\n');
 
         var accessToken = responseJson['access_token'];
         var teamId = responseJson['team_id'];
@@ -63,6 +63,7 @@ app.get('/auth', (req, res) => {
           "bot_user_id": botUserId
         });
       }
+    return;
   });
   res.sendStatus(200);
   return;
