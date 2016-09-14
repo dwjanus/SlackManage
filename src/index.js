@@ -48,24 +48,24 @@ app.get('/auth', (req, res) => {
       if (error)
         console.log(error);
 
-      console.log('Response: ' + util.inspect(response) + '\n');
-      console.log('Body: ' + util.inspect(body) + '\n');
+      console.log('Body: ' + util.inspect(JSON.parse(body)) + '\n');
       var responseJson = JSON.parse(body);
       console.log('ResponseJSON: ' + responseJson + '\n');
       if (responseJson.ok) {
-        var botAccessToken = responseJson['bot']['bot_access_token'];
-        var botUserId = responseJson['bot']['bot_user_id'];
+        var accessToken = responseJson['access_token'];
         var teamId = responseJson['team_id'];
+        var webhookUrl = responseJson['incoming_webhook']['url'];
+        var botUserId = responseJson['bot']['bot_user_id'];
+        var botAccessToken = responseJson['bot']['bot_access_token'];
         client.hmset(teamId, {
-          "bot_access_token": botAccessToken,
-          "bot_user_id": botUserId
+          "access_token": accessToken.toString(),
+          "webhook_url": webhookUrl.toString(),
+          "bot_access_token": botAccessToken.toString(),
+          "bot_user_id": botUserId.toString()
         }, function (err, replies) {
           if (err) console.log(err);
           else {
-            console.log(replies.length + "replies:");
-            for (var reply in replies) {
-              console.log(reply + ": " + replies[reply]);
-            }
+            console.log(util.inspect(replies) + '\n');
           }
         });
       }
