@@ -11,8 +11,6 @@ const slack = require('slack');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
 const util = require('util');
-var request = require('request'),
-  url = require('url');
 var client = require('redis').createClient(process.env.REDIS_URL);
 
 let bot = require('./bot');
@@ -36,6 +34,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/auth', (req, res) => {
+  var request = require('request'),
+    url = require('url');
   var requesetDetails = url.parse(request.url, true);
 
   request('https://slack.com/api/oauth.access?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&code=' + requestDetails.query.code,
