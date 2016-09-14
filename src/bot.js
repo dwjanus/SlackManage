@@ -12,7 +12,7 @@ var team = "";
 
 bot.started((payload) => {
   this.self = payload.self;
-  console.log('Bot Payload: ' + util.inspect(payload) + '\n');
+  // console.log('Bot Payload: ' + util.inspect(payload) + '\n');
   team = payload.team.id;
 });
 

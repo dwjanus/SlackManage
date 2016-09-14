@@ -130,7 +130,7 @@ app.post('/commands/samanage', (req, res) => {
     access = obj["access_token"];
     console.log('Access: ' + access + '\n');
 
-    if (!payload || payload.token !== access ) {
+    if (!payload || payload.token !== config('OAUTH_TOKEN')) {
       let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
                 '   Is your Slack slash token correctly configured?';
       console.log(err);
