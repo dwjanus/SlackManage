@@ -62,13 +62,12 @@ app.get('/auth', (req, res) => {
         console.log(webhookUrl + "\n    --> " + botUserId + "\n    --> " + botAccessToken + '\n');
         
         client.hmset(teamId, {
-          "access_token": accessToken.toString(),
-          "webhook_url": webhookUrl.toString(),
-          "bot_access_token": botAccessToken.toString(),
-          "bot_user_id": botUserId.toString()
+          "access_token": accessToken,
+          "webhook_url": webhookUrl,
+          "bot_access_token": botAccessToken,
+          "bot_user_id": botUserId
         });
         
-        client.unref();
         client.hgetall(teamId.toString(), function (err, obj) {
           if (err) console.log(err);
           console.dir(obj);
@@ -120,8 +119,18 @@ app.get('/auth', (req, res) => {
 
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
+  console.log('Payload: ' + util.inspect(payload) + '\n');
+  
+  var team_id = payload.team_id;
+  var access = "";
 
-  if (!payload || payload.token !== client.get('ACCESS_TOKEN')) {
+  client.get(team_id["access_token"], function (err, reply) {
+    if (err) console.log(err);
+    console.log(reply.toString() +'\n');
+    access = reply.toString();
+  });
+
+  if (!payload || payload.token !== access ) {
     let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
               '   Is your Slack slash token correctly configured?';
     console.log(err);
