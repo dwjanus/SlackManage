@@ -7,9 +7,16 @@ const slack = require('slack');
 var client = require('redis').createClient(process.env.REDIS_URL);
 
 let bot = slack.rtm.client();
+let team = "";
+let bot_token = "";
 
 bot.started((payload) => {
   this.self = payload.self;
+  team = payload.team_id;
+  client.hgetall(team, function (err, obj) {
+    bot_token = obj['bot_access_token'];
+    console.log('bot_token = ' + bot_token + '\n');
+  });
 });
 
 bot.message((msg) => {
@@ -17,7 +24,7 @@ bot.message((msg) => {
   if (!_.includes(msg.text.match(/<@([A-Z0-9])+>/igm), `<@${this.self.id}>`)) return;
 
   slack.chat.postMessage({
-    token: client.get('SLACK_TOKEN'),
+    token: bot_token,
     oauth: config('OAUTH_TOKEN'),
     icon_emoji: config('ICON_EMOJI'),
     channel: msg.channel,

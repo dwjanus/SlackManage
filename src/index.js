@@ -58,9 +58,6 @@ app.get('/auth', (req, res) => {
         var botUserId = responseJson['bot']['bot_user_id'];
         var botAccessToken = responseJson['bot']['bot_access_token'];
 
-        console.log("    --> " + accessToken + "\n    --> " + teamId + "\n    --> ");
-        console.log(webhookUrl + "\n    --> " + botUserId + "\n    --> " + botAccessToken + '\n');
-        
         client.hmset(teamId, {
           "access_token": accessToken,
           "webhook_url": webhookUrl,
@@ -68,10 +65,10 @@ app.get('/auth', (req, res) => {
           "bot_user_id": botUserId
         });
         
-        client.hgetall(teamId.toString(), function (err, obj) {
-          if (err) console.log(err);
-          console.dir(obj);
-        });
+        // client.hgetall(teamId.toString(), function (err, obj) {
+        //   if (err) console.log(err);
+        //   console.dir(obj);
+        // });
       }
   });
   res.sendStatus(200);
@@ -115,6 +112,7 @@ app.get('/auth', (req, res) => {
   // } else {
   //   // Reroute user back to install page, they denied auth
   // }
+  return;
 });
 
 app.post('/commands/samanage', (req, res) => {
@@ -128,6 +126,7 @@ app.post('/commands/samanage', (req, res) => {
     if (err) console.log(err);
     console.log(util.inspect(obj) +'\n');
     access = obj["access_token"];
+    console.log('Access: ' + access + '\n');
   });
 
   if (!payload || payload.token !== access ) {
