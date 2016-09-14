@@ -48,10 +48,10 @@ app.get('/auth', (req, res) => {
       if (error)
         console.log(error);
 
-      console.log('Body: ' + util.inspect(body) + '\n\n');
       var responseJson = JSON.parse(body);
-      console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
       if (responseJson.ok) {
+        console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
+
         var accessToken = responseJson['access_token'];
         var teamId = responseJson['team_id'];
         var webhookUrl = responseJson['incoming_webhook']['url'];
@@ -68,21 +68,14 @@ app.get('/auth', (req, res) => {
           "bot_user_id": botUserId.toString()
         });
         
+        client.unref();
         client.hgetall(teamId.toString(), function (err, obj) {
-            console.dir(obj);
+          if (err) console.log(err);
+          console.dir(obj);
         });
       }
   });
   res.sendStatus(200);
-
-  // if (codePos > -1) {
-  //   var oauth = slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode, (error, teamInfo) => {
-  //     if (error) console.log(error);
-  //     console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
-  //   });
-  // } else {
-  //   // Reroute user back to install page, they denied auth
-  // }
 
   // // Verify user accepted auth request
   // if (codePos > -1) {
