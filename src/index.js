@@ -115,34 +115,37 @@ app.get('/auth', (req, res) => {
   return;
 });
 
+
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
-  console.log('Payload: ' + util.inspect(payload) + '\n');
+  console.log('Command Payload: ' + util.inspect(payload) + '\n');
   
   var team_id = payload.team_id;
-  var access = "";
 
   client.hgetall(team_id, function (err, obj) {
     if (err) console.log(err);
+
+    var access = "";
     console.log(util.inspect(obj) +'\n');
     access = obj["access_token"];
     console.log('Access: ' + access + '\n');
-  });
 
-  if (!payload || payload.token !== access ) {
-    let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
-              '   Is your Slack slash token correctly configured?';
-    console.log(err);
-    res.status(401).end(err);
-    return;
-  }
+    if (!payload || payload.token !== access ) {
+      let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
+                '   Is your Slack slash token correctly configured?';
+      console.log(err);
+      res.status(401).end(err);
+      return;
+    }
 
-  let cmd = _.reduce(commands, (a, cmd) => {
-    return payload.text.match(cmd.pattern) ? cmd : a
-  }, helpCommand);
+    let cmd = _.reduce(commands, (a, cmd) => {
+      return payload.text.match(cmd.pattern) ? cmd : a
+    }, helpCommand);
 
-  cmd.handler(payload, res);
+    cmd.handler(payload, res);
+  });  
 });
+
 
 app.post('/action', (req, res) => {
   let payload = req.body;
