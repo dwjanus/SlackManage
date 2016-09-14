@@ -7,8 +7,8 @@ const slack = require('slack');
 var client = require('redis').createClient(process.env.REDIS_URL);
 
 let bot = slack.rtm.client();
-let team = "";
-let bot_token = "";
+var team = "";
+var bot_token = "";
 
 bot.started((payload) => {
   this.self = payload.self;
@@ -25,7 +25,6 @@ bot.message((msg) => {
 
   slack.chat.postMessage({
     token: bot_token,
-    oauth: config('OAUTH_TOKEN'),
     icon_emoji: config('ICON_EMOJI'),
     channel: msg.channel,
     username: 'Samanage bot',
