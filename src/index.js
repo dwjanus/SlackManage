@@ -60,8 +60,10 @@ app.get('/auth', (req, res) => {
           if (err) console.log(err);
           else {
             console.log(replies.length + "replies:");
-            replies.forEach(function (reply, i) {
-              console.log("   " + i + ": " + reply);
+            var count = 0;
+            for(var reply in replies) {
+              console.log("   " + count + ": " + reply);
+              count++;
             });
           }
         });
