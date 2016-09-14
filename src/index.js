@@ -64,7 +64,7 @@ app.get('/auth', (req, res) => {
             for(var reply in replies) {
               console.log("   " + count + ": " + reply);
               count++;
-            });
+            };
           }
         });
       }
