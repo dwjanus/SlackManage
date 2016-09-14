@@ -58,7 +58,7 @@ app.get('/auth', (req, res) => {
       });
 
       console.log('Body: ' + util.inspect(body) + '\n');
-      response.on('end', (chunk) => {
+      response.on('end', () => {
         var teamInfo = JSON.parse(body);
         console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
         if (teamInfo.ok === true) {
