@@ -11,6 +11,8 @@ const slack = require('slack');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
 const util = require('util');
+var request = require('request'),
+  url = require('url');
 var client = require('redis').createClient(process.env.REDIS_URL);
 
 let bot = require('./bot');
@@ -34,22 +36,42 @@ app.get('/', (req, res) => {
 });
 
 app.get('/auth', (req, res) => {
-  var url = req.url;
-  console.log('url: ' + url + '\n');
-  var codePos = url.indexOf("code="); //index where code starts in the url
-  var codeStart = codePos + 5; //we dont want the 'code=' part
-  var codeEnd = url.indexOf("&"); //we dont need anything else
-  var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
-  console.log('Access Code: ' + accessCode + '\n');
+  var requesetDetails = url.parse(request.url, true);
 
-  if (codePos > -1) {
-    slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode, (error, teamInfo) => {
-      if (error) console.log(error);
-      console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
-    });
-  } else {
-    // Reroute user back to install page, they denied auth
-  }
+  request('https://slack.com/api/oauth.access?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&code=' + requestDetails.query.code,
+    function (error, response, body) {
+      var responseJson = JSON.parse(body);
+      console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
+      if (responseJson.ok) {
+        var botAccessToken = responseJson['bot']['bot_access_token'];
+        var botUserId = responseJson['bot']['bot_user_id'];
+        var teamId = responseJson['team_id'];
+        client.hmset(teamId, {
+          "bot_access_token": botAccessToken,
+          "bot_user_id": botUserId
+        }, function (err, res) {
+          if (err) console.log(err);
+          console.log(res);
+        });
+      }
+  });
+
+  // var url = req.url;
+  // console.log('url: ' + url + '\n');
+  // var codePos = url.indexOf("code="); //index where code starts in the url
+  // var codeStart = codePos + 5; //we dont want the 'code=' part
+  // var codeEnd = url.indexOf("&"); //we dont need anything else
+  // var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
+  // console.log('Access Code: ' + accessCode + '\n');
+
+  // if (codePos > -1) {
+  //   var oauth = slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode, (error, teamInfo) => {
+  //     if (error) console.log(error);
+  //     console.log('TeamInfo: ' + util.inspect(teamInfo) + '\n');
+  //   });
+  // } else {
+  //   // Reroute user back to install page, they denied auth
+  // }
 
   // // Verify user accepted auth request
   // if (codePos > -1) {
@@ -57,6 +79,7 @@ app.get('/auth', (req, res) => {
   //     host: 'slack.com',
   //     path: '/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
   //     method: 'POST',
+  //     headers: {'Content-Type' : 'application/x-www-form-urlencoded'}
   //   }, (response) => {
   //     response.setEncoding('utf8');
       
