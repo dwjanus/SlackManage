@@ -46,6 +46,10 @@ app.get('/auth', (req, res) => {
 
   request('https://slack.com/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
     function (error, response, body) {
+      if (error) 
+        console.log(error);
+      else
+        response.setStatus(200);
       var responseJson = JSON.parse(body);
       console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
       if (responseJson.ok) {
@@ -57,10 +61,11 @@ app.get('/auth', (req, res) => {
           "bot_user_id": botUserId
         }, function (err, res) {
           if (err) console.log(err);
-          console.log(res);
+          if (res) console.log(res);
         });
       }
   });
+  res.send(200);
 
   // if (codePos > -1) {
   //   var oauth = slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode, (error, teamInfo) => {
