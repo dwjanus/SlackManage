@@ -34,11 +34,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/auth', (req, res) => {
-  var request = require('request'),
-    url = require('url');
-  var requesetDetails = url.parse(request.url, true);
+  var request = require('request');
 
-  request('https://slack.com/api/oauth.access?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&code=' + requestDetails.query.code,
+  var url = req.url;
+  console.log('url: ' + url + '\n');
+  var codePos = url.indexOf("code="); //index where code starts in the url
+  var codeStart = codePos + 5; //we dont want the 'code=' part
+  var codeEnd = url.indexOf("&"); //we dont need anything else
+  var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
+  console.log('Access Code: ' + accessCode + '\n');
+
+  request('https://slack.com/api/oauth.access?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&code=' + accessCode,
     function (error, response, body) {
       var responseJson = JSON.parse(body);
       console.log('ResponseJSON: ' + util.inspect(responseJson) + '\n');
@@ -55,14 +61,6 @@ app.get('/auth', (req, res) => {
         });
       }
   });
-
-  // var url = req.url;
-  // console.log('url: ' + url + '\n');
-  // var codePos = url.indexOf("code="); //index where code starts in the url
-  // var codeStart = codePos + 5; //we dont want the 'code=' part
-  // var codeEnd = url.indexOf("&"); //we dont need anything else
-  // var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
-  // console.log('Access Code: ' + accessCode + '\n');
 
   // if (codePos > -1) {
   //   var oauth = slack.oauth.access(process.env.CLIENT_ID, process.env.CLIENT_SECRET, accessCode, (error, teamInfo) => {
