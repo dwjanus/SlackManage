@@ -18,8 +18,7 @@ bot.started((payload) => {
 
 bot.hello((message) => {
   console.log(`Got a message: ${message}`);
-  bot.close();
-})
+});
 
 bot.message((msg) => {
   if (!msg.user) return;
@@ -44,7 +43,5 @@ bot.message((msg) => {
     });
   });
 });
-
-
 
 module.exports = bot;
