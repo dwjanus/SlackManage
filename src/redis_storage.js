@@ -99,13 +99,13 @@ module.exports = function(config) {
  */
 function getStorageObj(client, namespace) {
   return {
-    get: function(id, cb) {
-      client.hget(namespace, id, function(err, res) {
+    get: function (id, cb) {
+      client.hget(namespace, id, function (err, res) {
         cb(err, res ? JSON.parse(res) : null);
       });
     },
 
-    save: function(object, cb) {
+    save: function (object, cb) {
       if (!object.id) {
         return cb(new Error('The given object must have an id property'), {});
       }
@@ -113,11 +113,11 @@ function getStorageObj(client, namespace) {
       client.hset(namespace, object.id, JSON.stringify(object), cb);
     },
 
-    remove: function(id, cb) {
+    remove: function (id, cb) {
       client.hdel(namespace, [id], cb);
     },
 
-    all: function(cb, options) {
+    all: function (cb, options) {
       client.hgetall(namespace, function(err, res) {
         if (err) {
           return cb(err);
