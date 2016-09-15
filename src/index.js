@@ -112,14 +112,30 @@ controller.on('rtm_close', function (bot) {
   // you may want to attempt to re-open
 });
 
-controller.hears('hello', 'direct_message', function (bot,message) {
-  bot.reply(message, 'Hello!');
+controller.hears('hello', 'direct_message', function (bot, message) {
+  bot.reply(message, 'Hello ' + message.user + '!');
 });
 
-controller.hears('^stop', 'direct_message', function (bot,message) {
+controller.hears('^stop', 'direct_message', function (bot, message) {
   bot.reply(message,'Goodbye');
   bot.rtm.close();
 });
+
+
+//-------------------------------------------//
+//  ~ Handlers for the Samanage functions ~  //
+//------------------------------------------ //
+controller.hears(['new', 'new incidents, latest'], 'direct_message', function (bot, message) {
+  console.log('~INFO~\nBOT: ' + util.inspect(bot) + '\nMESSAGE: ' + util.inspect(message) + '\n');
+  bot.reply(message, 'Newest incidents');
+});
+
+
+
+//---------------------------------------------//
+//  ~ [END] Handlers for Samanage functions ~  //
+//---------------------------------------------//
+
 
 controller.storage.teams.all(function(err,teams) {
   if (err) {
