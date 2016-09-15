@@ -47,7 +47,11 @@ app.get('/auth', (req, res) => {
   var codeEnd = url.indexOf("&"); //we dont need anything else
   var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
 
-  slack.oauth.access(config('CLIENT_ID'), config('CLIENT_SECRET'), accessCode, (err, data) => {
+  slack.oauth.access({
+    config('CLIENT_ID'), 
+    config('CLIENT_SECRET'), 
+    accessCode
+  }, (err, data) => {
     if (err)
         console.log(err);
 
