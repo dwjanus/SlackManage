@@ -11,7 +11,7 @@ var redis_store = new redis_storage(process.env.REDIS_URL);
 /* Uses the slack button feature to offer a real time bot to multiple teams */
 var Botkit = require('botkit');
 
-if (!config('CLIENT_ID') || !config('CLIENT_SECRET') || !config('PORT') {
+if (!config('CLIENT_ID') || !config('CLIENT_SECRET') || !config('PORT')) {
   console.log('Error: Specify clientId clientSecret and port in environment');
   process.exit(1);
 }
