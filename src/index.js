@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const _ = require('lodash');
 const https = require('https');
 const config = require('./config');
-const slack = require('slack');
+var slack = require('slack');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
 const util = require('util');
@@ -47,15 +47,13 @@ app.get('/auth', (req, res) => {
   var codeEnd = url.indexOf("&"); //we dont need anything else
   var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
 
-  slack.oauth.access({
-    process.env.CLIENT_ID, 
-    process.env.CLIENT_SECRET,
-    accessCode
-  }, (err, data) => {
-    if (err)
-        console.log(err);
+  var request = require('request');
+  request('https://slack.com/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
+    function (error, response, body) {
+      if (error)
+        console.log(error);
 
-      var responseJson = JSON.parse(data);
+      var responseJson = JSON.parse(body);
       if (responseJson.ok) {
         console.log('ResponseJSON: ' + JSON.stringify(responseJson) + '\n');
 
@@ -74,32 +72,6 @@ app.get('/auth', (req, res) => {
       }
     return;
   });
-
-  // var request = require('request');
-  // request('https://slack.com/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
-  //   function (error, response, body) {
-  //     if (error)
-  //       console.log(error);
-
-  //     var responseJson = JSON.parse(body);
-  //     if (responseJson.ok) {
-  //       console.log('ResponseJSON: ' + JSON.stringify(responseJson) + '\n');
-
-  //       accessToken = responseJson['access_token'];
-  //       teamId = responseJson['team_id'];
-  //       webhookUrl = responseJson['incoming_webhook']['url'];
-  //       botUserId = responseJson['bot']['bot_user_id'];
-  //       botAccessToken = responseJson['bot']['bot_access_token'];
-
-  //       client.hmset(teamId, {
-  //         "access_token": accessToken,
-  //         "webhook_url": webhookUrl,
-  //         "bot_access_token": botAccessToken,
-  //         "bot_user_id": botUserId
-  //       });
-  //     }
-  //   return;
-  // });
   res.send('Success!');
   return;
 });
