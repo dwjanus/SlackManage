@@ -47,13 +47,11 @@ app.get('/auth', (req, res) => {
   var codeEnd = url.indexOf("&"); //we dont need anything else
   var accessCode = url.substring(codeStart, codeEnd).toString(); //put it all together
 
-  var request = require('request');
-  request('https://slack.com/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
-    function (error, response, body) {
-      if (error)
-        console.log(error);
+  slack.oauth.access(config('CLIENT_ID'), config('CLIENT_SECRET'), accessCode, (err, data) => {
+    if (err)
+        console.log(err);
 
-      var responseJson = JSON.parse(body);
+      var responseJson = JSON.parse(data);
       if (responseJson.ok) {
         console.log('ResponseJSON: ' + JSON.stringify(responseJson) + '\n');
 
@@ -72,7 +70,33 @@ app.get('/auth', (req, res) => {
       }
     return;
   });
-  res.sendStatus(200);
+
+  // var request = require('request');
+  // request('https://slack.com/api/oauth.access?client_id=' + process.env.CLIENT_ID + '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + accessCode,
+  //   function (error, response, body) {
+  //     if (error)
+  //       console.log(error);
+
+  //     var responseJson = JSON.parse(body);
+  //     if (responseJson.ok) {
+  //       console.log('ResponseJSON: ' + JSON.stringify(responseJson) + '\n');
+
+  //       accessToken = responseJson['access_token'];
+  //       teamId = responseJson['team_id'];
+  //       webhookUrl = responseJson['incoming_webhook']['url'];
+  //       botUserId = responseJson['bot']['bot_user_id'];
+  //       botAccessToken = responseJson['bot']['bot_access_token'];
+
+  //       client.hmset(teamId, {
+  //         "access_token": accessToken,
+  //         "webhook_url": webhookUrl,
+  //         "bot_access_token": botAccessToken,
+  //         "bot_user_id": botUserId
+  //       });
+  //     }
+  //   return;
+  // });
+  res.send('Success!');
   return;
 });
 
