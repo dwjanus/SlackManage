@@ -5,8 +5,9 @@ const _ = require('lodash');
 const config = require('./config');
 const util = require('util');
 const slack = require('slack');
-var redis_storage = require('./redis_storage.js');
-var redis_store = new redis_storage(process.env.REDIS_URL);
+var redis = require('redis').createClient(process.env.REDIS_URL);
+// var redis_storage = require('./redis_storage.js');
+// var redis_store = new redis_storage(process.env.REDIS_URL);
 
 /* Uses the slack button feature to offer a real time bot to multiple teams */
 var Botkit = require('botkit');
@@ -17,7 +18,7 @@ if (!config('CLIENT_ID') || !config('CLIENT_SECRET') || !config('PORT')) {
 }
 
 var controller = Botkit.slackbot({
-  storage: redis_storage,
+  storage: redis,
 }).configureSlackApp(
   {
     clientId: config('CLIENT_ID'),
