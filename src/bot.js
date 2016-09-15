@@ -15,16 +15,13 @@ if ( !config('CLIENT_ID') || !config('CLIENT_SECRET') || !config('PORT') ){
   process.exit(1);
 }
 
-var controller = Botkit.slackbot({
-  json_file_store: './db_slackbutton_bot/',
-}).configureSlackApp(
-  {
-    clientId: config('CLIENT_ID'),
-    clientSecret: config('CLIENT_SECRET'),
-    redirectUri: 'http://slackmanage.herokuapp.com/auth',
-    scopes: ['identify', 'bot', 'commands', 'incoming-webhook'],
-  }
-);
+var controller = Botkit.slackbot();
+controller.configureSlackApp({
+  clientId: config('CLIENT_ID'),
+  clientSecret: config('CLIENT_SECRET'),
+  redirectUri: 'http://slackmanage.herokuapp.com/auth',
+  scopes: ['identify', 'bot', 'commands', 'incoming-webhook'],
+});
 
 controller.setupWebserver(process.env.PORT, function (err, webserver) {
   controller.createWebhookEndpoints(controller.webserver);
