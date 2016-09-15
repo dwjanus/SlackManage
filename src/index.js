@@ -195,7 +195,7 @@ controller.hears(['new', 'new incidents, latest'], ['direct_message', 'direct_me
 //---------------------------------------------//
 
 
-controller.storage.teams.all(function(err,teams) {
+controller.storage.teams.all(function (err, teams) {
   if (err) {
     throw new Error(err);
   }
@@ -205,7 +205,7 @@ controller.storage.teams.all(function(err,teams) {
     if (teams[t].bot) {
       var bot = controller.spawn(teams[t]).startRTM(function(err) {
         if (err) {
-          console.log('Error connecting bot to Slack:',err);
+          console.log('Error connecting bot to Slack:', err);
         } else {
           trackBot(bot);
         }
