@@ -33,9 +33,9 @@ var controller = Botkit.slackbot({
   }
 );
 
-controller.setupWebserver(port,function (err, webserver) {
+controller.setupWebserver(port, function (err, webserver) {
 
-  webserver.get('/',function(req,res) {
+  webserver.get('/', (req, res) => {
     res.send('<a href="https://slack.com/oauth/authorize?scope=incoming-webhook,'
     + 'commands,bot&client_id=64177576980.78861190246"><img alt="Add to Slack" '
     + 'height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" '
@@ -52,6 +52,24 @@ controller.setupWebserver(port,function (err, webserver) {
       res.send('Success!');
     }
   });
+
+  webserver.post('/commands/samanage', (req, res) => {
+    let payload = req.body;
+
+    if (!payload || payload.token !== config('OAUTH_TOKEN')) {
+      let err = '✋  Dowhatnow? An invalid slash token was provided\n' +
+                '   Is your Slack slash token correctly configured?';
+      console.log(err);
+      res.status(401).end(err);
+      return;
+    }
+
+    let cmd = _.reduce(commands, (a, cmd) => {
+      return payload.text.match(cmd.pattern) ? cmd : a
+    }, helpCommand);
+
+    cmd.handler(payload, res);
+  });
 });
 
 
@@ -62,16 +80,16 @@ function trackBot(bot) {
   _bots[bot.config.token] = bot;
 }
 
-controller.on('create_bot',function(bot,config) {
+controller.on('create_bot', function (bot, config) {
   if (_bots[bot.config.token]) {
     // already online! do nothing.
   } else {
-    bot.startRTM(function(err) {
+    bot.startRTM(function (err) {
       if (!err) {
         trackBot(bot);
       }
 
-      bot.startPrivateConversation({user: config.createdBy},function(err,convo) {
+      bot.startPrivateConversation({user: config.createdBy}, function (err, convo) {
         if (err) {
           console.log(err);
         } else {
@@ -94,19 +112,11 @@ controller.on('rtm_close', function (bot) {
   // you may want to attempt to re-open
 });
 
-
-controller.on('slash_command', function (bot, message) {
-
-  bot.replyPublic(message,'<@' + message.user + '> is cool!');
-  bot.replyPrivate(message,'*nudge nudge wink wink*');
-
-});
-
 controller.hears('hello', 'direct_message', function (bot,message) {
-  bot.reply(message,'Hello!');
+  bot.reply(message, 'Hello!');
 });
 
-controller.hears('^stop','direct_message',function(bot,message) {
+controller.hears('^stop', 'direct_message', function (bot,message) {
   bot.reply(message,'Goodbye');
   bot.rtm.close();
 });
