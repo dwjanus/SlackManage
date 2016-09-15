@@ -25,6 +25,13 @@ if (config('PROXY_URI')) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+var accessToken;
+var teamId;
+var webhookUrl;
+var botUserId;
+var botAccessToken;
+
 app.get('/', (req, res) => {
   res.send('<a href="https://slack.com/oauth/authorize?scope=incoming-webhook,'
     + 'commands,bot&client_id=64177576980.78861190246"><img alt="Add to Slack" '
@@ -50,11 +57,11 @@ app.get('/auth', (req, res) => {
       if (responseJson.ok) {
         console.log('ResponseJSON: ' + JSON.stringify(responseJson) + '\n');
 
-        var accessToken = responseJson['access_token'];
-        var teamId = responseJson['team_id'];
-        var webhookUrl = responseJson['incoming_webhook']['url'];
-        var botUserId = responseJson['bot']['bot_user_id'];
-        var botAccessToken = responseJson['bot']['bot_access_token'];
+        accessToken = responseJson['access_token'];
+        teamId = responseJson['team_id'];
+        webhookUrl = responseJson['incoming_webhook']['url'];
+        botUserId = responseJson['bot']['bot_user_id'];
+        botAccessToken = responseJson['bot']['bot_access_token'];
 
         client.hmset(teamId, {
           "access_token": accessToken,
@@ -69,10 +76,10 @@ app.get('/auth', (req, res) => {
   return;
 });
 
-var team_id;
+
 app.post('/commands/samanage', (req, res) => {
   let payload = req.body;
-  team_id = payload.team_id;
+  var team_id = payload.team_id;
 
   client.hgetall(team_id, function (err, obj) {
     if (err) console.log(err);
