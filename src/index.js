@@ -7,7 +7,7 @@ const config = require('./config');
 var slack = require('slack');
 const commands = require('./commands');
 const helpCommand = require('./commands/help');
-const Samanage = require('../lib/samanage');
+const Samanage = require('./lib/samanage');
 const util = require('util');
 
 /* Uses the slack button feature to offer a real time bot to multiple teams */
