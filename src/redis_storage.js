@@ -1,4 +1,6 @@
 
+const _ = require('lodash');
+const config = require('./config');
 var redis = require('redis'); //https://github.com/NodeRedis/node_redis
 
 // * Optional *
@@ -11,7 +13,7 @@ var redis = require('redis'); //https://github.com/NodeRedis/node_redis
 
 module.exports = function(config) {
   config = config || {};
-  config.namespace = config.namespace || 'botkit:store';
+  config.namespace = config.namespace || 'bot:store';
 
   var storage = {},
   client = redis.createClient(config), // could pass specific redis config here
