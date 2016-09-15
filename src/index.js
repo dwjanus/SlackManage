@@ -14,7 +14,7 @@ var Botkit = require('botkit');
 
 // Botkit-based Redis store
 var Redis_Store = require('./redis_storage.js');
-var redis_store = new Redis_Store(process.env.REDIS_URL);
+var redis_store = new Redis_Store(config('REDIS_URL'));
 
 var port = process.env.PORT || process.env.port;
 
@@ -24,12 +24,12 @@ if (!config('CLIENT_ID') || !config('CLIENT_SECRET') || !config('PORT')) {
 }
 
 var controller = Botkit.slackbot({
-  storage: redis_store,
+  storage: redis_store
 }).configureSlackApp(
   {
     clientId: config('CLIENT_ID'),
     clientSecret: config('CLIENT_SECRET'),
-    scopes: ['bot', 'commands', 'incoming-webhook'],
+    scopes: ['bot', 'commands', 'incoming-webhook']
   }
 );
 
