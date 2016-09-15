@@ -5,9 +5,9 @@ const _ = require('lodash');
 const config = require('./config');
 const util = require('util');
 const slack = require('slack');
-var redis = require('redis').createClient(process.env.REDIS_URL);
-// var redis_storage = require('./redis_storage.js');
-// var redis_store = new redis_storage(process.env.REDIS_URL);
+// var redis = require('redis').createClient(process.env.REDIS_URL);
+var redis_storage = require('./redis_storage.js');
+var redis_store = new redis_storage(process.env.REDIS_URL);
 
 /* Uses the slack button feature to offer a real time bot to multiple teams */
 var Botkit = require('botkit');
@@ -18,7 +18,7 @@ if (!config('CLIENT_ID') || !config('CLIENT_SECRET') || !config('PORT')) {
 }
 
 var controller = Botkit.slackbot({
-  storage: redis,
+  storage: redis_store,
 }).configureSlackApp(
   {
     clientId: config('CLIENT_ID'),
@@ -51,7 +51,7 @@ controller.on('create_bot', function (bot, config) {
   if (_bots[bot.config.token]) {
     // already online! do nothing.
   } else {
-    bot.startRTM(function(err) {
+    bot.startRTM(function (err) {
 
       if (!err) {
         trackBot(bot);
@@ -88,8 +88,7 @@ controller.hears('^stop', 'direct_message', function (bot, message) {
   bot.rtm.close();
 });
 
-controller.storage.teams.all(function(err,teams) {
-
+controller.storage.teams.all(function (err, teams) {
   if (err) {
     throw new Error(err);
   }
@@ -97,9 +96,9 @@ controller.storage.teams.all(function(err,teams) {
   // connect all teams with bots up to slack!
   for (var t  in teams) {
     if (teams[t].bot) {
-      controller.spawn(teams[t]).startRTM(function(err, bot) {
+      controller.spawn(teams[t]).startRTM(function (err, bot) {
         if (err) {
-          console.log('Error connecting bot to Slack:',err);
+          console.log('Error connecting bot to Slack:', err);
         } else {
           trackBot(bot);
         }

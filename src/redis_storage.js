@@ -57,7 +57,7 @@ module.exports = function(config) {
           this.all(cb, {type: 'object'});
         }
       };
-    } (methods[i]);
+    }, (methods[i]);
   }
   return storage;
 };
