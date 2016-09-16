@@ -135,6 +135,35 @@ controller.hears('^stop', 'direct_message', function (bot, message) {
 });
 
 
+controller.hears('help', ['direct_message', 'direct_mention'], function (bot, message) {
+  let attachments = [
+    {
+      title: 'Samanagebot will help you view the status of, and modify, your latest incidents',
+      color: '#0067B3',
+      text: '/samanage new -- returns the 5 newest incidents\n' +
+            '/samanage mine -- returns your 5 most recent incidents\n' +
+            '/samanage @[number] -- returns specific incident by id\n' +
+            '/samanage #[number] -- returns a specific incident by ticket number\n',
+      mrkdown_in: ['text']
+    },
+    {
+      title: 'Configuring Samanagebot',
+      color: '#E3E4E6',
+      text: '/samanage help -- ... youre\'re lookin at it! \n',
+      mrkdown_in: ['text']
+    }
+  ];
+
+  var reply_with_attachments = {
+    'username': 'Samanage' ,
+    'text': 'Searching for latest Incidents',
+    'attachments': attachments,
+    'icon_emoji': config('ICON_EMOJI')
+  };
+
+  bot.reply(message, reply_with_attachments); 
+});
+
 //-------------------------------------------//
 //  ~ Handlers for the Samanage functions ~  //
 //------------------------------------------ //
@@ -184,7 +213,7 @@ controller.hears(['new', 'new incidents, latest'], ['direct_message', 'direct_me
       'text': 'Searching for latest Incidents',
       'attachments': attachments,
       'icon_emoji': config('ICON_EMOJI')
-    }
+    };
 
     bot.reply(message, reply_with_attachments);
   });
@@ -193,6 +222,18 @@ controller.hears(['new', 'new incidents, latest'], ['direct_message', 'direct_me
 //---------------------------------------------//
 //  ~ [END] Handlers for Samanage functions ~  //
 //---------------------------------------------//
+
+
+//-------------------------------------------//
+//  ~ Handlers for the Samanage functions ~  //
+//------------------------------------------ //
+
+
+
+
+//-------------------------------------------//
+//  ~ Handlers for the Samanage functions ~  //
+//------------------------------------------ //
 
 
 controller.storage.teams.all(function (err, teams) {
