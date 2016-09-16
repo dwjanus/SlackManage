@@ -156,7 +156,6 @@ controller.hears('help', ['direct_message', 'direct_mention'], function (bot, me
 
   var reply_with_attachments = {
     'username': 'Samanage' ,
-    'text': 'Searching for latest Incidents',
     'attachments': attachments,
     'icon_emoji': config('ICON_EMOJI')
   };
@@ -210,7 +209,7 @@ controller.hears(['new', 'new incidents, latest'], ['direct_message', 'direct_me
 
     var reply_with_attachments = {
       'username': 'Samanage' ,
-      'text': 'Searching for latest Incidents',
+      'fallback': 'Searching for latest Incidents',
       'attachments': attachments,
       'icon_emoji': config('ICON_EMOJI')
     };
